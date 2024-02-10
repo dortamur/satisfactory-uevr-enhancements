@@ -1,0 +1,25 @@
+- [ ] Raycast beam/cursor for Build & Gun equipment
+- Right Hand Menu Context/Info
+	- [x] Switch sub-menus based on State (and sub-states like Nudge mode) ✅ 2024-02-10
+	- Dismantle State
+		- [ ] Show filtered item
+		- [ ] Toggle Mass Dismantle
+		- [ ] Show Mass Dismantle selected count/total
+	- Build State
+		- [ ] Show name of item being built
+		- [ ] Show length of item being built
+		- [ ] Toggle Snap to Guidelines (Ctrl)
+		- [ ] Rotation
+	- Paint State
+		- [ ] Quick Switch
+		- [ ] Show filtered item
+- Movement
+	- [ ] Left Stick forward/back/strafe
+	- Right Stick
+		- [ ] Lock vertical/horizontal circular movement mode
+		- [ ] Left/Right smooth turn
+		- [ ] Up/Down/circle context actions
+- Large Palette selections
+	- [ ] Inventory
+	- [ ] Build/Blueprints
+	- [ ] Paint/Materials
