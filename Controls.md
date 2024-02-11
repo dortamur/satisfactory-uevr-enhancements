@@ -10,3 +10,8 @@
 		- Build Mode: Rotate Hologram
 	- Click
 		- Default: Building Sample
+- Left Controller Trigger
+	- Default: Jump/Up
+	- Context Menu: Select/Trigger
+- Left Controller Grip
+	- Default: Crouch
