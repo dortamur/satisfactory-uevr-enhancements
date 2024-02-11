@@ -1,0 +1,12 @@
+- Right Controller Grip
+	- Default: Build Gun Secondary Action
+	- Hologram Lock/Nudge: Unlock Hologram
+- Right Controller Stick:
+	- Left/Right
+		- Default: Smooth Turn Left/Right
+	- Up
+		- Default: Menu Select
+	- Down
+		- Build Mode: Rotate Hologram
+	- Click
+		- Default: Building Sample

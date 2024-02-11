@@ -6,10 +6,13 @@
 		- [ ] Toggle Mass Dismantle
 		- [ ] Show Mass Dismantle selected count/total
 	- Build State
-		- [ ] Show name of item being built
+		- [x] Show name of item being built ✅ 2024-02-10
 		- [ ] Show length of item being built
 		- [ ] Toggle Snap to Guidelines (Ctrl)
 		- [ ] Rotation
+		- [ ] Indicate when Nudge is not available
+	- Build+Nudge State
+		- [x] Add functional arrows for nudging and committing ✅ 2024-02-11
 	- Paint State
 		- [ ] Quick Switch
 		- [ ] Show filtered item
