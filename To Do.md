@@ -2,9 +2,9 @@
 - Right Hand Menu Context/Info
 	- [x] Switch sub-menus based on State (and sub-states like Nudge mode) ✅ 2024-02-10
 	- Dismantle State
-		- [ ] Show filtered item
+		- [x] Show filtered item ✅ 2024-02-11
 		- [ ] Toggle Mass Dismantle
-		- [ ] Show Mass Dismantle selected count/total
+		- [x] Show Mass Dismantle selected count/total ✅ 2024-02-11
 	- Build State
 		- [x] Show name of item being built ✅ 2024-02-10
 		- [ ] Show length of item being built
@@ -14,14 +14,15 @@
 	- Build+Nudge State
 		- [x] Add functional arrows for nudging and committing ✅ 2024-02-11
 	- Paint State
-		- [ ] Quick Switch
+		- [x] Quick Switch ✅ 2024-02-11
 		- [ ] Show filtered item
 - Movement
-	- [ ] Left Stick forward/back/strafe
+	- [x] Left Stick forward/back/strafe ✅ 2024-02-11
 	- Right Stick
-		- [ ] Lock vertical/horizontal circular movement mode
-		- [ ] Left/Right smooth turn
-		- [ ] Up/Down/circle context actions
+		- [x] Lock vertical/horizontal circular movement mode ✅ 2024-02-17
+		- [x] Left/Right smooth turn ✅ 2024-02-17
+		- [ ] Up/circle context actions
+		- [ ] Down/circle context actions
 - Large Palette selections
 	- [ ] Inventory
 	- [ ] Build/Blueprints
