@@ -1,4 +1,5 @@
-- [ ] Raycast beam/cursor for Build & Gun equipment
+- Raycast beam/cursor for Build & Gun equipment
+	- [x] Basic Pointer/target dot ✅ 2024-02-18
 - Right Hand Menu Context/Info
 	- [x] Switch sub-menus based on State (and sub-states like Nudge mode) ✅ 2024-02-10
 	- Dismantle State
@@ -9,7 +10,7 @@
 		- [x] Show name of item being built ✅ 2024-02-10
 		- [ ] Show length of item being built
 		- [ ] Toggle Snap to Guidelines (Ctrl)
-		- [ ] Rotation
+		- [x] Rotation ✅ 2024-02-18
 		- [ ] Indicate when Nudge is not available
 	- Build+Nudge State
 		- [x] Add functional arrows for nudging and committing ✅ 2024-02-11
