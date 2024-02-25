@@ -4,7 +4,7 @@
 	- [x] Switch sub-menus based on State (and sub-states like Nudge mode) ✅ 2024-02-10
 	- Dismantle State
 		- [x] Show filtered item ✅ 2024-02-11
-		- [ ] Toggle Mass Dismantle
+		- [ ] Toggle/Hold Mass Dismantle
 		- [x] Show Mass Dismantle selected count/total ✅ 2024-02-11
 	- Build State
 		- [x] Show name of item being built ✅ 2024-02-10
@@ -17,13 +17,25 @@
 	- Paint State
 		- [x] Quick Switch ✅ 2024-02-11
 		- [ ] Show filtered item
-- Movement
+	- [x] Menu hide/show based on controller "roll" ✅ 2024-02-24
+- Movement/Controls
 	- [x] Left Stick forward/back/strafe ✅ 2024-02-11
 	- Right Stick
 		- [x] Lock vertical/horizontal circular movement mode ✅ 2024-02-17
 		- [x] Left/Right smooth turn ✅ 2024-02-17
 		- [ ] Up/circle context actions
-		- [ ] Down/circle context actions
+		- [x] Down/circle context actions (build rotate/pivot) ✅ 2024-02-18
+	- Context right-trigger/grip
+		- [ ] Build Mode
+		- [ ] Dismantle Mode
+		- [ ] Nudge Mode
+		- [ ] Paint Mode
+		- [ ] Equipment
+		- [ ] LH Menu pointer
+- Equipment representation
+	- [x] Attach build gun to RH ✅ 2024-02-24
+	- [ ] Split Hover Pack / Hide right-hand
+	- [ ] Attach other equipment to RH
 - Large Palette selections
 	- [ ] Inventory
 	- [ ] Build/Blueprints
