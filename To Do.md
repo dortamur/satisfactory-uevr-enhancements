@@ -27,15 +27,16 @@
 		- [x] Down/circle context actions (build rotate/pivot) ✅ 2024-02-18
 	- Context right-trigger/grip
 		- [ ] Build Mode
-		- [ ] Dismantle Mode
+		- [x] Dismantle Mode ✅ 2024-02-25
 		- [ ] Nudge Mode
 		- [ ] Paint Mode
-		- [ ] Equipment
+		- [x] Equipment ✅ 2024-02-25
 		- [ ] LH Menu pointer
 - Equipment representation
 	- [x] Attach build gun to RH ✅ 2024-02-24
 	- [ ] Split Hover Pack / Hide right-hand
-	- [ ] Attach other equipment to RH
+	- [x] Attach other equipment to RH ✅ 2024-02-25
+	- [ ] Custom transpose/rotate for select equipment
 - Large Palette selections
 	- [ ] Inventory
 	- [ ] Build/Blueprints
