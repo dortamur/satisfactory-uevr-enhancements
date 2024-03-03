@@ -1,5 +1,6 @@
 - Raycast beam/cursor for Build & Gun equipment
 	- [x] Basic Pointer/target dot ✅ 2024-02-18
+	- [ ] Reuse main UI widget pointer
 - Right Hand Menu Context/Info
 	- [x] Switch sub-menus based on State (and sub-states like Nudge mode) ✅ 2024-02-10
 	- Dismantle State
@@ -14,30 +15,42 @@
 		- [ ] Indicate when Nudge is not available
 	- Build+Nudge State
 		- [x] Add functional arrows for nudging and committing ✅ 2024-02-11
+		- [x] Add left-stick nudging ✅ 2024-03-02
 	- Paint State
 		- [x] Quick Switch ✅ 2024-02-11
 		- [ ] Show filtered item
 	- [x] Menu hide/show based on controller "roll" ✅ 2024-02-24
+	- [x] Menu hide/show based on Right-Stick Up menu interaction ✅ 2024-03-03
+- Left Hand Menu Context/Info
+	- [x] Replicate Equipment & Health HUD ✅ 2024-03-02
+	- [x] Hide replicated UI from main UI ✅ 2024-03-03
+	- [x] Hide other main UI elements ✅ 2024-03-03
 - Movement/Controls
 	- [x] Left Stick forward/back/strafe ✅ 2024-02-11
 	- Right Stick
 		- [x] Lock vertical/horizontal circular movement mode ✅ 2024-02-17
 		- [x] Left/Right smooth turn ✅ 2024-02-17
-		- [ ] Up/circle context actions
+		- [x] Up/circle context actions ✅ 2024-03-02
 		- [x] Down/circle context actions (build rotate/pivot) ✅ 2024-02-18
 	- Context right-trigger/grip
-		- [ ] Build Mode
+		- [x] Build Mode ✅ 2024-03-02
 		- [x] Dismantle Mode ✅ 2024-02-25
-		- [ ] Nudge Mode
+		- [x] Nudge Mode ✅ 2024-03-02
 		- [ ] Paint Mode
 		- [x] Equipment ✅ 2024-02-25
 		- [ ] LH Menu pointer
 - Equipment representation
 	- [x] Attach build gun to RH ✅ 2024-02-24
-	- [ ] Split Hover Pack / Hide right-hand
 	- [x] Attach other equipment to RH ✅ 2024-02-25
-	- [ ] Custom transpose/rotate for select equipment
+	- [ ] Split Hover Pack / Hide right-hand
+	- [ ] Custom LH Nobelisk detonator / RH Nobelisk attachment
+	- [x] Custom transpose/rotate for select equipment ✅ 2024-02-29
+	- [ ] VR "swing" Stun-Stick
+	- [ ] VR Nobelisk detonation interaction (push plunger)
+	- [ ] Boom Box custom interaction controls
 - Large Palette selections
 	- [ ] Inventory
 	- [ ] Build/Blueprints
 	- [ ] Paint/Materials
+- Interactions with in-game objects
+- 
