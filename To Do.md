@@ -1,3 +1,8 @@
+- General Usability
+	- [ ] Delay VR "mode" initialisation until after UEVR injection
+	- User settings
+		- [ ] Smooth Turn
+		- [ ] Wrist menu rotation activation
 - Raycast beam/cursor for Build & Gun equipment
 	- [x] Basic Pointer/target dot ✅ 2024-02-18
 	- [ ] Reuse main UI widget pointer
@@ -39,6 +44,9 @@
 		- [ ] Paint Mode
 		- [x] Equipment ✅ 2024-02-25
 		- [ ] LH Menu pointer
+	- Long-press/Hold Actions
+		- [ ] Long-press Build trigger for temporary Nudge mode
+		- [ ] Long-press Dismantle multi-select for quick drag selections
 - Equipment representation
 	- [x] Attach build gun to RH ✅ 2024-02-24
 	- [x] Attach other equipment to RH ✅ 2024-02-25
@@ -53,4 +61,3 @@
 	- [ ] Build/Blueprints
 	- [ ] Paint/Materials
 - Interactions with in-game objects
-- 
