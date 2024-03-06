@@ -47,17 +47,30 @@
 	- Long-press/Hold Actions
 		- [ ] Long-press Build trigger for temporary Nudge mode
 		- [ ] Long-press Dismantle multi-select for quick drag selections
-- Equipment representation
+- Equipment & Pioneer representation
 	- [x] Attach build gun to RH ✅ 2024-02-24
 	- [x] Attach other equipment to RH ✅ 2024-02-25
 	- [ ] Split Hover Pack / Hide right-hand
-	- [ ] Custom LH Nobelisk detonator / RH Nobelisk attachment
+	- [x] LH Nobelisk detonator ✅ 2024-03-06
+	- [ ] RH Nobelisk attachment
 	- [x] Custom transpose/rotate for select equipment ✅ 2024-02-29
 	- [ ] VR "swing" Stun-Stick
 	- [ ] VR Nobelisk detonation interaction (push plunger)
 	- [ ] Boom Box custom interaction controls
+	- [ ] Hands
+	- [ ] Full VRIK arms/body
 - Large Palette selections
+	- [ ] Quick Bar
 	- [ ] Inventory
 	- [ ] Build/Blueprints
 	- [ ] Paint/Materials
-- Interactions with in-game objects
+- Interactions with in-game objects/buildings/machines
+- Vehicle camera/controls adjustments
+	- [ ] Factory Cart
+	- [ ] Explorer
+	- [ ] Tractor
+	- [ ] Truck
+	- [ ] Train
+	- [ ] Cyber Wagon?
+	- [ ] Drones?
+	- [ ] Hypertubes?
