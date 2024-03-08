@@ -59,12 +59,14 @@
 	- [ ] Boom Box custom interaction controls
 	- [ ] Hands
 	- [ ] Full VRIK arms/body
-- Large Palette selections
+- Larger Palette selections
 	- [ ] Quick Bar
 	- [ ] Inventory
 	- [ ] Build/Blueprints
 	- [ ] Paint/Materials
 - Interactions with in-game objects/buildings/machines
+	- [ ] Basic Interaction (pick berry, gather grass)
+	- [ ] Interact with machine - trigger
 - Vehicle camera/controls adjustments
 	- [ ] Factory Cart
 	- [ ] Explorer
