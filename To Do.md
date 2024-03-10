@@ -60,12 +60,12 @@
 	- [ ] Hands
 	- [ ] Full VRIK arms/body
 - Larger Palette selections
-	- [ ] Quick Bar
+	- [x] Hotkey/Quick Bar ✅ 2024-03-09
 	- [ ] Inventory
 	- [ ] Build/Blueprints
 	- [ ] Paint/Materials
 - Interactions with in-game objects/buildings/machines
-	- [ ] Basic Interaction (pick berry, gather grass)
+	- [x] Basic Interaction (pick berry, gather grass) ✅ 2024-03-08
 	- [ ] Interact with machine - trigger
 - Vehicle camera/controls adjustments
 	- [ ] Factory Cart
