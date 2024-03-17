@@ -67,6 +67,12 @@
 - Interactions with in-game objects/buildings/machines
 	- [x] Basic Interaction (pick berry, gather grass) ✅ 2024-03-08
 	- [ ] Interact with machine - trigger
+- New HUD specific to VR
+	- [ ] Initial "HUD" widget
+	- [ ] Compass
+	- [ ] Health
+	- [ ] Equipment status
+	- [ ] Danger indicators?
 - Vehicle camera/controls adjustments
 	- [ ] Factory Cart
 	- [ ] Explorer
