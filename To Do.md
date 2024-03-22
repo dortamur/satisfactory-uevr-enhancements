@@ -1,5 +1,5 @@
 - General Usability
-	- [ ] Delay VR "mode" initialisation until after UEVR injection
+	- [x] Delay VR "mode" initialisation until after UEVR injection ✅ 2024-03-10
 	- User settings
 		- [ ] Smooth Turn
 		- [ ] Wrist menu rotation activation
@@ -23,9 +23,12 @@
 		- [x] Add left-stick nudging ✅ 2024-03-02
 	- Paint State
 		- [x] Quick Switch ✅ 2024-02-11
+		- [ ] Show paint swatch
 		- [ ] Show filtered item
 	- [x] Menu hide/show based on controller "roll" ✅ 2024-02-24
 	- [x] Menu hide/show based on Right-Stick Up menu interaction ✅ 2024-03-03
+	- [ ] Info mode to show building info when menu closed
+	- [ ] Haptics on interaction
 - Left Hand Menu Context/Info
 	- [x] Replicate Equipment & Health HUD ✅ 2024-03-02
 	- [x] Hide replicated UI from main UI ✅ 2024-03-03
@@ -57,6 +60,7 @@
 	- [ ] VR "swing" Stun-Stick
 	- [ ] VR Nobelisk detonation interaction (push plunger)
 	- [ ] Boom Box custom interaction controls
+	- [ ] Zipline custom interaction (hold above head)
 	- [ ] Hands
 	- [ ] Full VRIK arms/body
 - Larger Palette selections
