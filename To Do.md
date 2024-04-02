@@ -27,7 +27,7 @@
 		- [ ] Show filtered item
 	- [x] Menu hide/show based on controller "roll" ✅ 2024-02-24
 	- [x] Menu hide/show based on Right-Stick Up menu interaction ✅ 2024-03-03
-	- [ ] Info mode to show building info when menu closed
+	- [x] Info mode to show building info when menu closed ✅ 2024-03-22
 	- [ ] Haptics on interaction
 - Left Hand Menu Context/Info
 	- [x] Replicate Equipment & Health HUD ✅ 2024-03-02
