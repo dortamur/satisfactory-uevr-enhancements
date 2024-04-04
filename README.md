@@ -12,11 +12,11 @@ Since this is still very experimental, installation is a manual process.
 - Download a release zip file from github
 - Extract the contents of the zip file (a folder called `UEVREnhancements` to your Satisfactory game install mods folder. This will be something like `<steam-common-folder>\Satisfactory\FactoryGame\Mods`
 - Download the [UEVR](https://uevr.io/) app, and install it
-- Download this Satisfactory profile for UEVR (*coming soon*) and load it into UEVR
+- Download this [Satisfactory profile for UEVR](UEVR/FactoryGame-Win64-Shipping.zip)  and load it into UEVR
 - Run Satisfactory, and load into your game
 - Run the UEVR mod, select `FactoryGame-Win64-Shipping` from the Inject menu, and inject into the game
 
-*Warning: This is intended for testing only! Currently the mod activates even if you are not in VR mode. You will need to remove the `UEVREnhancements` mod folder to disable it.*
+*Warning: This is intended for testing only!
 
 ## Credits
 

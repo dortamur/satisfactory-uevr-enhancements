@@ -46,21 +46,22 @@
 		- [x] Nudge Mode ✅ 2024-03-02
 		- [ ] Paint Mode
 		- [x] Equipment ✅ 2024-02-25
-		- [ ] LH Menu pointer
+		- [x] LH Menu pointer ✅ 2024-04-03
 	- Long-press/Hold Actions
 		- [ ] Long-press Build trigger for temporary Nudge mode
 		- [ ] Long-press Dismantle multi-select for quick drag selections
 - Equipment & Pioneer representation
 	- [x] Attach build gun to RH ✅ 2024-02-24
 	- [x] Attach other equipment to RH ✅ 2024-02-25
-	- [ ] Split Hover Pack / Hide right-hand
+	- [ ] Split Hover Pack / Hide right-hand / Custom Hover Pack separate controllers
 	- [x] LH Nobelisk detonator ✅ 2024-03-06
 	- [ ] RH Nobelisk attachment
 	- [x] Custom transpose/rotate for select equipment ✅ 2024-02-29
 	- [ ] VR "swing" Stun-Stick
 	- [ ] VR Nobelisk detonation interaction (push plunger)
 	- [ ] Boom Box custom interaction controls
-	- [ ] Zipline custom interaction (hold above head)
+	- [ ] Zipline custom interaction (hold above head/player offset)
+	- [x] Default VR Controller meshes ✅ 2024-04-03
 	- [ ] Hands
 	- [ ] Full VRIK arms/body
 - Larger Palette selections
@@ -70,7 +71,8 @@
 	- [ ] Paint/Materials
 - Interactions with in-game objects/buildings/machines
 	- [x] Basic Interaction (pick berry, gather grass) ✅ 2024-03-08
-	- [ ] Interact with machine - trigger
+	- [x] Interact with machine/device - trigger ✅ 2024-03-08
+	- [ ] Mouse-style interaction with default interaction menu screens
 - New HUD specific to VR
 	- [ ] Initial "HUD" widget
 	- [ ] Compass

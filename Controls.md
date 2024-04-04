@@ -4,9 +4,13 @@ The left controller is focussed on movement, and most movement controls are hand
 
 The right controller is focussed on interactions, including weapon aiming & firing, build aiming and adjustments (including nudging), and menu selection.
 
-The right wrist has a menu of selectable options. This can be interacted with a number of different ways:
+The right wrist has a menu of selectable options, and also shows build information. Rotate your wrist (like looking at a watch) to see the right wrist menu.
+This can be interacted with a number of different ways:
 - Point at it with the left controller, and push left trigger to select an option
 - Press Up on the right controller stick, roll the stick left or right to highlight an option, and push right trigger to select
+
+The left wrist has some information elements (equipment status, health), as well as the Build Quick Bar, and numbers to select different bars.
+Rotate your wrist (like looking at a watch) to see the left wrist UI.
 
 - Left Controller stick
 	- Up/Down moves forward/backward
@@ -37,4 +41,5 @@ The right wrist has a menu of selectable options. This can be interacted with a 
 	- Click
 		- Default: Building Sample
 - Right Controller Buttons:
-	- B: Cycle through equipment
+	- A: Interact
+	- B: Cycle through equipment / Switch build parts
