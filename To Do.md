@@ -88,3 +88,8 @@
 	- [ ] Cyber Wagon?
 	- [ ] Drones?
 	- [ ] Hypertubes?
+- Code Structure Improvements
+	- [ ] Combine common elements of `VRControllerRight` and `VRControllerLeft` into common class
+	- [ ] Split Equipment handling out from `VRCoordinator` into separate class
+	- [ ] Split Input/Controller handling out from `VRCoordinator` into separate class
+	- [ ] Add Variable Categories for more organised variables
