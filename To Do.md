@@ -61,6 +61,7 @@
 	- [ ] VR Nobelisk detonation interaction (push plunger)
 	- [ ] Boom Box custom interaction controls
 	- [ ] Zipline custom interaction (hold above head/player offset)
+	- [ ] Over the shoulder Holster
 	- [x] Default VR Controller meshes ✅ 2024-04-03
 	- [ ] Hands
 	- [ ] Full VRIK arms/body
@@ -73,6 +74,7 @@
 	- [x] Basic Interaction (pick berry, gather grass) ✅ 2024-03-08
 	- [x] Interact with machine/device - trigger ✅ 2024-03-08
 	- [ ] Mouse-style interaction with default interaction menu screens
+	- [ ] "Close" when "Interact" pressed when already in Menu mode
 - New HUD specific to VR
 	- [ ] Initial "HUD" widget
 	- [ ] Compass
