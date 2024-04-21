@@ -2,6 +2,7 @@
 	- [x] Delay VR "mode" initialisation until after UEVR injection ✅ 2024-03-10
 	- User settings
 		- [ ] Smooth Turn
+		- [ ] Enable HUD
 		- [ ] Wrist menu rotation activation
 - Raycast beam/cursor for Build & Gun equipment
 	- [x] Basic Pointer/target dot ✅ 2024-02-18
@@ -33,6 +34,11 @@
 	- [x] Replicate Equipment & Health HUD ✅ 2024-03-02
 	- [x] Hide replicated UI from main UI ✅ 2024-03-03
 	- [x] Hide other main UI elements ✅ 2024-03-03
+	- [ ] Tabbed controls:
+		- [ ] Quick Build hotbar
+		- [ ] Equipment selection
+		- [ ] Resource Scanner
+	- [ ] Context-sensitive Status (alternative to HUD)
 - Movement/Controls
 	- [x] Left Stick forward/back/strafe ✅ 2024-02-11
 	- Right Stick
@@ -44,7 +50,7 @@
 		- [x] Build Mode ✅ 2024-03-02
 		- [x] Dismantle Mode ✅ 2024-02-25
 		- [x] Nudge Mode ✅ 2024-03-02
-		- [ ] Paint Mode
+		- [x] Paint Mode ✅ 2024-04-21
 		- [x] Equipment ✅ 2024-02-25
 		- [x] LH Menu pointer ✅ 2024-04-03
 	- Long-press/Hold Actions
@@ -68,18 +74,19 @@
 - Larger Palette selections
 	- [x] Hotkey/Quick Bar ✅ 2024-03-09
 	- [ ] Inventory
-	- [ ] Build/Blueprints
-	- [ ] Paint/Materials
+	- [x] Build/Blueprints (existing UI/fake mouse) ✅ 2024-04-21
+	- [x] Paint/Materials (existing UI/fake mouse) ✅ 2024-04-21
 - Interactions with in-game objects/buildings/machines
 	- [x] Basic Interaction (pick berry, gather grass) ✅ 2024-03-08
 	- [x] Interact with machine/device - trigger ✅ 2024-03-08
-	- [ ] Mouse-style interaction with default interaction menu screens
-	- [ ] "Close" when "Interact" pressed when already in Menu mode
+	- [x] Mouse-style interaction with default interaction menu screens ✅ 2024-04-21
+	- [x] "Close" when "Interact" pressed when already in Menu mode ✅ 2024-04-21
+	- [ ] World-space UI migration
 - New HUD specific to VR
-	- [ ] Initial "HUD" widget
+	- [x] Initial "HUD" widget ✅ 2024-04-07
 	- [ ] Compass
-	- [ ] Health
-	- [ ] Equipment status
+	- [x] Health ✅ 2024-04-13
+	- [x] Equipment status ✅ 2024-04-13
 	- [ ] Danger indicators?
 - Vehicle camera/controls adjustments
 	- [ ] Factory Cart
