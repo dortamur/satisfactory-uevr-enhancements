@@ -21,5 +21,12 @@
 			"SemVersion": "^3.6.1"
 		}
 	],
+	"Modules": [
+		{
+			"Name": "UEVREnhancements",
+			"Type": "Runtime",
+			"LoadingPhase": "Default"
+		}
+	],
 	"SemVersion": "0.0.2"
 }
