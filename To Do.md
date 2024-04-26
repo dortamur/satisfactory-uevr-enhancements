@@ -59,6 +59,7 @@
 - Equipment & Pioneer representation
 	- [x] Attach build gun to RH ✅ 2024-02-24
 	- [x] Attach other equipment to RH ✅ 2024-02-25
+	- [ ] Attach consumable items to RH
 	- [ ] Split Hover Pack / Hide right-hand / Custom Hover Pack separate controllers
 	- [x] LH Nobelisk detonator ✅ 2024-03-06
 	- [ ] RH Nobelisk attachment
