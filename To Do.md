@@ -34,10 +34,10 @@
 	- [x] Replicate Equipment & Health HUD ✅ 2024-03-02
 	- [x] Hide replicated UI from main UI ✅ 2024-03-03
 	- [x] Hide other main UI elements ✅ 2024-03-03
-	- [ ] Tabbed controls:
-		- [ ] Quick Build hotbar
+	- [x] Tabbed controls: ✅ 2024-04-26
+		- [x] Quick Build hotbar ✅ 2024-04-26
 		- [ ] Equipment selection
-		- [ ] Resource Scanner
+		- [x] Resource Scanner ✅ 2024-04-26
 	- [ ] Context-sensitive Status (alternative to HUD)
 - Movement/Controls
 	- [x] Left Stick forward/back/strafe ✅ 2024-02-11
@@ -56,6 +56,7 @@
 	- Long-press/Hold Actions
 		- [ ] Long-press Build trigger for temporary Nudge mode
 		- [ ] Long-press Dismantle multi-select for quick drag selections
+		- [ ] Long-press Equipment toggle to holster/draw
 - Equipment & Pioneer representation
 	- [x] Attach build gun to RH ✅ 2024-02-24
 	- [x] Attach other equipment to RH ✅ 2024-02-25
