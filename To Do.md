@@ -36,7 +36,7 @@
 	- [x] Hide other main UI elements ✅ 2024-03-03
 	- [x] Tabbed controls: ✅ 2024-04-26
 		- [x] Quick Build hotbar ✅ 2024-04-26
-		- [ ] Equipment selection
+		- [x] Equipment selection ✅ 2024-04-28
 		- [x] Resource Scanner ✅ 2024-04-26
 	- [ ] Context-sensitive Status (alternative to HUD)
 - Movement/Controls
@@ -61,6 +61,7 @@
 	- [x] Attach build gun to RH ✅ 2024-02-24
 	- [x] Attach other equipment to RH ✅ 2024-02-25
 	- [ ] Attach consumable items to RH
+	- [ ] Hide Equipment on wrist menu interaction
 	- [ ] Split Hover Pack / Hide right-hand / Custom Hover Pack separate controllers
 	- [x] LH Nobelisk detonator ✅ 2024-03-06
 	- [ ] RH Nobelisk attachment
