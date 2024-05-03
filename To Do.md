@@ -60,14 +60,15 @@
 - Equipment & Pioneer representation
 	- [x] Attach build gun to RH ✅ 2024-02-24
 	- [x] Attach other equipment to RH ✅ 2024-02-25
-	- [ ] Attach consumable items to RH
+	- [x] Attach consumable items to RH ✅ 2024-05-03
 	- [ ] Hide Equipment on wrist menu interaction
 	- [ ] Split Hover Pack / Hide right-hand / Custom Hover Pack separate controllers
 	- [x] LH Nobelisk detonator ✅ 2024-03-06
-	- [ ] RH Nobelisk attachment
+	- [ ] RH Nobelisk attachment - currently in UEVR Profile
 	- [x] Custom transpose/rotate for select equipment ✅ 2024-02-29
 	- [ ] VR "swing" Stun-Stick
 	- [ ] VR Nobelisk detonation interaction (push plunger)
+	- [ ] VR "eat" consumable/inhaler
 	- [ ] Boom Box custom interaction controls
 	- [ ] Zipline custom interaction (hold above head/player offset)
 	- [ ] Over the shoulder Holster
@@ -102,6 +103,7 @@
 	- [ ] Hypertubes?
 - Code Structure Improvements
 	- [ ] Combine common elements of `VRControllerRight` and `VRControllerLeft` into common class
+	- [x] Replace Equipment positioning selection spaghetti with transform map ✅ 2024-05-03
 	- [ ] Split Equipment handling out from `VRCoordinator` into separate class
 	- [ ] Split Input/Controller handling out from `VRCoordinator` into separate class
 	- [ ] Add Variable Categories for more organised variables
