@@ -107,3 +107,7 @@
 	- [ ] Split Equipment handling out from `VRCoordinator` into separate class
 	- [ ] Split Input/Controller handling out from `VRCoordinator` into separate class
 	- [ ] Add Variable Categories for more organised variables
+- Known Issues to fix
+	- [ ] Mouse click emulation doesn't work in Inventory before interacting with another menu
+	- [ ] Right-hand Wrist Menu keeps opening instead of staying hidden during other interactions
+	- [ ] Left-stick down "rotate building" position is possibly resetting?
