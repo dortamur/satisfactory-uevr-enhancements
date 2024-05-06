@@ -25,9 +25,9 @@ Rotate your wrist (like looking at a watch) to see the left wrist UI.
 	- Default: Mode-specific trigger action. eg; fire weapon, build item
 	- Menu Select: Select highlighted item
 - Right Controller Grip
-	- Default: Build Gun Secondary Action
+	- Default: Interact
 	- Hologram Lock/Nudge: Unlock Hologram
-	- Other build modes: Back/Cancel
+	- Other build modes + Menus: Back/Cancel
 - Right Controller Stick:
 	- Left/Right
 		- Default: Smooth Turn left/right
@@ -41,5 +41,10 @@ Rotate your wrist (like looking at a watch) to see the left wrist UI.
 	- Click
 		- Default: Building Sample
 - Right Controller Buttons:
-	- A: Interact
-	- B: Cycle through equipment / Switch build parts
+	- A: 
+		- Default: Secondary Fire
+		- Build: Build Mode
+	- B: 
+		- Default: Cycle through equipment
+		- Build: Switch build parts
+		- Dismantle: Multi-Select
