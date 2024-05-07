@@ -53,10 +53,13 @@
 		- [x] Paint Mode ✅ 2024-04-21
 		- [x] Equipment ✅ 2024-02-25
 		- [x] LH Menu pointer ✅ 2024-04-03
-	- Long-press/Hold Actions
+	- Extra Controller Actions
 		- [ ] Long-press Build trigger for temporary Nudge mode
-		- [ ] Long-press Dismantle multi-select for quick drag selections
 		- [ ] Long-press Equipment toggle to holster/draw
+		- [x] Button for Snap ✅ 2024-05-07
+		- [x] Button for Dismantle Multi-select (with hold/drag) ✅ 2024-05-07
+		- [x] Button for Mode cycle ✅ 2024-05-07
+		- [x] Button for Hologram lock ✅ 2024-05-07
 - Equipment & Pioneer representation
 	- [x] Attach build gun to RH ✅ 2024-02-24
 	- [x] Attach other equipment to RH ✅ 2024-02-25
@@ -77,7 +80,7 @@
 	- [ ] Full VRIK arms/body
 - Larger Palette selections
 	- [x] Hotkey/Quick Bar ✅ 2024-03-09
-	- [ ] Inventory
+	- [x] Inventory (existing UI/fake mouse) ✅ 2024-04-24
 	- [x] Build/Blueprints (existing UI/fake mouse) ✅ 2024-04-21
 	- [x] Paint/Materials (existing UI/fake mouse) ✅ 2024-04-21
 - Interactions with in-game objects/buildings/machines
@@ -109,5 +112,5 @@
 	- [ ] Add Variable Categories for more organised variables
 - Known Issues to fix
 	- [ ] Mouse click emulation doesn't work in Inventory before interacting with another menu
-	- [ ] Right-hand Wrist Menu keeps opening instead of staying hidden during other interactions
-	- [ ] Left-stick down "rotate building" position is possibly resetting?
+	- [x] Right-hand Wrist Menu keeps opening instead of staying hidden during other interactions ✅ 2024-05-05
+	- [x] Left-stick down "rotate building" position is possibly resetting? ✅ 2024-05-07

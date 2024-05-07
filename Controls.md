@@ -48,3 +48,10 @@ Rotate your wrist (like looking at a watch) to see the left wrist UI.
 		- Default: Cycle through equipment
 		- Build: Switch build parts
 		- Dismantle: Multi-Select
+- Left Controller Buttons:
+	- X: 
+		- Default: Holster
+		- Build: Snap to Grid
+	- Y: 
+		- Default: Flashlight
+		- Build: Hologram Lock
