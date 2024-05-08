@@ -4,10 +4,10 @@
 // Derived from:
 //  https://forums.unrealengine.com/t/how-to-inject-simulate-mouse-clicks/25602/12
 //  https://pastebin.com/QqsTYYkv
-void UMouseEmulation::SimulateMouseButton(bool bLeft, bool bButtonDown, bool bWidgetsOnly, bool bWorldOnly)
+void UMouseEmulation::SimulateMouseButton(const FKey MouseButton, bool bButtonDown, bool bWidgetsOnly, bool bWorldOnly)
 {
     // Determine Mouse Button and Input Type
-    FKey MouseButton = bLeft ? EKeys::LeftMouseButton : EKeys::RightMouseButton;
+    // FKey MouseButton = bLeft ? EKeys::LeftMouseButton : EKeys::RightMouseButton;
     EInputEvent InputEvent = bButtonDown ? EInputEvent::IE_Pressed : EInputEvent::IE_Released;
 
     // Get our slate application
@@ -60,4 +60,24 @@ void UMouseEmulation::SimulateMouseButton(bool bLeft, bool bButtonDown, bool bWi
       // Mouse Button up
       SlateApp.ProcessMouseButtonUpEvent(MouseEvent);
     }
+}
+
+void UMouseEmulation::SimulateMouseScroll(float ScrollAmount)
+{
+    // Get our slate application
+    FSlateApplication& SlateApp = FSlateApplication::Get();
+
+    // Create a pointer event
+    FPointerEvent MouseEvent(
+        0,
+        SlateApp.CursorPointerIndex,
+        SlateApp.GetCursorPos(),
+        SlateApp.GetLastCursorPos(),
+        SlateApp.GetPressedMouseButtons(),
+        EKeys::MouseScrollUp,
+        ScrollAmount,
+        SlateApp.GetPlatformApplication()->GetModifierKeys()
+    );
+
+    SlateApp.ProcessMouseWheelOrGestureEvent(MouseEvent, nullptr);
 }

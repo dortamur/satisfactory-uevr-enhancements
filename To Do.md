@@ -87,6 +87,7 @@
 	- [x] Basic Interaction (pick berry, gather grass) ✅ 2024-03-08
 	- [x] Interact with machine/device - trigger ✅ 2024-03-08
 	- [x] Mouse-style interaction with default interaction menu screens ✅ 2024-04-21
+	- [x] Stick up/down to scroll UI pane with scrollbar (uses buttons, but works) ✅ 2024-05-08
 	- [x] "Close" when "Interact" pressed when already in Menu mode ✅ 2024-04-21
 	- [ ] World-space UI migration
 - New HUD specific to VR
