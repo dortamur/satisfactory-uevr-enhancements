@@ -40,7 +40,8 @@
 		- [x] Quick Build hotbar ✅ 2024-04-26
 		- [x] Equipment selection ✅ 2024-04-28
 		- [x] Resource Scanner ✅ 2024-04-26
-	- [ ] Context-sensitive Status (alternative to HUD)
+	- [x] General Status (alternative to HUD) ✅ 2024-05-11
+	- [ ] Use current equip icon/holster desaturated as Equip tab icon
 - Movement/Controls
 	- [x] Left Stick forward/back/strafe ✅ 2024-02-11
 	- Right Stick
