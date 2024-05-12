@@ -13,9 +13,11 @@
 		- [x] Show filtered item ✅ 2024-02-11
 		- [ ] Toggle/Hold Mass Dismantle
 		- [x] Show Mass Dismantle selected count/total ✅ 2024-02-11
+		- [ ] Show Dismantle materials refund
 	- Build State
 		- [x] Show name of item being built ✅ 2024-02-10
 		- [x] Show length of item being built ✅ 2024-05-12
+		- [ ] Show materials cost/availability
 		- [ ] Toggle Snap to Guidelines (Ctrl)
 		- [x] Rotation ✅ 2024-02-18
 		- [ ] Indicate when Nudge is not available
@@ -64,7 +66,7 @@
 	- [x] Attach build gun to RH ✅ 2024-02-24
 	- [x] Attach other equipment to RH ✅ 2024-02-25
 	- [x] Attach consumable items to RH ✅ 2024-05-03
-	- [ ] Hide Equipment on wrist menu interaction
+	- [x] Hide Equipment on wrist menu interaction ✅ 2024-05-11
 	- [ ] Split Hover Pack / Hide right-hand / Custom Hover Pack separate controllers
 	- [x] LH Nobelisk detonator ✅ 2024-03-06
 	- [ ] RH Nobelisk attachment - currently in UEVR Profile
@@ -97,6 +99,7 @@
 	- [x] Equipment status ✅ 2024-04-13
 	- [ ] Danger indicators?
 - Vehicle camera/controls adjustments
+	- [ ] General vehicle controls/recognition
 	- [ ] Factory Cart
 	- [ ] Explorer
 	- [ ] Tractor
@@ -112,6 +115,8 @@
 	- [ ] Split Input/Controller handling out from `VRCoordinator` into separate class
 	- [ ] Add Variable Categories for more organised variables
 - Known Issues to fix
-	- [ ] Mouse click emulation doesn't work in Inventory before - something?
+	- [ ] Mouse click emulation doesn't work for some buttons, and is sometimes intermittent
 	- [x] Right-hand Wrist Menu keeps opening instead of staying hidden during other interactions ✅ 2024-05-05
 	- [x] Left-stick down "rotate building" position is possibly resetting? ✅ 2024-05-07
+	- [ ] Exiting Vehicles restores default UI
+	- [ ] Vehicle view angle is locked (head turn doesn't work)
