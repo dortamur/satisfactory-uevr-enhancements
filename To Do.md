@@ -15,7 +15,7 @@
 		- [x] Show Mass Dismantle selected count/total ✅ 2024-02-11
 	- Build State
 		- [x] Show name of item being built ✅ 2024-02-10
-		- [ ] Show length of item being built
+		- [x] Show length of item being built ✅ 2024-05-12
 		- [ ] Toggle Snap to Guidelines (Ctrl)
 		- [x] Rotation ✅ 2024-02-18
 		- [ ] Indicate when Nudge is not available
@@ -24,8 +24,8 @@
 		- [x] Add left-stick nudging ✅ 2024-03-02
 	- Paint State
 		- [x] Quick Switch ✅ 2024-02-11
-		- [ ] Show paint swatch
-		- [ ] Show filtered item
+		- [x] Show paint swatch - name only ✅ 2024-05-12
+		- [x] Show filtered item ✅ 2024-05-12
 	- [x] Menu hide/show based on controller "roll" ✅ 2024-02-24
 	- [x] Menu hide/show based on Right-Stick Up menu interaction ✅ 2024-03-03
 	- [x] Info mode to show building info when menu closed ✅ 2024-03-22
@@ -112,6 +112,6 @@
 	- [ ] Split Input/Controller handling out from `VRCoordinator` into separate class
 	- [ ] Add Variable Categories for more organised variables
 - Known Issues to fix
-	- [ ] Mouse click emulation doesn't work in Inventory before interacting with another menu
+	- [ ] Mouse click emulation doesn't work in Inventory before - something?
 	- [x] Right-hand Wrist Menu keeps opening instead of staying hidden during other interactions ✅ 2024-05-05
 	- [x] Left-stick down "rotate building" position is possibly resetting? ✅ 2024-05-07
