@@ -49,10 +49,10 @@ You may need to drop back to flat-mode for manual mouse fiddling occasionally (h
 This can happen when the Satisfactory game window doesn't have focus. Did you Alt-tab to Satisfactory Calculator on another screen? Make sure Satisfactory has the active focus.
 ### Ok, I'm in VR but I can't aim straight and I can't build stuff!
 It sounds like you didn't import the provided [Satisfactory profile for UEVR](UEVR/FactoryGame-Win64-Shipping.zip) , or have reset the settings.
-## Aieee! Smooth turn makes me want to hurl!
+### Aieee! Smooth turn makes me want to hurl!
 *...adds "Snap Turn Option" to the To Do list...*
 Sorry. You can physically turn as an alternate turn option - swivel chairs and wireless headsets are good for this!
-## I can't drive vehicles!
+### I can't drive vehicles!
 Nope! Not yet... At least there's a button to get out! (Right Grip)
 
 ## Credits
