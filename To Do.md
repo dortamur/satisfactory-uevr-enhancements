@@ -1,7 +1,7 @@
 - General Usability
 	- [x] Delay VR "mode" initialisation until after UEVR injection ✅ 2024-03-10
 	- User settings
-		- [ ] Smooth Turn
+		- [ ] Smooth Turn / Snap Turn
 		- [ ] Enable HUD
 		- [ ] Wrist menu rotation activation
 - Raycast beam/cursor for Build & Gun equipment
@@ -47,6 +47,7 @@
 	- Right Stick
 		- [x] Lock vertical/horizontal circular movement mode ✅ 2024-02-17
 		- [x] Left/Right smooth turn ✅ 2024-02-17
+		- [ ] Left/Right snap turn
 		- [x] Up/circle context actions ✅ 2024-03-02
 		- [x] Down/circle context actions (build rotate/pivot) ✅ 2024-02-18
 	- Context right-trigger/grip
@@ -72,15 +73,19 @@
 	- [x] LH Nobelisk detonator ✅ 2024-03-06
 	- [ ] RH Nobelisk attachment - currently in UEVR Profile
 	- [x] Custom transpose/rotate for select equipment ✅ 2024-02-29
+	- [ ] Hands
+	- [ ] Full VRIK arms/body
+	- [x] Default VR Controller meshes ✅ 2024-04-03
+- Immersive VR Interactions
 	- [ ] VR "swing" Stun-Stick
 	- [ ] VR Nobelisk detonation interaction (push plunger)
 	- [ ] VR "eat" consumable/inhaler
 	- [ ] Boom Box custom interaction controls
 	- [ ] Zipline custom interaction (hold above head/player offset)
 	- [ ] Over the shoulder Holster
-	- [x] Default VR Controller meshes ✅ 2024-04-03
-	- [ ] Hands
-	- [ ] Full VRIK arms/body
+	- [ ] Vehicle steering
+	- [ ] Vehicle exit
+	- [ ] Vehicle horn?
 - Larger Palette selections
 	- [x] Hotkey/Quick Bar ✅ 2024-03-09
 	- [x] Inventory (existing UI/fake mouse) ✅ 2024-04-24
@@ -119,5 +124,5 @@
 	- [ ] Mouse click emulation doesn't work for some buttons, and is sometimes intermittent
 	- [x] Right-hand Wrist Menu keeps opening instead of staying hidden during other interactions ✅ 2024-05-05
 	- [x] Left-stick down "rotate building" position is possibly resetting? ✅ 2024-05-07
-	- [ ] Exiting Vehicles restores default UI
-	- [ ] Vehicle view angle is locked (head turn doesn't work)
+	- [x] Exiting Vehicles restores default UI ✅ 2024-05-18
+
