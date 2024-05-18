@@ -18,7 +18,7 @@
 		- [x] Show name of item being built ✅ 2024-02-10
 		- [x] Show length of item being built ✅ 2024-05-12
 		- [ ] Show materials cost/availability
-		- [ ] Toggle Snap to Guidelines (Ctrl)
+		- [x] Toggle Snap to Guidelines (Ctrl) ✅ 2024-05-18
 		- [x] Rotation ✅ 2024-02-18
 		- [ ] Indicate when Nudge is not available
 	- Build+Nudge State
