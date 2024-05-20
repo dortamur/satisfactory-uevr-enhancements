@@ -10,7 +10,8 @@ See the [Controls](Controls.md) for tips on usage, and check the [To Do](To Do.m
 
 ## First Time Installation and Setup
 
-- Install this mod either via [Satisfactory Mod Manager](https://ficsit.app/) or by downloading a [release zip from github](https://github.com/dortamur/satisfactory-uevr-enhancements/releases) and unzip it to your Satisfactory Mods folder
+- Download and install the [Satisfactory Mod Manager](https://ficsit.app/) app
+- Go to the [UEVR Enhancements mod page](https://ficsit.app/mod/UEVREnhancements) and select [Install] latest version from the right of the page. This should open Satisfactory Mod Manager, install this mod, along with its dependencies.
 - Download the UEVR tool from its [releases on github](https://github.com/praydog/UEVR/releases)
 - Unzip it to a folder somewhere, and create a shortcut to `UEVRInjector.exe`
 - Download this [Satisfactory profile for UEVR](UEVR/FactoryGame-Win64-Shipping.zip)
@@ -23,15 +24,26 @@ See the [Controls](Controls.md) for tips on usage, and check the [To Do](To Do.m
 - Make sure your VR headset is connected and ready
 - Run the UEVR tool, select `FactoryGame-Win64-Shipping` from the Inject menu, and inject into the game
 
+## Upgrading
+
+If you already have the "UEVR Enhancements" mod installed, loading the Satisfactory Mod Manager app should give an option to upgrade to the latest version.
+Alternatively, you can download a [release zip from github](https://github.com/dortamur/satisfactory-uevr-enhancements/releases) and unzip it to your Satisfactory `/Mods/` folder, replacing the existing `UEVREnhancements` mod directory
+
 ## VR Headset Tips
 
 - **Quest** or similar headset using **Virtual Desktop**: Select "OpenXR" in the UEVR Tool before injecting it
+- **Quest** or **Rift** using **Oculus Link**: Select "OpenXR" in the UEVR Tool before injecting it
 - PC **Steam VR** headset: Select "OpenVR" in the UEVR Tool before injecting it
+- VR is a *performance hog*. If your frame-rate is super-terrible, try:
+	- Turn off "Global Illumination"!
+	- Dropping your VR render resolution down
+	- Drop your DLSS down to "Performance" (for NVIDIA cards)
+	- Check you're using the right one out of OpenVR/OpenXR
 - ...let me know what works best for your setup!
 
 ## Troubleshooting
 
-### Windows Defender/other virus scanner things UEVR is an evil virus!!1!
+### Windows Defender/Chrome/other virus scanner thinks UEVR is an evil virus!!1!
 The UEVR Tool is a very recent open source tool that injects code into your other apps. Injecting code is what viruses do to do bad things, but in this case UEVR needs to do this to enable VR in games like Satisfactory that don't otherwise support it.
 You may need to tell your virus scanner to ignore/trust UEVR so it doesn't panic and hide it away from you.
 ### Satisfactory says "Ready for UEVR Injection..." but it's not in VR

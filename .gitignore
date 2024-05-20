@@ -76,4 +76,9 @@ DerivedDataCache/*
 # Obsidian
 .obsidian
 Notes.md
+
+# Local archive of release zips
+Releases/
+
+# Miscellaneous files to exclude
 Content/Materials/VRWidgetTest.uasset

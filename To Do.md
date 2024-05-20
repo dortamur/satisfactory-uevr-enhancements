@@ -7,6 +7,9 @@
 - Raycast beam/cursor for Build & Gun equipment
 	- [x] Basic Pointer/target dot ✅ 2024-02-18
 	- [ ] Reuse main UI widget pointer
+- Early Game UI changes:
+	- [ ] Hide Scanner until usable
+	- [ ] Hide Map until usable
 - Right Hand Menu Context/Info
 	- [x] Switch sub-menus based on State (and sub-states like Nudge mode) ✅ 2024-02-10
 	- Dismantle State
