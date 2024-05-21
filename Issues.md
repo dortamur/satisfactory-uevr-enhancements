@@ -1,7 +1,7 @@
 ## Known Issues
 	- [ ] Mouse click emulation doesn't work for some buttons, and is sometimes intermittent
 	- [ ] Left wrist panel sometimes vanishes, never to return
-	- [ ] Dying restores the original UI
+	- [ ] Respawn restores the original UI & breaks equipment attachment
 	- [ ] Reloading a game, the mod is active, but equipment binding to controllers stops working
 
 ## Resolved Issues
