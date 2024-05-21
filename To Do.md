@@ -4,8 +4,10 @@
 		- [ ] Smooth Turn / Snap Turn
 		- [ ] Enable HUD
 		- [ ] Wrist menu rotation activation
+		- [ ] Auto-Sprint
 - Raycast beam/cursor for Build & Gun equipment
 	- [x] Basic Pointer/target dot ✅ 2024-02-18
+	- [ ] Pointer context - hide/show based on equipment or aimed buildable
 	- [ ] Reuse main UI widget pointer
 - Early Game UI changes:
 	- [ ] Hide Scanner until usable
@@ -86,6 +88,8 @@
 	- [ ] Boom Box custom interaction controls
 	- [ ] Zipline custom interaction (hold above head/player offset)
 	- [ ] Over the shoulder Holster
+	- [ ] Launch Payload button-mash
+	- [ ] Pat Lizard Doggos
 	- [ ] Vehicle steering
 	- [ ] Vehicle exit
 	- [ ] Vehicle horn?
@@ -123,9 +127,5 @@
 	- [ ] Split Equipment handling out from `VRCoordinator` into separate class
 	- [ ] Split Input/Controller handling out from `VRCoordinator` into separate class
 	- [ ] Add Variable Categories for more organised variables
-- Known Issues to fix
-	- [ ] Mouse click emulation doesn't work for some buttons, and is sometimes intermittent
-	- [x] Right-hand Wrist Menu keeps opening instead of staying hidden during other interactions ✅ 2024-05-05
-	- [x] Left-stick down "rotate building" position is possibly resetting? ✅ 2024-05-07
-	- [x] Exiting Vehicles restores default UI ✅ 2024-05-18
+
 

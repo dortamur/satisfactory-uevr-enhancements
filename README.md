@@ -11,7 +11,7 @@ See the [Controls](Controls.md) for tips on usage, and check the [To Do](To Do.m
 ## First Time Installation and Setup
 
 - Download and install the [Satisfactory Mod Manager](https://ficsit.app/) app
-- Go to the [UEVR Enhancements mod page](https://ficsit.app/mod/UEVREnhancements) and select [Install] latest version from the right of the page. This should open Satisfactory Mod Manager, install this mod, along with its dependencies.
+- Go to the [UEVR Enhancements mod page](https://ficsit.app/mod/UEVREnhancements) and select "**:luc_arrow_big_down: Install**" latest version from the right of the page. This should open Satisfactory Mod Manager, install this mod, along with its dependencies. 
 - Download the UEVR tool from its [releases on github](https://github.com/praydog/UEVR/releases)
 - Unzip it to a folder somewhere, and create a shortcut to `UEVRInjector.exe`
 - Download this [Satisfactory profile for UEVR](UEVR/FactoryGame-Win64-Shipping.zip)
