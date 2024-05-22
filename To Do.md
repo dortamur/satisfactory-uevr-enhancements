@@ -47,6 +47,7 @@
 		- [x] Resource Scanner ✅ 2024-04-26
 	- [x] General Status (alternative to HUD) ✅ 2024-05-11
 	- [ ] Use current equip icon/holster desaturated as Equip tab icon
+	- [ ] Move Objectives to LH panel (hide in main GUI)
 - Movement/Controls
 	- [x] Left Stick forward/back/strafe ✅ 2024-02-11
 	- Right Stick
