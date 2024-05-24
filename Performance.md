@@ -5,12 +5,12 @@ To show your FPS in UEVR Tools, check "Show Advanced Options", then select "Debu
 
 For the table below, "Game Size" is a rough estimate of how complex your game save is that you are testing: Small = early tiers, minimal builds, Medium = mid-game, modest builds, Large = late-game, decent builds, Huge = mid to late game with larger builds, Andrew = Mega-builds stretching the capabilities of the engine.
 
-Global Illumination is *off* unless mentioned in the Notes
+Global Illumination is *off* unless mentioned in the Notes.
 
-| Contributor | Headset | Connection      | Runtime | CPU        | GPU      | Graphics | Scaling          | Game Size | Render Resolution | FPS | Notes |
-| ----------- | ------- | --------------- | ------- | ---------- | -------- | -------- | ---------------- | --------- | ----------------- | --- | ----- |
-| Dortamur    | Quest 3 | Virtual Desktop | OpenXR  | i7-13700KF | RTX 2080 | High     | DLSS Performance | Small     | 4032 x 2112       |     |       |
-| Dortamur    | Quest 3 | Virtual Desktop | OpenXR  | i7-13700KF | RTX 2080 | High     | DLSS Performance | Large     | 4032 x 2112       | ~40 |       |
-| Dortamur    | Quest 3 | SteamLink       | OpenVR  | i7-13700KF | RTX 2080 | High     | DLSS Performance | Large     |                   |     |       |
-| Dortamur    | Rift S  | Wired/Oculus    | OpenVR  | i7-13700KF | RTX 2080 | High     | DLSS Performance | Large     |                   |     |       |
-|KroyVR | Index | Wired | OpenVR  | 5950x |  RTX 4090 | High | DLSS Performance | Small | 2016 x 2240 /eye |~85  | Playing in co-op / Multiplayer (as host) |
+| Contributor | Headset | Connection / Runtime         | CPU / GPU                 | Graphics | Scaling   | Game Size | Render Res,      | FPS | Notes                                    |
+| ----------- | ------- | ---------------------------- | ------------------------- | -------- | --------- | --------- | ---------------- | --- | ---------------------------------------- |
+| Dortamur    | Quest 3 | Virtual Desktop <br/> OpenXR | i7-13700KF <br/> RTX 2080 | High     | DLSS Perf | Small     | 4032 x 2112      | ~70 |                                          |
+| Dortamur    | Quest 3 | Virtual Desktop <br/> OpenXR | i7-13700KF <br/> RTX 2080 | High     | DLSS Perf | Large     | 4032 x 2112      | ~40 |                                          |
+| Dortamur    | Quest 3 | SteamLink       <br/> OpenVR | i7-13700KF <br/> RTX 2080 | High     | DLSS Perf | Large     |                  |     |                                          |
+| Dortamur    | Rift S  | Wired/Oculus    <br/> OpenVR | i7-13700KF <br/> RTX 2080 | High     | DLSS Perf | Large     |                  |     |                                          |
+| KroyVR      | Index   | Wired           <br/> OpenVR | 5950x      <br/> RTX 4090 | High     | DLSS Perf | Small     | 2016 x 2240 /eye | ~85 | Playing in co-op / Multiplayer (as host) |
