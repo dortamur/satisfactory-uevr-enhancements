@@ -78,6 +78,16 @@ Note: The current implementation is not a complete mouse replacement, and someti
 - Right Controller Buttons:
 	- A: Dismantle Mode (Normal/Blueprint)
 	- B: Multi-Select
+- Left Controller Buttons:
+	- X: Filter
+
+## Paint Mode
+
+- Right Controller Buttons:
+	- A: Dismantle Mode (Normal/Blueprint)
+	- B: Switch
+- Left Controller Buttons:
+	- X: Filter
 
 ## Right Wrist Menu Stick-Selection
 

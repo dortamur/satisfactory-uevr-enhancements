@@ -1,10 +1,12 @@
 - General Usability
 	- [x] Delay VR "mode" initialisation until after UEVR injection ✅ 2024-03-10
+	- [x] Show shortcut controller buttons on related wrist panel buttons ✅ 2024-05-24
 	- User settings
-		- [ ] Smooth Turn / Snap Turn
+		- [x] Smooth Turn ✅ 2024-05-22
+		- [ ] Snap Turn
 		- [ ] Enable HUD
 		- [ ] Wrist menu rotation activation
-		- [ ] Auto-Sprint
+		- [x] Auto-Sprint ✅ 2024-05-22
 - Raycast beam/cursor for Build & Gun equipment
 	- [x] Basic Pointer/target dot ✅ 2024-02-18
 	- [ ] Pointer context - hide/show based on equipment or aimed buildable
