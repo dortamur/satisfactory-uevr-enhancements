@@ -48,6 +48,7 @@
 		- [x] Equipment selection ✅ 2024-04-28
 		- [x] Resource Scanner ✅ 2024-04-26
 	- [x] General Status (alternative to HUD) ✅ 2024-05-11
+	- [x] Smart Auto-switch tab based on gameplay actions ✅ 2024-05-26
 	- [ ] Use current equip icon/holster desaturated as Equip tab icon
 	- [ ] Move Objectives to LH panel (hide in main GUI)
 - Movement/Controls
@@ -72,6 +73,7 @@
 		- [x] Button for Dismantle Multi-select (with hold/drag) ✅ 2024-05-07
 		- [x] Button for Mode cycle ✅ 2024-05-07
 		- [x] Button for Hologram lock ✅ 2024-05-07
+	- [x] Vehicles basic driving support ✅ 2024-05-25
 - Equipment & Pioneer representation
 	- [x] Attach build gun to RH ✅ 2024-02-24
 	- [x] Attach other equipment to RH ✅ 2024-02-25

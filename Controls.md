@@ -29,7 +29,8 @@ Note: The current implementation is not a complete mouse replacement, and someti
 - Left Controller stick
 	- Up/Down: move forward/backward
 	- Left/Right: strafe left/right
-	- Click while moving: toggle Sprint
+	- Click while moving: toggle Sprint (if Auto-sprint is off)
+	- Click while still: Ping
 - Left Controller Trigger
 	- Jump/Up
 - Left Controller Grip
@@ -77,9 +78,9 @@ Note: The current implementation is not a complete mouse replacement, and someti
 
 - Right Controller Buttons:
 	- A: Dismantle Mode (Normal/Blueprint)
-	- B: Multi-Select
 - Left Controller Buttons:
 	- X: Filter
+	- Y: Multi-Select
 
 ## Paint Mode
 

@@ -64,8 +64,6 @@ It sounds like you didn't import the provided [Satisfactory profile for UEVR](UE
 ### Aieee! Smooth turn makes me want to hurl!
 *...adds "Snap Turn Option" to the To Do list...*
 Sorry. You can physically turn as an alternate turn option - swivel chairs and wireless headsets are good for this!
-### I can't drive vehicles!
-Nope! Not yet... At least there's a button to get out! (Right Grip)
 
 ## Credits
 

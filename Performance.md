@@ -9,11 +9,11 @@ Global Illumination is *off* unless mentioned in the Notes.
 
 | Contributor | Headset       | Connection / Runtime         | CPU / GPU                 | Graphics / Scaling        | Game Size | Render Res,      | FPS | Notes                 |
 | ----------- | ------------- | ---------------------------- | ------------------------- | ------------------------- | --------- | ---------------- | --- | --------------------- |
-| Dortamur    | Quest 3       | Virtual Desktop <br/> OpenXR | i7-13700KF <br/> RTX 2080 | High<br/>DLSS Performance | Small     | 4032 x 2112      | ~70 |                       |
-| Dortamur    | Quest 3       | Virtual Desktop <br/> OpenXR | i7-13700KF <br/> RTX 2080 | High<br/>DLSS Performance | Large     | 4032 x 2112      | ~40 |                       |
-| Dortamur    | Quest 3       | SteamLink       <br/> OpenVR | i7-13700KF <br/> RTX 2080 | High<br/>DLSS Performance | Large     |                  |     |                       |
-| Dortamur    | Rift S        | Wired/Oculus    <br/> OpenVR | i7-13700KF <br/> RTX 2080 | High<br/>DLSS Performance | Large     |                  |     |                       |
-| KroyVR      | Index         | Wired           <br/> OpenVR | 5950x      <br/> RTX 4090 | High<br/>DLSS Performance | Small     | 2016 x 2240 /eye | ~90 | Multiplayer (as host) |
+| Dortamur    | Quest 3       | Virtual Desktop <br/> OpenXR | i7-13700KF <br/> RTX 2080 | High<br/>DLSS Perf | Small     | 4032 x 2112      | ~70 |                       |
+| Dortamur    | Quest 3       | Virtual Desktop <br/> OpenXR | i7-13700KF <br/> RTX 2080 | High<br/>DLSS Perf | Large     | 4032 x 2112      | ~40 |                       |
+| Dortamur    | Quest 3       | SteamLink       <br/> OpenVR | i7-13700KF <br/> RTX 2080 | High<br/>DLSS Perf | Large     |                  |     |                       |
+| Dortamur    | Rift S        | Wired/Oculus    <br/> OpenVR | i7-13700KF <br/> RTX 2080 | High<br/>DLSS Perf | Large     |                  |     |                       |
+| KroyVR      | Index         | Wired           <br/> OpenVR | 5950x      <br/> RTX 4090 | High<br/>DLSS Perf | Small     | 2016 x 2240 /eye | ~90 | Multiplayer (as host) |
 | xmccaryx    | Pimax Crystal | Wired<br>OpenXR              | 7800x3D<br>RTX 4090       | Low-Med<br>**none**       | Small     | 4312x5102 /eye   | ~55 |                       |
 ## Game Engine Settings
 

@@ -75,6 +75,7 @@ DerivedDataCache/*
 
 # Obsidian
 .obsidian
+DevNotes/*
 Notes.md
 
 # Local archive of release zips
