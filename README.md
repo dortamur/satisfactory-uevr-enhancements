@@ -27,7 +27,9 @@ See the [Controls](Controls.md) for tips on usage, and check the [To Do](To Do.m
 ## Upgrading
 
 If you already have the "UEVR Enhancements" mod installed, loading the Satisfactory Mod Manager app should give an option to upgrade to the latest version.
-Alternatively, you can download a [release zip from github](https://github.com/dortamur/satisfactory-uevr-enhancements/releases) and unzip it to your Satisfactory `/Mods/` folder, replacing the existing `UEVREnhancements` mod directory
+Alternatively, you can download a [release zip from github](https://github.com/dortamur/satisfactory-uevr-enhancements/releases) and unzip it to your Satisfactory `/Mods/` folder, replacing the existing `UEVREnhancements` mod directory.
+
+Make sure to download and import the latest [Satisfactory profile for UEVR](UEVR/FactoryGame-Win64-Shipping.zip), as it may have config adjustments to suit changes to the mod.
 
 ## VR Headset Tips
 
@@ -39,7 +41,8 @@ Alternatively, you can download a [release zip from github](https://github.com/d
 	- Dropping your VR render resolution down
 	- Drop your DLSS down to "Performance" (for NVIDIA cards)
 	- Check you're using the right one out of OpenVR/OpenXR
-- ...let me know what works best for your setup!
+- See the [[Performance]] page for some more performance tips, and to see reported performance that others are getting
+- Let me know what works best for your setup!
 
 ## Troubleshooting
 
@@ -68,6 +71,7 @@ Sorry. You can physically turn as an alternate turn option - swivel chairs and w
 ## Credits
 
 - Almine is working on his own VR prototype, and we have been sharing techniques and code. Check out his [Satisfactory VR Plugin](https://github.com/Almine2/SatisfactoryVRPlugins) project to see what he has been experimenting with.
-- Rafi has provided [custom icons](https://github.com/rccrossde/Satisfactory_VRicons) and concept mock-ups
+- Rafi for providing [custom icons](https://github.com/rccrossde/Satisfactory_VRicons) and other UI design help
 - Satisfactory Modding Community, and their [Modding Documentation](https://docs.ficsit.app/satisfactory-modding/) as well as their help on the [Satisfactory Modding Discord Server](https://discord.gg/xkVJ73E).
 - [Coffee Stain Studios](https://www.coffeestainstudios.com/) for making such an awesome game
+- [Oculus Controller Icons](https://www.figma.com/community/file/1277443078935776593) by Felix Z
