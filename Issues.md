@@ -1,6 +1,7 @@
 ## Known Issues
 - [ ] Mouse click emulation doesn't work for some buttons, and is sometimes intermittent
 - [ ] Reviving players leaves the mod in a bad state (controller buttons don't work?)
+- [ ] Water materials mess with the wrist panel translucency, making them hard to see
 
 ## Resolved Issues
 - [x] Left wrist panel sometimes vanishes, never to return ✅ 2024-05-26

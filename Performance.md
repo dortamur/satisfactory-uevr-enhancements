@@ -5,16 +5,17 @@ To show your FPS in UEVR Tools, check "Show Advanced Options", then select "Debu
 
 For the table below, "Game Size" is a rough estimate of how complex your game save is that you are testing: Small = early tiers, minimal builds, Medium = mid-game, modest builds, Large = late-game, decent builds, Huge = mid to late game with larger builds, Andrew = Mega-builds stretching the capabilities of the engine.
 
-Global Illumination is *off* unless mentioned in the Notes.
+Global Illumination is *off* unless mentioned in the Notes. Render resolution is *per eye*.
 
-| Contributor | Headset       | Connection / Runtime         | CPU / GPU                 | Graphics / Scaling        | Game Size | Render Res,      | FPS | Notes                 |
-| ----------- | ------------- | ---------------------------- | ------------------------- | ------------------------- | --------- | ---------------- | --- | --------------------- |
-| Dortamur    | Quest 3       | Virtual Desktop <br/> OpenXR | i7-13700KF <br/> RTX 2080 | High<br/>DLSS Perf | Small     | 4032 x 2112      | ~70 |                       |
-| Dortamur    | Quest 3       | Virtual Desktop <br/> OpenXR | i7-13700KF <br/> RTX 2080 | High<br/>DLSS Perf | Large     | 4032 x 2112      | ~40 |                       |
-| Dortamur    | Quest 3       | SteamLink       <br/> OpenVR | i7-13700KF <br/> RTX 2080 | High<br/>DLSS Perf | Large     |                  |     |                       |
-| Dortamur    | Rift S        | Wired/Oculus    <br/> OpenVR | i7-13700KF <br/> RTX 2080 | High<br/>DLSS Perf | Large     |                  |     |                       |
-| KroyVR      | Index         | Wired           <br/> OpenVR | 5950x      <br/> RTX 4090 | High<br/>DLSS Perf | Small     | 2016 x 2240 /eye | ~90 | Multiplayer (as host) |
-| xmccaryx    | Pimax Crystal | Wired<br>OpenXR              | 7800x3D<br>RTX 4090       | Low-Med<br>**none**       | Small     | 4312x5102 /eye   | ~55 |                       |
+| Contributor | Headset       | Connection / Runtime         | CPU / GPU                 | Graphics / Scaling  | Game Size | Render Res, | FPS | Notes                 |
+| ----------- | ------------- | ---------------------------- | ------------------------- | ------------------- | --------- | ----------- | --- | --------------------- |
+| Dortamur    | Quest 3       | Virtual Desktop <br/> OpenXR | i7-13700KF <br/> RTX 2080 | High<br/>DLSS Perf  | Small     | 2016 x 2112 | ~70 |                       |
+| Dortamur    | Quest 3       | Virtual Desktop <br/> OpenXR | i7-13700KF <br/> RTX 2080 | High<br/>DLSS Perf  | Large     | 2016 x 2112 | ~40 |                       |
+| Dortamur    | Quest 3       | SteamLink       <br/> OpenVR | i7-13700KF <br/> RTX 2080 | High<br/>DLSS Perf  | Large     |             |     |                       |
+| Dortamur    | Rift S        | Wired/Oculus    <br/> OpenVR | i7-13700KF <br/> RTX 2080 | High<br/>DLSS Perf  | Large     |             |     |                       |
+| KroyVR      | Index         | Wired           <br/> OpenVR | 5950x      <br/> RTX 4090 | High<br/>DLSS Perf  | Small     | 2016 x 2240 | ~90 | Multiplayer (as host) |
+| xmccaryx    | Pimax Crystal | Wired<br>OpenXR              | 7800x3D<br>RTX 4090       | Low-Med<br>**none** | Small     | 4312x5102   | ~55 |                       |
+| xmccaryx    | Quest Pro     | Wired/Oculus<br>OpenXR       | i9-12900k<br>RTX 3080     | Low-Med<br>**none** | Small     | 2832x2896   | ~72 |                       |
 ## Game Engine Settings
 
 Submitted by tester **xmccaryx**, adding these settings to your Satisfactory config should give clearer visuals and better performance. Feel free to turn back on effects you personally like (although this may affect FPS).
