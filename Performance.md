@@ -5,7 +5,7 @@ To show your FPS in UEVR Tools, check "Show Advanced Options", then select "Debu
 
 For the table below, "Game Size" is a rough estimate of how complex your game save is that you are testing: Small = early tiers, minimal builds, Medium = mid-game, modest builds, Large = late-game, decent builds, Huge = mid to late game with larger builds, Andrew = Mega-builds stretching the capabilities of the engine.
 
-Global Illumination is *off* unless mentioned in the Notes. Render resolution is *per eye*.
+Global Illumination is *off* unless mentioned in the Notes. Render resolution is *per eye*. Graphics is using *DirectX 12* unless otherwise specified.
 
 | Contributor | Headset       | Connection / Runtime         | CPU / GPU                 | Graphics / Scaling  | Game Size | Render Res, | FPS | Notes                 |
 | ----------- | ------------- | ---------------------------- | ------------------------- | ------------------- | --------- | ----------- | --- | --------------------- |

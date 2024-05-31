@@ -53,6 +53,8 @@ You may need to tell your virus scanner to ignore/trust UEVR so it doesn't panic
 Did you set up UEVR, and "Inject" it into `FactoryGame-Win64-Shipping`? If so and you're still having problems, check the [UEVR site](https://uevr.io/) or the channels in their Flat2VR discord. Also try using it with other Unreal Engine games.
 ### Wait - I can use UEVR for other games?
 Well, yes - it's the "Unreal Engine Virtual Reality Tool". There's a lot of info about how to best configure it and how well it works for other games on the [Flat2VR Discord](https://flat2vr.com/). But the factory must grow...
+### Ok, I'm in VR but I can't aim straight and I can't build stuff!
+It sounds like you didn't import the provided [Satisfactory profile for UEVR](UEVR/FactoryGame-Win64-Shipping.zip) , or have reset the settings.
 ### The in-game screens move about when I move my right controller!
 UEVR does some magic hacks to work, and one of the side-effects is, to be able to "aim" with your controller, it tricks the game into thinking the game camera is there - which affects where the screen-space UI ends up. That is - Yes, we know about it, No, we don't have a fix right now.
 ### So how do I click on stuff if the screen keeps moving?
@@ -62,16 +64,16 @@ Yeeeeaaah, it's not perfect, is sometimes a bit flaky, and some buttons just ref
 You may need to drop back to flat-mode for manual mouse fiddling occasionally (how you do this depends on your headset and how you're connecting).
 ### I click stuff to change settings, but when I close the screen the settings reset
 This can happen when the Satisfactory game window doesn't have focus. Did you Alt-tab to Satisfactory Calculator on another screen? Make sure Satisfactory has the active focus.
-### Ok, I'm in VR but I can't aim straight and I can't build stuff!
-It sounds like you didn't import the provided [Satisfactory profile for UEVR](UEVR/FactoryGame-Win64-Shipping.zip) , or have reset the settings.
 ### Aieee! Smooth turn makes me want to hurl!
 *...adds "Snap Turn Option" to the To Do list...*
 Sorry. You can physically turn as an alternate turn option - swivel chairs and wireless headsets are good for this!
 
 ## Credits
 
-- Almine is working on his own VR prototype, and we have been sharing techniques and code. Check out his [Satisfactory VR Plugin](https://github.com/Almine2/SatisfactoryVRPlugins) project to see what he has been experimenting with.
+- Almine for sharing UE5 and Satisfactory mod techniques and code, and working on his own [Satisfactory VR prototype](https://github.com/Almine2/SatisfactoryVRPlugins)
 - Rafi for providing [custom icons](https://github.com/rccrossde/Satisfactory_VRicons) and other UI design help
-- Satisfactory Modding Community, and their [Modding Documentation](https://docs.ficsit.app/satisfactory-modding/) as well as their help on the [Satisfactory Modding Discord Server](https://discord.gg/xkVJ73E).
+- [Praydog](https://github.com/praydog) and his awesome [UEVR Tool](https://uevr.io/)
+- [Satisfactory Modding Community](https://discord.gg/xkVJ73E) for their help, and the [Modding Documentation](https://docs.ficsit.app/satisfactory-modding/)
+- [Flat2VR Community](https://discord.com/channels/747967102895390741/1062167971956531340) for their enthusiastic support and feedback.
 - [Coffee Stain Studios](https://www.coffeestainstudios.com/) for making such an awesome game
 - [Oculus Controller Icons](https://www.figma.com/community/file/1277443078935776593) by Felix Z
