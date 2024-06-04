@@ -20,11 +20,11 @@
 		- [x] Show filtered item ✅ 2024-02-11
 		- [ ] Toggle/Hold Mass Dismantle
 		- [x] Show Mass Dismantle selected count/total ✅ 2024-02-11
-		- [ ] Show Dismantle materials refund
+		- [x] Show Dismantle materials refund ✅ 2024-06-03
 	- Build State
 		- [x] Show name of item being built ✅ 2024-02-10
 		- [x] Show length of item being built ✅ 2024-05-12
-		- [ ] Show materials cost/availability
+		- [x] Show materials cost/availability ✅ 2024-06-03
 		- [x] Toggle Snap to Guidelines (Ctrl) ✅ 2024-05-18
 		- [x] Rotation ✅ 2024-02-18
 		- [ ] Indicate when Nudge is not available
