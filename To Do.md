@@ -13,12 +13,11 @@
 	- [ ] Reuse main UI widget pointer
 - Early Game UI changes:
 	- [ ] Hide Scanner until usable
-	- [ ] Hide Map until usable
+	- [x] Hide Map until usable ✅ 2024-06-05
 - Right Hand Menu Context/Info
 	- [x] Switch sub-menus based on State (and sub-states like Nudge mode) ✅ 2024-02-10
 	- Dismantle State
 		- [x] Show filtered item ✅ 2024-02-11
-		- [ ] Toggle/Hold Mass Dismantle
 		- [x] Show Mass Dismantle selected count/total ✅ 2024-02-11
 		- [x] Show Dismantle materials refund ✅ 2024-06-03
 	- Build State
@@ -127,10 +126,10 @@
 	- [ ] Drones?
 	- [ ] Hypertubes?
 - Code Structure Improvements
-	- [ ] Combine common elements of `VRControllerRight` and `VRControllerLeft` into common class
+	- [x] Combine common elements of `VRControllerRight` and `VRControllerLeft` into common class ✅ 2024-06-02
 	- [x] Replace Equipment positioning selection spaghetti with transform map ✅ 2024-05-03
 	- [ ] Split Equipment handling out from `VRCoordinator` into separate class
-	- [ ] Split Input/Controller handling out from `VRCoordinator` into separate class
+	- [ ] Split Input/Controller handling out from `VRCoordinator` into separate class and refactor
 	- [ ] Add Variable Categories for more organised variables
 
 
