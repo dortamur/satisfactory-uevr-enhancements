@@ -17,18 +17,7 @@ For further information, see:
 - [Controls](https://github.com/dortamur/satisfactory-uevr-enhancements/wiki/Controls)
 - [Troubleshooting](https://github.com/dortamur/satisfactory-uevr-enhancements/wiki/Troubleshooting)
 
-## VR Headset Tips
-
-- **Quest** or similar headset using **Virtual Desktop**: Select "OpenXR" in the UEVR Tool before injecting it
-- **Quest** or **Rift** using **Oculus Link**: Select "OpenXR" in the UEVR Tool before injecting it
-- PC **Steam VR** headset: Select "OpenVR" in the UEVR Tool before injecting it
-- VR is a *performance hog*. If your frame-rate is super-terrible, try:
-	- Turn off "Global Illumination"!
-	- Dropping your VR render resolution down
-	- Drop your DLSS down to "Performance" (for NVIDIA cards)
-	- Check you're using the right one out of OpenVR/OpenXR
-- See the [Performance](https://github.com/dortamur/satisfactory-uevr-enhancements/wiki/Performance) page for some more performance tips, and to see reported performance that others are getting
-- Let me know what works best for your setup!
+If you enjoy this mod or my other content, please consider donating to my [completely optional tip jar](https://ko-fi.com/dortamur).
 
 ## Credits
 
