@@ -9,10 +9,11 @@
 		- [x] Auto-Sprint ✅ 2024-05-22
 - Raycast beam/cursor for Build & Gun equipment
 	- [x] Basic Pointer/target dot ✅ 2024-02-18
-	- [ ] Pointer context - hide/show based on equipment or aimed buildable
+	- [x] Pointer context - hide/show based on current state ✅ 2024-07-01
+	- [ ] Pointer context - hide/show based on equipment or aimed at buildable
 	- [ ] Reuse main UI widget pointer
 - Early Game UI changes:
-	- [ ] Hide Scanner until usable
+	- [x] Hide Scanner until usable - nah, you use it really early ✅ 2024-07-02
 	- [x] Hide Map until usable ✅ 2024-06-05
 - Right Hand Menu Context/Info
 	- [x] Switch sub-menus based on State (and sub-states like Nudge mode) ✅ 2024-02-10
@@ -78,6 +79,7 @@
 	- [x] Attach other equipment to RH ✅ 2024-02-25
 	- [x] Attach consumable items to RH ✅ 2024-05-03
 	- [x] Hide Equipment on wrist menu interaction ✅ 2024-05-11
+	- [x] Hide Body and Equipment (mask, hoverpack, bladerunners, etc...) ✅ 2024-07-01
 	- [ ] Split Hover Pack / Hide right-hand / Custom Hover Pack separate controllers
 	- [x] LH Nobelisk detonator ✅ 2024-03-06
 	- [ ] RH Nobelisk attachment - currently in UEVR Profile
@@ -116,18 +118,19 @@
 	- [x] Equipment status ✅ 2024-04-13
 	- [ ] Danger indicators?
 - Vehicle camera/controls adjustments
-	- [ ] General vehicle controls/recognition
-	- [ ] Factory Cart
-	- [ ] Explorer
-	- [ ] Tractor
-	- [ ] Truck
-	- [ ] Train
+	- [x] General vehicle controls/recognition ✅ 2024-07-01
+	- [x] Factory Cart ✅ 2024-07-01
+	- [x] Explorer ✅ 2024-07-01
+	- [x] Tractor ✅ 2024-07-01
+	- [x] Truck ✅ 2024-07-01
+	- [x] Train ✅ 2024-07-01
 	- [ ] Cyber Wagon?
 	- [ ] Drones?
-	- [ ] Hypertubes?
+	- [x] Hypertubes? ✅ 2024-07-01
 - Code Structure Improvements
 	- [x] Combine common elements of `VRControllerRight` and `VRControllerLeft` into common class ✅ 2024-06-02
 	- [x] Replace Equipment positioning selection spaghetti with transform map ✅ 2024-05-03
+	- [ ] Refactor VRCoordinator as a System
 	- [ ] Split Equipment handling out from `VRCoordinator` into separate class
 	- [ ] Split Input/Controller handling out from `VRCoordinator` into separate class and refactor
 	- [ ] Add Variable Categories for more organised variables
