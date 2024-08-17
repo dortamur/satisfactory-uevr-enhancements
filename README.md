@@ -1,12 +1,12 @@
 # Satisfactory UEVR Enhancements
 
-This is a work-in-progress mod for Satisfactory intended to accompany Praydog's [Unreal Engine Virtual Reality Tool](https://uevr.io/), to provide VR-specific UI and interaction enhancements, to make playing Satisfactory in VR more practical and enjoyable.
+<img align="right" src="Resources/Icon128.png"/>This is a work-in-progress mod for Satisfactory intended to accompany Praydog's [Unreal Engine Virtual Reality Tool](https://uevr.io/), to provide VR-specific UI and interaction enhancements, to make playing Satisfactory in VR more practical and enjoyable.
 
 *This mod does not enable VR! It adds VR controls and interactions. You will need the [Unreal Engine Virtual Reality Tool](https://uevr.io/) as well, which runs separately to Satisfactory.*
 
-This mod is in alpha state, and is functional for core Satisfactory gameplay elements. However, it is still experimental, so things may change, and there is still much to improve and optimise.
+This mod is now in *beta*, with most game elements playable in VR - just in time for Satisfactory 1.0 to come out and break everything...
 
-See the [Controls](Controls.md) for tips on usage, and check the [To Do](To Do.md) for current progress and future goals.
+See the [Controls](https://github.com/dortamur/satisfactory-uevr-enhancements/wiki/Controls.md) for tips on usage, and check the [To Do](https://github.com/dortamur/satisfactory-uevr-enhancements/wiki/To Do.md) for current progress and future goals.
 
 For further information, see:
 
@@ -16,6 +16,7 @@ For further information, see:
   - [Upgrading](https://github.com/dortamur/satisfactory-uevr-enhancements/wiki/Getting-Started#upgrading)
 - [Controls](https://github.com/dortamur/satisfactory-uevr-enhancements/wiki/Controls)
 - [Troubleshooting](https://github.com/dortamur/satisfactory-uevr-enhancements/wiki/Troubleshooting)
+- [Roadmap](https://github.com/dortamur/satisfactory-uevr-enhancements/wiki/Roadmap)
 
 If you enjoy this mod or my other content, please consider donating to my [completely optional tip jar](https://ko-fi.com/dortamur).
 
