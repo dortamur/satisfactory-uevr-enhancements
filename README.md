@@ -6,7 +6,7 @@
 
 This mod is now in *beta*, with most game elements playable in VR - just in time for Satisfactory 1.0 to come out and break everything...
 
-See the [Controls](https://github.com/dortamur/satisfactory-uevr-enhancements/wiki/Controls.md) for tips on usage, and check the [To Do](https://github.com/dortamur/satisfactory-uevr-enhancements/wiki/To Do.md) for current progress and future goals.
+See the [Controls](https://github.com/dortamur/satisfactory-uevr-enhancements/wiki/Controls) for tips on usage, and check the [Roadmap](https://github.com/dortamur/satisfactory-uevr-enhancements/wiki/Roadmap) for current progress and future goals.
 
 For further information, see:
 
