@@ -154,3 +154,24 @@ void UMouseEmulation::SimulateMouseScroll(float ScrollAmount)
 
     SlateApp.ProcessMouseWheelOrGestureEvent(MouseEvent, nullptr);
 }
+
+// void UMouseEmulation::MouseXYToScreenPosition(float X, float Y, FVector2D& ScreenPosition, FVector2D& WindowPosition, FVector2D& WindowSize)
+// {
+//     // ScreenPosition = FVector2D(0.0f, 0.0f);
+//     if (GEngine && GEngine->GameViewport) {
+//         // FVector2D 
+//         WindowPosition = GEngine->GameViewport->GetWindow()->GetPositionInScreen();
+//         // FVector2D 
+//         WindowSize = GEngine->GameViewport->GetWindow()->GetSizeInScreen();
+//         // ScreenPosition = FVector2D(WindowPosition.X + (WindowSize.X * X), WindowPosition.Y + (WindowSize.Y * Y));
+//         ScreenPosition = FVector2D((WindowSize.X * X), (WindowSize.Y * Y));
+//     }
+// }
+
+void UMouseEmulation::ScaleXYToMousePosition(float X, float Y, FVector2D& MousePosition)
+{
+    if (GEngine && GEngine->GameViewport) {
+        FVector2D WindowSize = GEngine->GameViewport->GetWindow()->GetSizeInScreen();
+        MousePosition = FVector2D((WindowSize.X * X), (WindowSize.Y * Y));
+    }
+}

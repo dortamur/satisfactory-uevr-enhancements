@@ -11,6 +11,7 @@ local uobjects = uevr.types.FUObjectArray.get()
 local last_gamepad = {}
 local vrcoordinator
 local vrcontrolleractions
+local ui_interact_fn
 
 local function init_bridge()
   local mod_subsystem_c = api:find_uobject("Class /Script/SML.ModSubsystem")
@@ -37,10 +38,29 @@ local function init_bridge()
     else
       vr_print("UEVRBridge found!")
       uevr_bridge:InitUEVRBridge()
+      vr_print("UEVRBridge: "..uevr_bridge:get_fname():to_string()..' / '..uevr_bridge:get_full_name())
+      -- vr_print("UEVRBridge Event Dispatch: "..uevr_bridge:as_class(UEVR_BlueprintGeneratedClass))
+      -- Init UI Interaction hook
+      -- local uevr_bridge_bpc = api:find_uobject("BlueprintGeneratedClass /UEVREnhancements/Blueprints/UEVRBridge.UEVRBridge_C")
+
+
+      -- ui_interact_fn = uevr_bridge_bpc:find_function("UpdateUIInteraction2")
+      -- ui_interact_fn = uevr_bridge_bpc:find_function("DebugLog")
+      ui_interact_fn = uevr_bridge.UpdateUIInteraction
+
+      if ui_interact_fn ~= nil then
+          vr_print("Found UIInteraction function")
+
+          ui_interact_fn:hook_ptr(function(fn, obj, locals, result)
+              vr_print('Foo')
+              vr_print("UIInteraction! " .. tostring(locals).." ------------------------------------------------------")
+          end, nil)
+      else
+          vr_print("Failed to find UIInteraction function")
+      end
     end
   end
 end
-
 
 local function debug_test()
   local game_engine_class = api:find_uobject("Class /Script/Engine.GameEngine")
@@ -117,7 +137,7 @@ uevr.sdk.callbacks.on_xinput_get_state(function(retval, user_index, state)
     local btn_right_stick = gamepad.wButtons & XINPUT_GAMEPAD_RIGHT_THUMB ~= 0
     local btn_left_grip = gamepad.wButtons & XINPUT_GAMEPAD_LEFT_SHOULDER ~= 0
     local btn_right_grip = gamepad.wButtons & XINPUT_GAMEPAD_RIGHT_SHOULDER ~= 0
-    vr_print('Buttons A='..tostring(btn_a)..' B='..tostring(btn_b)..' X='..tostring(btn_x)..' Y='..tostring(btn_y)..' LS='..tostring(btn_left_stick)..' LG='..tostring(btn_left_grip)..' RS='..tostring(btn_right_stick)..' RG='..tostring(btn_right_grip))
+    -- vr_print('Buttons A='..tostring(btn_a)..' B='..tostring(btn_b)..' X='..tostring(btn_x)..' Y='..tostring(btn_y)..' LS='..tostring(btn_left_stick)..' LG='..tostring(btn_left_grip)..' RS='..tostring(btn_right_stick)..' RG='..tostring(btn_right_grip))
     last_gamepad.wButtons = gamepad.wButtons
     if (btn_x) then
       debug_test()
@@ -128,7 +148,7 @@ uevr.sdk.callbacks.on_xinput_get_state(function(retval, user_index, state)
   if (gamepad.sThumbLX or 0) ~= last_gamepad.sThumbLX or (gamepad.sThumbLY or 0) ~= last_gamepad.sThumbLY then
     local stick_left_x = gamepad.sThumbLX or 0
     local stick_left_y = gamepad.sThumbLY or 0
-    vr_print('Left Stick X='..tostring(stick_left_x)..' Y='..tostring(stick_left_y)..' UI='..tostring(user_index)..' RV='..tostring(retval)..' PN='..tostring(state.dwPacketNumber))
+    -- vr_print('Left Stick X='..tostring(stick_left_x)..' Y='..tostring(stick_left_y)..' UI='..tostring(user_index)..' RV='..tostring(retval)..' PN='..tostring(state.dwPacketNumber))
     last_gamepad.sThumbLX = gamepad.sThumbLX or 0
     last_gamepad.sThumbLY = gamepad.sThumbLY or 0
     uevr_bridge:UpdateLeftStickState(gamepad.sThumbLX, gamepad.sThumbLY)
@@ -136,7 +156,7 @@ uevr.sdk.callbacks.on_xinput_get_state(function(retval, user_index, state)
   if (gamepad.sThumbRX or 0) ~= last_gamepad.sThumbRX or (gamepad.sThumbRY or 0) ~= last_gamepad.sThumbRY then
     local stick_right_x = gamepad.sThumbRX or 0
     local stick_right_y = gamepad.sThumbRY or 0
-    vr_print('Right Stick X='..tostring(stick_right_x)..' Y='..tostring(stick_right_y))
+    -- vr_print('Right Stick X='..tostring(stick_right_x)..' Y='..tostring(stick_right_y))
     last_gamepad.sThumbRX = gamepad.sThumbRX or 0
     last_gamepad.sThumbRY = gamepad.sThumbRY or 0
     uevr_bridge:UpdateRightStickState(gamepad.sThumbRX, gamepad.sThumbRY)
@@ -144,13 +164,13 @@ uevr.sdk.callbacks.on_xinput_get_state(function(retval, user_index, state)
 
   if gamepad.bLeftTrigger ~= last_gamepad.bLeftTrigger then
     local left_trigger = gamepad.bLeftTrigger
-    vr_print('Left Trigger LT='..tostring(left_trigger))
+    -- vr_print('Left Trigger LT='..tostring(left_trigger))
     last_gamepad.bLeftTrigger = gamepad.bLeftTrigger
     uevr_bridge:UpdateLeftTriggerState(gamepad.bLeftTrigger ~= 0)
   end
   if gamepad.bRightTrigger ~= last_gamepad.bRightTrigger then
     local right_trigger = gamepad.bRightTrigger
-    vr_print('Right Trigger RT='..tostring(right_trigger))
+    -- vr_print('Right Trigger RT='..tostring(right_trigger))
     last_gamepad.bRightTrigger = gamepad.bRightTrigger
     uevr_bridge:UpdateRightTriggerState(gamepad.bRightTrigger ~= 0)
   end
@@ -163,10 +183,32 @@ uevr.sdk.callbacks.on_post_engine_tick(function(engine, delta)
 end)
 
 local spawn_once = true
+local ui_interaction = false
 
 uevr.sdk.callbacks.on_pre_engine_tick(function(engine, delta)
-  if (uevr_bridge == nil) then
+  -- if (uevr_bridge == nil) then
+  if (vrcoordinator == nil) then
     init_bridge()
+  end
+
+  if (uevr_bridge == nil) then
+    return
+  end
+
+  if (uevr_bridge.UIInteraction ~= ui_interaction) then
+    -- Interaction mode changed!! Update UEVR Input Aim mode
+    ui_interaction = uevr_bridge.UIInteraction
+    vr_print('Interaction changed: '..tostring(ui_interaction))
+
+    if (ui_interaction == true) then
+      -- uevr.params.vr:set_mod_value("VR_AimMethod","1")
+      uevr.params.vr.set_aim_method(0)
+      vr_print("Aim Method: Game")
+    else
+      uevr.params.vr.set_aim_method(2)
+      vr_print("Aim Method: Right Hand")
+    end
+
   end
 
 end)

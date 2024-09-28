@@ -23,4 +23,10 @@ public:
 
   UFUNCTION(BlueprintCallable, Category = "Utility")
   static void SimulateMouseScroll(float ScrollAmount);
+
+  // UFUNCTION(BlueprintCallable, Category = "Utility")
+  // static void MouseXYToScreenPosition(float X, float Y, FVector2D& ScreenPosition, FVector2D& WindowPosition, FVector2D& WindowSize);
+
+  UFUNCTION(BlueprintCallable, Category = "Utility")
+  static void ScaleXYToMousePosition(float X, float Y, FVector2D& MousePosition);
 };
