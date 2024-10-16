@@ -3,12 +3,12 @@
 <img align="right" src="Resources/Icon128.png"/>This is a [mod for Satisfactory](https://ficsit.app/mod/UEVREnhancements) intended to accompany Praydog's [Unreal Engine Virtual Reality (UEVR) Tool](https://uevr.io/), to provide VR-specific UI and interaction enhancements, to make playing Satisfactory in VR more practical and enjoyable.
 
 **This mod does not enable VR! It adds VR controls and interactions.** You will also need:
-- A recent [nightly build](https://github.com/praydog/UEVR-nightly/releases) of the UEVR Tool 
+- A recent [nightly build](https://github.com/praydog/UEVR-nightly/releases) of the UEVR Tool
 - The Satisfactory profile for UEVR depending on where you bought Satisfactory:
 	- [UEVR Profile for Steam Satisfactory](https://github.com/dortamur/satisfactory-uevr-enhancements/raw/master/UEVR/FactoryGameSteam-Win64-Shipping.zip)
 	- [UEVR Profile for Epic Store Satisfactory](https://github.com/dortamur/satisfactory-uevr-enhancements/raw/master/UEVR/FactoryGameEGS-Win64-Shipping.zip).
 
-See the [Getting Started](https://github.com/dortamur/satisfactory-uevr-enhancements/wiki/Getting-Started) page for full installation details, and the [Troubleshooting](https://github.com/dortamur/satisfactory-uevr-enhancements/wiki/sTroubleshooting) page if you have problems getting it working. 
+See the [Getting Started](https://github.com/dortamur/satisfactory-uevr-enhancements/wiki/Getting-Started) page for full installation details, and the [Troubleshooting](https://github.com/dortamur/satisfactory-uevr-enhancements/wiki/Troubleshooting) page if you have problems getting it working.
 See the [Controls](https://github.com/dortamur/satisfactory-uevr-enhancements/wiki/Controls) for tips on usage, and check the [Roadmap](https://github.com/dortamur/satisfactory-uevr-enhancements/wiki/Roadmap) for current progress and future goals.
 
 For further information, see:
@@ -18,7 +18,7 @@ For further information, see:
   - [Starting Satisfactory with UEVR](https://github.com/dortamur/satisfactory-uevr-enhancements/wiki/Getting-Started#starting-satisfactory-with-uevr)
   - [Upgrading](https://github.com/dortamur/satisfactory-uevr-enhancements/wiki/Getting-Started#upgrading)
 - [Controls](https://github.com/dortamur/satisfactory-uevr-enhancements/wiki/Controls)
-- [Troubleshooting](https://github.com/dortamur/satisfactory-uevr-enhancements/wiki/Troubleshooting) 
+- [Troubleshooting](https://github.com/dortamur/satisfactory-uevr-enhancements/wiki/Troubleshooting)
 - [Multiplayer](https://github.com/dortamur/satisfactory-uevr-enhancements/wiki/Multiplayer)
 - [Roadmap](https://github.com/dortamur/satisfactory-uevr-enhancements/wiki/Roadmap)
 
@@ -30,8 +30,8 @@ If you enjoy this mod or my other content, please consider donating to my [compl
 
 If you're interested in purchasing a Quest VR headset, using my [referral link](https://www.meta.com/referrals/link/Dortamur) supports me and gives you store credit!
 
-If you'd like to help out with development, the mod source is available on [github](https://github.com/dortamur/satisfactory-uevr-enhancements). 
-If you'd like to help with testing updates before they are released, join the [#sf-join](https://discord.com/channels/747967102895390741/1247534737585864745) channel on the  [Flat2VR Community](https://flat2vr.com/). 
+If you'd like to help out with development, the mod source is available on [github](https://github.com/dortamur/satisfactory-uevr-enhancements).
+If you'd like to help with testing updates before they are released, join the [#sf-join](https://discord.com/channels/747967102895390741/1247534737585864745) channel on the  [Flat2VR Community](https://flat2vr.com/).
 
 You can contact me on Discord on the [Satisfactory Modding server](https://discord.gg/xkVJ73E) or [Flat2VR Community](https://flat2vr.com/).
 ## Credits
