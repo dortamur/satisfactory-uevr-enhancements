@@ -1,0 +1,26 @@
+{
+    "path": [
+        "Acknowledged Pawn",
+        "Properties",
+        "Children",
+        "Equip_NobeliskDetonator_C Equip_NobeliskDetonator_C_2147477474",
+        "Components",
+        "SkeletalMeshComponent SkeletalMeshComponent_2147464306"
+    ],
+    "state": {
+        "hand": 1,
+        "location_offset": {
+            "x": -1.0615158081054688,
+            "y": -4.91778564453125,
+            "z": 1.2431080341339111
+        },
+        "permanent": true,
+        "rotation_offset": {
+            "w": 0.9036495685577393,
+            "x": 0.41952234506607056,
+            "y": 0.03297936171293259,
+            "z": -0.07956644892692566
+        }
+    },
+    "type": "motion_controller"
+}

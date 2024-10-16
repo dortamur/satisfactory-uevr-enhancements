@@ -62,6 +62,79 @@ void UMouseEmulation::SimulateMouseButton(const FKey MouseButton, bool bButtonDo
     }
 }
 
+void UMouseEmulation::SimulateMouseButtonWithModifier(const FKey MouseButton, bool bButtonDown, bool bShift, bool bCtrl, bool bAlt)
+{
+    // Get our slate application
+    FSlateApplication& SlateApp = FSlateApplication::Get();
+
+    // Create a pointer event
+    FPointerEvent MouseEvent(
+        0,
+        SlateApp.CursorPointerIndex,
+        SlateApp.GetCursorPos(),
+        SlateApp.GetLastCursorPos(),
+        SlateApp.GetPressedMouseButtons(),
+        MouseButton,
+        0,
+        FModifierKeysState(bShift, false, bCtrl, false, bAlt, false, false, false, false)
+    );
+    // World click
+    if (bButtonDown) {
+        TSharedPtr<FGenericWindow, ESPMode::ThreadSafe> NullWindow;
+        SlateApp.ProcessMouseButtonDownEvent(NullWindow, MouseEvent);
+    }
+    else {
+        SlateApp.ProcessMouseButtonUpEvent(MouseEvent);
+    }
+    return;
+}
+
+void UMouseEmulation::SimulateMouseDoubleClick(const FKey MouseButton)
+{
+    // Get our slate application
+    FSlateApplication& SlateApp = FSlateApplication::Get();
+
+    // Create a pointer event
+    FPointerEvent DoubleClickEvent(
+        0,
+        SlateApp.CursorPointerIndex,
+        SlateApp.GetCursorPos(),
+        SlateApp.GetLastCursorPos(),
+        SlateApp.GetPressedMouseButtons(),
+        MouseButton,
+        0,
+        SlateApp.GetPlatformApplication()->GetModifierKeys()
+    );
+    // World click
+    TSharedPtr<FGenericWindow, ESPMode::ThreadSafe> NullWindow;
+    SlateApp.ProcessMouseButtonDoubleClickEvent(NullWindow, DoubleClickEvent);
+    // SlateApp.ProcessMouseButtonDownEvent(NullWindow, DoubleClickEvent);
+    return;
+}
+
+void UMouseEmulation::SimulateMouseMove(const FKey MouseButton)
+{
+    // Get our slate application
+    FSlateApplication& SlateApp = FSlateApplication::Get();
+
+    // Create a pointer event
+    FPointerEvent MouseEvent(
+        0,
+        SlateApp.CursorPointerIndex,
+        SlateApp.GetCursorPos(),
+        SlateApp.GetLastCursorPos(),
+        SlateApp.GetPressedMouseButtons(),
+        MouseButton,
+        0,
+        SlateApp.GetPlatformApplication()->GetModifierKeys()
+    );
+
+    // World click
+    TSharedPtr<FGenericWindow, ESPMode::ThreadSafe> NullWindow;
+    SlateApp.ProcessMouseMoveEvent(MouseEvent);
+    return;
+}
+
 void UMouseEmulation::SimulateMouseScroll(float ScrollAmount)
 {
     // Get our slate application
@@ -80,4 +153,25 @@ void UMouseEmulation::SimulateMouseScroll(float ScrollAmount)
     );
 
     SlateApp.ProcessMouseWheelOrGestureEvent(MouseEvent, nullptr);
+}
+
+// void UMouseEmulation::MouseXYToScreenPosition(float X, float Y, FVector2D& ScreenPosition, FVector2D& WindowPosition, FVector2D& WindowSize)
+// {
+//     // ScreenPosition = FVector2D(0.0f, 0.0f);
+//     if (GEngine && GEngine->GameViewport) {
+//         // FVector2D 
+//         WindowPosition = GEngine->GameViewport->GetWindow()->GetPositionInScreen();
+//         // FVector2D 
+//         WindowSize = GEngine->GameViewport->GetWindow()->GetSizeInScreen();
+//         // ScreenPosition = FVector2D(WindowPosition.X + (WindowSize.X * X), WindowPosition.Y + (WindowSize.Y * Y));
+//         ScreenPosition = FVector2D((WindowSize.X * X), (WindowSize.Y * Y));
+//     }
+// }
+
+void UMouseEmulation::ScaleXYToMousePosition(float X, float Y, FVector2D& MousePosition)
+{
+    if (GEngine && GEngine->GameViewport) {
+        FVector2D WindowSize = GEngine->GameViewport->GetWindow()->GetSizeInScreen();
+        MousePosition = FVector2D((WindowSize.X * X), (WindowSize.Y * Y));
+    }
 }
