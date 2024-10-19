@@ -167,7 +167,7 @@ uevr.sdk.callbacks.on_post_engine_tick(function(engine, delta)
 end)
 
 local spawn_once = true
-local ui_interaction = false
+local game_aim_mode = false
 
 uevr.sdk.callbacks.on_pre_engine_tick(function(engine, delta)
   check_state()
@@ -176,12 +176,12 @@ uevr.sdk.callbacks.on_pre_engine_tick(function(engine, delta)
     return
   end
 
-  if (uevr_bridge.UIInteraction ~= ui_interaction) then
+  if (uevr_bridge.GameAimMode ~= game_aim_mode) then
     -- Interaction mode changed!! Update UEVR Input Aim mode
-    ui_interaction = uevr_bridge.UIInteraction
-    vr_log('Interaction changed: '..tostring(ui_interaction))
+    game_aim_mode = uevr_bridge.GameAimMode
+    vr_log('Interaction changed: '..tostring(game_aim_mode))
 
-    if (ui_interaction == true) then
+    if (game_aim_mode == true) then
       -- uevr.params.vr:set_mod_value("VR_AimMethod","1")
       uevr.params.vr.set_aim_method(0)
       vr_log("Aim Method: Game")
