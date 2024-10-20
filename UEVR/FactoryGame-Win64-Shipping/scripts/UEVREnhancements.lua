@@ -125,9 +125,12 @@ uevr.sdk.callbacks.on_xinput_get_state(function(retval, user_index, state)
     local btn_right_stick = gamepad.wButtons & XINPUT_GAMEPAD_RIGHT_THUMB ~= 0
     local btn_left_grip = gamepad.wButtons & XINPUT_GAMEPAD_LEFT_SHOULDER ~= 0
     local btn_right_grip = gamepad.wButtons & XINPUT_GAMEPAD_RIGHT_SHOULDER ~= 0
+    local btn_start = gamepad.wButtons & XINPUT_GAMEPAD_START ~= 0
+    local btn_back = gamepad.wButtons & XINPUT_GAMEPAD_BACK ~= 0
     -- vr_log('Buttons A='..tostring(btn_a)..' B='..tostring(btn_b)..' X='..tostring(btn_x)..' Y='..tostring(btn_y)..' LS='..tostring(btn_left_stick)..' LG='..tostring(btn_left_grip)..' RS='..tostring(btn_right_stick)..' RG='..tostring(btn_right_grip))
+    vr_log('Buttons wButtons='..tostring(gamepad.wButtons)..' Start='..tostring(btn_start)..' Back='..tostring(btn_back))
     last_gamepad.wButtons = gamepad.wButtons
-    uevr_bridge:UpdateButtonState(btn_a, btn_b, btn_x, btn_y, btn_left_stick, btn_left_grip, btn_right_stick, btn_right_grip)
+    uevr_bridge:UpdateButtonState(btn_a, btn_b, btn_x, btn_y, btn_left_stick, btn_left_grip, btn_right_stick, btn_right_grip, btn_start)
   end
   if (gamepad.sThumbLX or 0) ~= last_gamepad.sThumbLX or (gamepad.sThumbLY or 0) ~= last_gamepad.sThumbLY then
     local stick_left_x = gamepad.sThumbLX or 0
