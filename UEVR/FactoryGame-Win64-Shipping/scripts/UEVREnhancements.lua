@@ -1,3 +1,6 @@
+-- Profile version to match against UEVR Enhancements mod expected version
+local uevr_profile_version = '0.9.1-r20241022'
+
 local log_functions = uevr.params.functions
 
 local function vr_log(text)
@@ -40,7 +43,9 @@ local function init_bridge()
       vr_log("UEVRBridge not found")
     else
       vr_log("UEVRBridge found!")
-      uevr_bridge:InitUEVRBridge()
+      local pv = uevr.params.version
+      vr_log("PV: "..tostring(pv)..' / '..tostring(pv.major)..'.'..tostring(pv.minor)..'.'..tostring(pv.patch))
+      uevr_bridge:InitUEVRBridge(uevr_profile_version, tostring(pv.major)..'.'..tostring(pv.minor)..'.'..tostring(pv.patch))
       -- uevr_bridge.IsInitialised = true
       vr_log("UEVRBridge: "..uevr_bridge:get_fname():to_string()..' / '..uevr_bridge:get_full_name())
 
