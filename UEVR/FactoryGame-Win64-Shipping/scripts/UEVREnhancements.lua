@@ -18,6 +18,7 @@ local vrcoordinator
 local uevr_bridge
 local last_world
 local last_level
+local player_state
 
 local function init_bridge()
   local mod_subsystem_c = api:find_uobject("Class /Script/SML.ModSubsystem")
@@ -168,6 +169,16 @@ uevr.sdk.callbacks.on_xinput_get_state(function(retval, user_index, state)
   end
 
   -- vr_log('XState: '..tostring(user_index)..' / '..tostring(retval)..' / '..tostring(gamepad.wButtons)..' / '..tostring(left_trigger)..' / '..tostring(stick_left_x)..' / '..tostring(stick_left_y)..' / '..tostring(right_trigger)..' / '..tostring(stick_right_x)..' / '..tostring(stick_right_y))
+
+  local new_state = vrcoordinator.VRPlayerState.CurrentState
+  if (new_state ~= player_state) then
+    player_state = new_state
+    vr_log('Player State: '..tostring(player_state))
+    if (player_state == 7 or player_state == 8) then
+      -- Recenter View on entering a vehicle - does this help?
+      uevr.params.vr.recenter_view()
+    end
+  end
 end)
 
 uevr.sdk.callbacks.on_post_engine_tick(function(engine, delta)
