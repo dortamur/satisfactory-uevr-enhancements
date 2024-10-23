@@ -175,7 +175,7 @@ uevr.sdk.callbacks.on_xinput_get_state(function(retval, user_index, state)
     player_state = new_state
     vr_log('Player State: '..tostring(player_state))
     if (player_state == 7 or player_state == 8) then
-      -- Recenter View on entering a vehicle - does this help?
+      -- Recenter View on entering a vehicle
       uevr.params.vr.recenter_view()
     end
   end
