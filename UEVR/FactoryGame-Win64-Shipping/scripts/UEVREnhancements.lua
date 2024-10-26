@@ -1,5 +1,5 @@
 -- Profile version to match against UEVR Enhancements mod expected version
-local uevr_profile_version = '0.9.5'
+local uevr_profile_version = 'v0.9.5-1'
 
 local log_functions = uevr.params.functions
 
@@ -7,7 +7,7 @@ local function vr_log(text)
     log_functions.log_info("[UEVREnhancements] " .. text )
 end
 
-vr_log("Initializing UEVREnhancements.lua")
+vr_log("Initializing UEVREnhancements.lua "..uevr_profile_version)
 
 UEVR_UObjectHook.activate()
 
@@ -24,7 +24,7 @@ local game_aim_mode = false
 local function update_aim_mode()
   -- Interaction mode changed!! Update UEVR Input Aim mode
   game_aim_mode = uevr_bridge.GameAimMode
-  vr_log('Aim Mode changed: '..tostring(game_aim_mode))
+  vr_log('Interaction changed: '..tostring(game_aim_mode))
 
   if (game_aim_mode == true) then
     -- uevr.params.vr:set_mod_value("VR_AimMethod","1")
