@@ -1,7 +1,7 @@
 {
 	"FileVersion": 3,
 	"Version": 0,
-	"VersionName": "0.9.0",
+	"VersionName": "0.9.5",
 	"FriendlyName": "UEVR Enhancements",
 	"Description": "Controller support and other enhancements for using the UEVR Plugin with Satisfactory",
 	"Category": "Modding",
@@ -28,7 +28,7 @@
 			"LoadingPhase": "Default"
 		}
 	],
-	"SemVersion": "0.9.0",
+	"SemVersion": "0.9.5",
 	"AcceptsAnyRemoteVersion": true,
 	"GameVersion": ">=365306"
 }

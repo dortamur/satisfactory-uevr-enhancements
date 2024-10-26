@@ -1,0 +1,14 @@
+{
+    "hide": true,
+    "hide_legacy": false,
+    "path": [
+        "Acknowledged Pawn",
+        "Properties",
+        "Children",
+        "Equip_MedKit_C Equip_MedKit_C_2147456136",
+        "Components",
+        "SkeletalMeshComponent SK_Medkit"
+    ],
+    "properties": [],
+    "type": "properties"
+}

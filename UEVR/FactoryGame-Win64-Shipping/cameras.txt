@@ -1,8 +1,8 @@
 camera_forward_offset0=0.000000
-camera_forward_offset1=0.000000
+camera_forward_offset1=-180
 camera_forward_offset2=0.000000
 camera_right_offset0=0.000000
-camera_right_offset1=0.000000
+camera_right_offset1=180
 camera_right_offset2=0.000000
 camera_up_offset0=0.000000
 camera_up_offset1=0.000000
