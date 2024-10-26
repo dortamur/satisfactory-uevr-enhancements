@@ -1,5 +1,5 @@
 -- Profile version to match against UEVR Enhancements mod expected version
-local uevr_profile_version = '0.9.1-r20241022'
+local uevr_profile_version = '0.9.5'
 
 local log_functions = uevr.params.functions
 
@@ -19,6 +19,22 @@ local uevr_bridge
 local last_world
 local last_level
 local player_state
+local game_aim_mode = false
+
+local function update_aim_mode()
+  -- Interaction mode changed!! Update UEVR Input Aim mode
+  game_aim_mode = uevr_bridge.GameAimMode
+  vr_log('Aim Mode changed: '..tostring(game_aim_mode))
+
+  if (game_aim_mode == true) then
+    -- uevr.params.vr:set_mod_value("VR_AimMethod","1")
+    uevr.params.vr.set_aim_method(0)
+    vr_log("Aim Method: Game")
+  else
+    uevr.params.vr.set_aim_method(2)
+    vr_log("Aim Method: Right Hand")
+  end
+end
 
 local function init_bridge()
   local mod_subsystem_c = api:find_uobject("Class /Script/SML.ModSubsystem")
@@ -49,6 +65,9 @@ local function init_bridge()
       uevr_bridge:InitUEVRBridge(uevr_profile_version, tostring(pv.major)..'.'..tostring(pv.minor)..'.'..tostring(pv.patch))
       -- uevr_bridge.IsInitialised = true
       vr_log("UEVRBridge: "..uevr_bridge:get_fname():to_string()..' / '..uevr_bridge:get_full_name())
+
+      -- Update Aim mode to initial state
+      update_aim_mode()
 
       if false then
       -- vr_print("UEVRBridge Event Dispatch: "..uevr_bridge:as_class(UEVR_BlueprintGeneratedClass))
@@ -185,9 +204,6 @@ uevr.sdk.callbacks.on_post_engine_tick(function(engine, delta)
 
 end)
 
-local spawn_once = true
-local game_aim_mode = false
-
 uevr.sdk.callbacks.on_pre_engine_tick(function(engine, delta)
   check_state()
   -- if true then return end -- Breakpoint
@@ -197,18 +213,7 @@ uevr.sdk.callbacks.on_pre_engine_tick(function(engine, delta)
 
   if (uevr_bridge.GameAimMode ~= game_aim_mode) then
     -- Interaction mode changed!! Update UEVR Input Aim mode
-    game_aim_mode = uevr_bridge.GameAimMode
-    vr_log('Interaction changed: '..tostring(game_aim_mode))
-
-    if (game_aim_mode == true) then
-      -- uevr.params.vr:set_mod_value("VR_AimMethod","1")
-      uevr.params.vr.set_aim_method(0)
-      vr_log("Aim Method: Game")
-    else
-      uevr.params.vr.set_aim_method(2)
-      vr_log("Aim Method: Right Hand")
-    end
-
+    update_aim_mode()
   end
 
 end)
