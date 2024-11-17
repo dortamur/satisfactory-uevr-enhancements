@@ -1,5 +1,5 @@
 -- Profile version to match against UEVR Enhancements mod expected version
-local uevr_profile_version = 'v0.9.5-1'
+local uevr_profile_version = 'v0.9.6-1'
 
 local log_functions = uevr.params.functions
 
@@ -20,11 +20,12 @@ local last_world
 local last_level
 local player_state
 local game_aim_mode = false
+local movement_mode = -1
 
 local function update_aim_mode()
   -- Interaction mode changed!! Update UEVR Input Aim mode
   game_aim_mode = uevr_bridge.GameAimMode
-  vr_log('Interaction changed: '..tostring(game_aim_mode))
+  vr_log('Aim Method changed: '..tostring(game_aim_mode))
 
   if (game_aim_mode == true) then
     -- uevr.params.vr:set_mod_value("VR_AimMethod","1")
@@ -34,6 +35,16 @@ local function update_aim_mode()
     uevr.params.vr.set_aim_method(2)
     vr_log("Aim Method: Right Hand")
   end
+end
+
+local function update_movement_mode()
+  -- Interaction mode changed!! Update UEVR Input Aim mode
+  movement_mode = uevr_bridge.MovementMode
+  vr_log('Movement Mode changed: '..tostring(movement_mode))
+
+  -- uevr.params.vr:set_mod_value("VR_AimMethod","1")
+  uevr.params.vr.set_mod_value("VR_MovementOrientation",movement_mode)
+  -- uevr.params.vr.set_movement_orientation()
 end
 
 local function init_bridge()
@@ -68,6 +79,9 @@ local function init_bridge()
 
       -- Update Aim mode to initial state
       update_aim_mode()
+
+      -- Update movement mode to initial state
+      update_movement_mode()
 
       if false then
       -- vr_print("UEVRBridge Event Dispatch: "..uevr_bridge:as_class(UEVR_BlueprintGeneratedClass))
@@ -212,8 +226,13 @@ uevr.sdk.callbacks.on_pre_engine_tick(function(engine, delta)
   end
 
   if (uevr_bridge.GameAimMode ~= game_aim_mode) then
-    -- Interaction mode changed!! Update UEVR Input Aim mode
+    -- Interaction/Vehicle mode changed!! Update UEVR Input Aim mode
     update_aim_mode()
+  end
+
+  if (uevr_bridge.MovementMode ~= movement_mode) then
+    -- Interaction mode changed!! Update UEVR Input Aim mode
+    update_movement_mode()
   end
 
 end)
