@@ -1,5 +1,5 @@
 -- Profile version to match against UEVR Enhancements mod expected version
-local uevr_profile_version = 'v0.9.6-1'
+local uevr_profile_version = 'v0.9.6-2'
 
 local log_functions = uevr.params.functions
 
@@ -45,6 +45,32 @@ local function update_movement_mode()
   -- uevr.params.vr:set_mod_value("VR_AimMethod","1")
   uevr.params.vr.set_mod_value("VR_MovementOrientation",movement_mode)
   -- uevr.params.vr.set_movement_orientation()
+end
+
+local function update_haptics()
+  local vr = uevr.params.vr
+
+  if (uevr_bridge.HapticsLeftPending) then
+    -- vr_log('Haptics Left Update!')
+    local source_handle = vr.get_left_joystick_source()
+    uevr_bridge.HapticsLeftPending = false
+    local duration = uevr_bridge.haptics_left_duration
+    local frequency = uevr_bridge.haptics_left_frequency
+    local amplitude = uevr_bridge.haptics_left_amplitude
+    vr_log('Haptics Left: '..tostring(duration)..', '..tostring(frequency)..', '..tostring(amplitude))
+    vr.trigger_haptic_vibration(0.0, duration, frequency, amplitude, source_handle)
+  end
+
+  if (uevr_bridge.HapticsRightPending) then
+    -- vr_log('Haptics Right Update!')
+    local source_handle = vr.get_right_joystick_source()
+    uevr_bridge.HapticsRightPending = false
+    local duration = uevr_bridge.haptics_right_duration
+    local frequency = uevr_bridge.haptics_right_frequency
+    local amplitude = uevr_bridge.haptics_right_amplitude
+    vr_log('Haptics Right: '..tostring(duration)..', '..tostring(frequency)..', '..tostring(amplitude))
+    vr.trigger_haptic_vibration(0.0, duration, frequency, amplitude, source_handle)
+  end
 end
 
 local function init_bridge()
@@ -233,6 +259,10 @@ uevr.sdk.callbacks.on_pre_engine_tick(function(engine, delta)
   if (uevr_bridge.MovementMode ~= movement_mode) then
     -- Interaction mode changed!! Update UEVR Input Aim mode
     update_movement_mode()
+  end
+
+  if (uevr_bridge.HapticsLeftPending or uevr_bridge.HapticsRightPending) then
+    update_haptics()
   end
 
 end)
