@@ -20,6 +20,7 @@ local last_world
 local last_level
 local player_state
 local game_aim_mode = false
+local ui_interact_mode = false
 local movement_mode = -1
 
 local function update_aim_mode()
@@ -254,6 +255,12 @@ uevr.sdk.callbacks.on_pre_engine_tick(function(engine, delta)
   if (uevr_bridge.GameAimMode ~= game_aim_mode) then
     -- Interaction/Vehicle mode changed!! Update UEVR Input Aim mode
     update_aim_mode()
+  end
+
+  if (uevr_bridge.UIInteractMode ~= ui_interact_mode) then
+    -- Different from Game mode - just UI Interaction mode, for streaming stabilisation switch
+    ui_interact_mode = uevr_bridge.UIInteractMode
+    vr_log('UI Interact Change [UIInteract='..tostring(ui_interact_mode)..']')
   end
 
   if (uevr_bridge.MovementMode ~= movement_mode) then
