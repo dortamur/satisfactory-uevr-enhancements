@@ -3,7 +3,7 @@
 <img align="right" src="Resources/Icon128.png"/>This is a [mod for Satisfactory](https://ficsit.app/mod/UEVREnhancements) intended to accompany Praydog's [Unreal Engine Virtual Reality (UEVR) Tool](https://uevr.io/), to provide VR-specific UI and interaction enhancements, to make playing Satisfactory in VR more practical and enjoyable.
 
 **This mod does not enable VR! It adds VR controls and interactions.** You will also need:
-- A recent [nightly build](https://github.com/praydog/UEVR-nightly/releases) of the UEVR Tool
+- Version [1.05 or newer](https://github.com/praydog/UEVR/releases) of the UEVR Tool
 - The Satisfactory profile for UEVR depending on where you bought Satisfactory:
 	- [UEVR Profile for Steam Satisfactory](https://github.com/dortamur/satisfactory-uevr-enhancements/raw/master/UEVR/FactoryGameSteam-Win64-Shipping.zip)
 	- [UEVR Profile for Epic Store Satisfactory](https://github.com/dortamur/satisfactory-uevr-enhancements/raw/master/UEVR/FactoryGameEGS-Win64-Shipping.zip).
@@ -22,7 +22,7 @@ For further information, see:
 - [Multiplayer](https://github.com/dortamur/satisfactory-uevr-enhancements/wiki/Multiplayer)
 - [Roadmap](https://github.com/dortamur/satisfactory-uevr-enhancements/wiki/Roadmap)
 
-Check out the [Video Guide](https://www.youtube.com/watch?v=5PAEs0eoGuk) to see the mod in action!
+Check out the [Video Guide](https://www.youtube.com/watch?v=5PAEs0eoGuk), or [pop by my twitch channel](https://www.twitch.tv/dortamur) to see the mod in action!
 
 ## Support this project
 
@@ -33,7 +33,8 @@ If you're interested in purchasing a Quest VR headset, using my [referral link](
 If you'd like to help out with development, the mod source is available on [github](https://github.com/dortamur/satisfactory-uevr-enhancements).
 If you'd like to help with testing updates before they are released, join the [#sf-join](https://discord.com/channels/747967102895390741/1247534737585864745) channel on the  [Flat2VR Community](https://flat2vr.com/).
 
-You can contact me on Discord on the [Satisfactory Modding server](https://discord.gg/xkVJ73E) or [Flat2VR Community](https://flat2vr.com/).
+You can contact me on Discord on the [Satisfactory Modding server](https://discord.gg/xkVJ73E) or [Flat2VR Community](https://flat2vr.com/), or catch me [live on twitch](https://www.twitch.tv/dortamur)!
+
 ## Credits
 
 - Almine for sharing UE5 and Satisfactory mod techniques and code, and working on his own [Satisfactory VR prototype](https://github.com/Almine2/SatisfactoryVRPlugins)
