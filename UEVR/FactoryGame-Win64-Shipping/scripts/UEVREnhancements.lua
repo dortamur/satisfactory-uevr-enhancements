@@ -1,5 +1,5 @@
 -- Profile version to match against UEVR Enhancements mod expected version
-local uevr_profile_version = 'v0.9.5-1'
+local uevr_profile_version = 'v0.9.6-2'
 
 local log_functions = uevr.params.functions
 
@@ -20,11 +20,13 @@ local last_world
 local last_level
 local player_state
 local game_aim_mode = false
+local ui_interact_mode = false
+local movement_mode = -1
 
 local function update_aim_mode()
   -- Interaction mode changed!! Update UEVR Input Aim mode
   game_aim_mode = uevr_bridge.GameAimMode
-  vr_log('Interaction changed: '..tostring(game_aim_mode))
+  vr_log('Aim Method changed: '..tostring(game_aim_mode))
 
   if (game_aim_mode == true) then
     -- uevr.params.vr:set_mod_value("VR_AimMethod","1")
@@ -33,6 +35,42 @@ local function update_aim_mode()
   else
     uevr.params.vr.set_aim_method(2)
     vr_log("Aim Method: Right Hand")
+  end
+end
+
+local function update_movement_mode()
+  -- Interaction mode changed!! Update UEVR Input Aim mode
+  movement_mode = uevr_bridge.MovementMode
+  vr_log('Movement Mode changed: '..tostring(movement_mode))
+
+  -- uevr.params.vr:set_mod_value("VR_AimMethod","1")
+  uevr.params.vr.set_mod_value("VR_MovementOrientation",movement_mode)
+  -- uevr.params.vr.set_movement_orientation()
+end
+
+local function update_haptics()
+  local vr = uevr.params.vr
+
+  if (uevr_bridge.HapticsLeftPending) then
+    -- vr_log('Haptics Left Update!')
+    local source_handle = vr.get_left_joystick_source()
+    uevr_bridge.HapticsLeftPending = false
+    local duration = uevr_bridge.haptics_left_duration
+    local frequency = uevr_bridge.haptics_left_frequency
+    local amplitude = uevr_bridge.haptics_left_amplitude
+    vr_log('Haptics Left: '..tostring(duration)..', '..tostring(frequency)..', '..tostring(amplitude))
+    vr.trigger_haptic_vibration(0.0, duration, frequency, amplitude, source_handle)
+  end
+
+  if (uevr_bridge.HapticsRightPending) then
+    -- vr_log('Haptics Right Update!')
+    local source_handle = vr.get_right_joystick_source()
+    uevr_bridge.HapticsRightPending = false
+    local duration = uevr_bridge.haptics_right_duration
+    local frequency = uevr_bridge.haptics_right_frequency
+    local amplitude = uevr_bridge.haptics_right_amplitude
+    vr_log('Haptics Right: '..tostring(duration)..', '..tostring(frequency)..', '..tostring(amplitude))
+    vr.trigger_haptic_vibration(0.0, duration, frequency, amplitude, source_handle)
   end
 end
 
@@ -68,6 +106,9 @@ local function init_bridge()
 
       -- Update Aim mode to initial state
       update_aim_mode()
+
+      -- Update movement mode to initial state
+      update_movement_mode()
 
       if false then
       -- vr_print("UEVRBridge Event Dispatch: "..uevr_bridge:as_class(UEVR_BlueprintGeneratedClass))
@@ -212,8 +253,23 @@ uevr.sdk.callbacks.on_pre_engine_tick(function(engine, delta)
   end
 
   if (uevr_bridge.GameAimMode ~= game_aim_mode) then
-    -- Interaction mode changed!! Update UEVR Input Aim mode
+    -- Interaction/Vehicle mode changed!! Update UEVR Input Aim mode
     update_aim_mode()
+  end
+
+  if (uevr_bridge.UIInteractMode ~= ui_interact_mode) then
+    -- Different from Game mode - just UI Interaction mode, for streaming stabilisation switch
+    ui_interact_mode = uevr_bridge.UIInteractMode
+    vr_log('UI Interact Change [UIInteract='..tostring(ui_interact_mode)..']')
+  end
+
+  if (uevr_bridge.MovementMode ~= movement_mode) then
+    -- Interaction mode changed!! Update UEVR Input Aim mode
+    update_movement_mode()
+  end
+
+  if (uevr_bridge.HapticsLeftPending or uevr_bridge.HapticsRightPending) then
+    update_haptics()
   end
 
 end)
