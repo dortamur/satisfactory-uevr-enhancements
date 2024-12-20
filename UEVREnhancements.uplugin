@@ -1,7 +1,7 @@
 {
 	"FileVersion": 3,
 	"Version": 0,
-	"VersionName": "0.9.8-r20241213",
+	"VersionName": "0.9.8-r20241218",
 	"FriendlyName": "UEVR Enhancements",
 	"Description": "Controller support and other enhancements for using the UEVR Plugin with Satisfactory",
 	"Category": "Modding",
@@ -18,7 +18,7 @@
 		{
 			"Name": "SML",
 			"Enabled": true,
-			"SemVersion": "^3.8.0"
+			"SemVersion": "^3.9.0"
 		}
 	],
 	"Modules": [
@@ -30,6 +30,6 @@
 	],
 	"SemVersion": "0.9.8",
 	"AcceptsAnyRemoteVersion": true,
-	"GameVersion": ">=365306",
+	"GameVersion": ">=383729",
 	"RequiredOnRemote": false
 }
