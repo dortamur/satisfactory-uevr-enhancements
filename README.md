@@ -2,11 +2,12 @@
 
 <img align="right" src="Resources/Icon128.png"/>This is a [mod for Satisfactory](https://ficsit.app/mod/UEVREnhancements) intended to accompany Praydog's [Unreal Engine Virtual Reality (UEVR) Tool](https://uevr.io/), to provide VR-specific UI and interaction enhancements, to make playing Satisfactory in VR more practical and enjoyable.
 
-**This mod does not enable VR! It adds VR controls and interactions.** You will also need:
-- Version [1.05 or newer](https://github.com/praydog/UEVR/releases) of the UEVR Tool
+**This mod does not enable VR! It adds VR controls and interactions.** 
+You will also need:
+- UEVR Injector Tool version [nightly 983 or newer](https://github.com/praydog/UEVR-nightly/releases) 
 - The Satisfactory profile for UEVR depending on where you bought Satisfactory:
-	- [UEVR Profile for Steam Satisfactory](https://github.com/dortamur/satisfactory-uevr-enhancements/raw/master/UEVR/FactoryGameSteam-Win64-Shipping.zip)
-	- [UEVR Profile for Epic Store Satisfactory](https://github.com/dortamur/satisfactory-uevr-enhancements/raw/master/UEVR/FactoryGameEGS-Win64-Shipping.zip).
+	- [UEVR Profile for Steam Satisfactory](https://github.com/dortamur/satisfactory-uevr-enhancements/raw/master/UEVR/FactoryGameSteam-Win64-Shipping.zip) from version 0.9.6
+	- [UEVR Profile for Epic Store Satisfactory](https://github.com/dortamur/satisfactory-uevr-enhancements/raw/master/UEVR/FactoryGameEGS-Win64-Shipping.zip) from version 0.9.6
 
 See the [Getting Started](https://github.com/dortamur/satisfactory-uevr-enhancements/wiki/Getting-Started) page for full installation details, and the [Troubleshooting](https://github.com/dortamur/satisfactory-uevr-enhancements/wiki/Troubleshooting) page if you have problems getting it working.
 See the [Controls](https://github.com/dortamur/satisfactory-uevr-enhancements/wiki/Controls) for tips on usage, and check the [Roadmap](https://github.com/dortamur/satisfactory-uevr-enhancements/wiki/Roadmap) for current progress and future goals.
@@ -22,7 +23,8 @@ For further information, see:
 - [Multiplayer](https://github.com/dortamur/satisfactory-uevr-enhancements/wiki/Multiplayer)
 - [Roadmap](https://github.com/dortamur/satisfactory-uevr-enhancements/wiki/Roadmap)
 
-Check out the [Video Guide](https://www.youtube.com/watch?v=5PAEs0eoGuk), or [pop by my twitch channel](https://www.twitch.tv/dortamur) to see the mod in action!
+If you prefer a video guide, check out the [Setup Guide](https://www.youtube.com/watch?v=Hxy5kKsCVNw) for step-by-step installation, as well as the older [Satisfactory in VR Guide](https://www.youtube.com/watch?v=5PAEs0eoGuk) for how to use the mod once installed.
+You can also [pop by my twitch channel](https://www.twitch.tv/dortamur) to see the mod in action!
 
 ## Support this project
 
