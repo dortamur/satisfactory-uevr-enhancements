@@ -85,3 +85,4 @@ Releases/
 Content/Materials/VRWidgetTest.uasset
 Content/Materials/M_HalfCircleMaskOrig.uasset
 Content.zip
+*.disabled
