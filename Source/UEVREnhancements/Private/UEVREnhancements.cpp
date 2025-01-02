@@ -5,7 +5,7 @@
 
 #define LOCTEXT_NAMESPACE "FUEVREnhancementsModule"
 
-DEFINE_LOG_CATEGORY(UEVREnhancements_Log);
+DEFINE_LOG_CATEGORY(UEVREnhancements);
 
 void FUEVREnhancementsModule::StartupModule()
 {
