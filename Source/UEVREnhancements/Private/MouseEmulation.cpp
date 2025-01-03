@@ -159,9 +159,9 @@ void UMouseEmulation::SimulateMouseScroll(float ScrollAmount)
 // {
 //     // ScreenPosition = FVector2D(0.0f, 0.0f);
 //     if (GEngine && GEngine->GameViewport) {
-//         // FVector2D 
+//         // FVector2D
 //         WindowPosition = GEngine->GameViewport->GetWindow()->GetPositionInScreen();
-//         // FVector2D 
+//         // FVector2D
 //         WindowSize = GEngine->GameViewport->GetWindow()->GetSizeInScreen();
 //         // ScreenPosition = FVector2D(WindowPosition.X + (WindowSize.X * X), WindowPosition.Y + (WindowSize.Y * Y));
 //         ScreenPosition = FVector2D((WindowSize.X * X), (WindowSize.Y * Y));

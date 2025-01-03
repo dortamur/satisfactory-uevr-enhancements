@@ -2,7 +2,7 @@
 #include "FGButtonHintBar.h"
 #include "UEVREnhancements.h"
 
-void FButtonHintBarFix::RegisterHooks() {
+void UButtonHintBarFix::RegisterUEVRFixHooks() {
   if (!WITH_EDITOR) {
     SUBSCRIBE_METHOD(UFGButtonHintBar::OnKeyHintsUpdated, [](auto &Scope, UFGButtonHintBar *FGButtonHintBar) {
       UE_LOG(UEVREnhancements, Verbose, TEXT("Skipping OnKeyHintsUpdated"));

@@ -4,10 +4,13 @@
 #include "Patching/NativeHookManager.h"
 // #include "Modules/ModuleManager.h"
 // #include "Subsystem/ModSubsystem.h"
+#include "ButtonHintBarFix.generated.h"
 
-class FButtonHintBarFix
+UCLASS()
+class UButtonHintBarFix : public UBlueprintFunctionLibrary
 {
+  GENERATED_BODY()
 public:
-	// UFUNCTION(BlueprintCallable)
-	static void RegisterHooks();
+	UFUNCTION(BlueprintCallable)
+	static void RegisterUEVRFixHooks();
 };

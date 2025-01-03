@@ -10,7 +10,7 @@ DEFINE_LOG_CATEGORY(UEVREnhancements);
 void FUEVREnhancementsModule::StartupModule()
 {
 	// This code will execute after your module is loaded into memory; the exact timing is specified in the .uplugin file per-module
-	FButtonHintBarFix::RegisterHooks();
+	// FButtonHintBarFix::RegisterHooks();
 }
 
 void FUEVREnhancementsModule::ShutdownModule()
