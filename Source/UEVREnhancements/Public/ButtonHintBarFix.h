@@ -13,4 +13,7 @@ class UButtonHintBarFix : public UBlueprintFunctionLibrary
 public:
 	UFUNCTION(BlueprintCallable)
 	static void RegisterUEVRFixHooks();
+
+	UFUNCTION(BlueprintCallable)
+	static void UnregisterUEVRFixHooks();
 };
