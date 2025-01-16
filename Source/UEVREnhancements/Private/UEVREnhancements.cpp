@@ -1,12 +1,16 @@
 // Copyright Epic Games, Inc. All Rights Reserved.
 
 #include "UEVREnhancements.h"
+#include "ButtonHintBarFix.h"
 
 #define LOCTEXT_NAMESPACE "FUEVREnhancementsModule"
+
+DEFINE_LOG_CATEGORY(UEVREnhancements);
 
 void FUEVREnhancementsModule::StartupModule()
 {
 	// This code will execute after your module is loaded into memory; the exact timing is specified in the .uplugin file per-module
+	// FButtonHintBarFix::RegisterHooks();
 }
 
 void FUEVREnhancementsModule::ShutdownModule()
