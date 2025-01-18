@@ -1,5 +1,5 @@
 -- Profile version to match against UEVR Enhancements mod expected version
-local uevr_profile_version = 'v0.9.6-2'
+local uevr_profile_version = 'v0.9.10-1'
 
 local log_functions = uevr.params.functions
 
@@ -75,63 +75,61 @@ local function update_haptics()
 end
 
 local function init_bridge()
-  local mod_subsystem_c = api:find_uobject("Class /Script/SML.ModSubsystem")
-  if mod_subsystem_c == nil then
-      vr_log("Class ModSubsystem not found")
+  local game_instance_module_c = api:find_uobject('Class /Script/SML.GameInstanceModule')
+  if game_instance_module_c == nil then
+      vr_log("Class GameInstanceModule not found")
   else
-    vr_log("Subsystem Class: "..mod_subsystem_c:get_full_name())
-    local subsystems = UEVR_UObjectHook.get_objects_by_class(mod_subsystem_c, false)
+    vr_log("GameInstanceModule Class: "..game_instance_module_c:get_full_name())
+    local game_instance_modules = UEVR_UObjectHook.get_objects_by_class(game_instance_module_c, false)
 
-    vr_log("Subsystems: ")
-    for i, subsystem in ipairs(subsystems) do
-      vr_log(" - "..subsystem:get_fname():to_string()..' / '..subsystem:get_full_name())
-      if (subsystem:get_fname():to_string() == 'UEVREnhancements_VRCoordinatorSystem_C') then
-        vrcoordinator = subsystem
+    vr_log("GameInstanceModules: ")
+    for i, module in ipairs(game_instance_modules) do
+      vr_log(" - "..module:get_fname():to_string()..' / '..module:get_full_name())
+      if (module:get_fname():to_string() == 'UEVREnhancements_UEVRBridge') then
+        vr_log('Found UEVRBridge module!')
+        uevr_bridge = module
       end
     end
   end
 
-  if vrcoordinator ~= nil then
-    -- if true then return end -- Breakpoint
-    uevr_bridge = vrcoordinator.UEVRBridge
-    if uevr_bridge == nil then
-      vr_log("UEVRBridge not found")
+  if false then
+    local mod_subsystem_c = api:find_uobject("Class /Script/SML.ModSubsystem")
+    if mod_subsystem_c == nil then
+        vr_log("Class ModSubsystem not found")
     else
-      vr_log("UEVRBridge found!")
-      local pv = uevr.params.version
-      vr_log("PV: "..tostring(pv)..' / '..tostring(pv.major)..'.'..tostring(pv.minor)..'.'..tostring(pv.patch))
-      uevr_bridge:InitUEVRBridge(uevr_profile_version, tostring(pv.major)..'.'..tostring(pv.minor)..'.'..tostring(pv.patch))
-      -- uevr_bridge.IsInitialised = true
-      vr_log("UEVRBridge: "..uevr_bridge:get_fname():to_string()..' / '..uevr_bridge:get_full_name())
+      vr_log("Subsystem Class: "..mod_subsystem_c:get_full_name())
+      local subsystems = UEVR_UObjectHook.get_objects_by_class(mod_subsystem_c, false)
 
-      -- Update Aim mode to initial state
-      update_aim_mode()
-
-      -- Update movement mode to initial state
-      update_movement_mode()
-
-      if false then
-      -- vr_print("UEVRBridge Event Dispatch: "..uevr_bridge:as_class(UEVR_BlueprintGeneratedClass))
-      -- Init UI Interaction hook
-      -- local uevr_bridge_bpc = api:find_uobject("BlueprintGeneratedClass /UEVREnhancements/Blueprints/UEVRBridge.UEVRBridge_C")
-
-
-      -- ui_interact_fn = uevr_bridge_bpc:find_function("UpdateUIInteraction2")
-      -- ui_interact_fn = uevr_bridge_bpc:find_function("DebugLog")
-      ui_interact_fn = uevr_bridge.UpdateUIInteraction
-
-      if ui_interact_fn ~= nil then
-          vr_print("Found UIInteraction function")
-
-          ui_interact_fn:hook_ptr(function(fn, obj, locals, result)
-              vr_print('Foo')
-              vr_print("UIInteraction! " .. tostring(locals).." ------------------------------------------------------")
-          end, nil)
-      else
-          vr_print("Failed to find UIInteraction function")
-      end
+      vr_log("Subsystems: ")
+      for i, subsystem in ipairs(subsystems) do
+        vr_log(" - "..subsystem:get_fname():to_string()..' / '..subsystem:get_full_name())
+        if (subsystem:get_fname():to_string() == 'UEVREnhancements_VRCoordinatorSystem_C') then
+          vrcoordinator = subsystem
+        end
       end
     end
+    if vrcoordinator ~= nil then
+      -- if true then return end -- Breakpoint
+      uevr_bridge = vrcoordinator.UEVRBridge
+    end
+  end
+
+  if uevr_bridge == nil then
+    vr_log("UEVRBridge not found")
+  else
+    vr_log("UEVRBridge found!")
+    local pv = uevr.params.version
+    vr_log("PV: "..tostring(pv)..' / '..tostring(pv.major)..'.'..tostring(pv.minor)..'.'..tostring(pv.patch))
+    vr_log("UEVRBridge: "..uevr_bridge:get_fname():to_string()..' / '..uevr_bridge:get_full_name())
+    uevr_bridge:DebugLog('Test')
+    uevr_bridge:InitUEVRBridge(uevr_profile_version, tostring(pv.major)..'.'..tostring(pv.minor)..'.'..tostring(pv.patch))
+    -- uevr_bridge.IsInitialised = true
+
+    -- Update Aim mode to initial state
+    update_aim_mode()
+
+    -- Update movement mode to initial state
+    update_movement_mode()
   end
 end
 
@@ -166,7 +164,7 @@ local function check_state()
     return
   end
 
-  if (vrcoordinator == nil) then
+  if (uevr_bridge == nil) then
     init_bridge()
   end
 end
@@ -230,13 +228,15 @@ uevr.sdk.callbacks.on_xinput_get_state(function(retval, user_index, state)
 
   -- vr_log('XState: '..tostring(user_index)..' / '..tostring(retval)..' / '..tostring(gamepad.wButtons)..' / '..tostring(left_trigger)..' / '..tostring(stick_left_x)..' / '..tostring(stick_left_y)..' / '..tostring(right_trigger)..' / '..tostring(stick_right_x)..' / '..tostring(stick_right_y))
 
-  local new_state = vrcoordinator.VRPlayerState.CurrentState
-  if (new_state ~= player_state) then
-    player_state = new_state
-    vr_log('Player State: '..tostring(player_state))
-    if (player_state == 7 or player_state == 8) then
-      -- Recenter View on entering a vehicle
-      uevr.params.vr.recenter_view()
+  if vrcoordinator ~= null then
+    local new_state = vrcoordinator.VRPlayerState.CurrentState
+    if (new_state ~= player_state) then
+      player_state = new_state
+      vr_log('Player State: '..tostring(player_state))
+      if (player_state == 7 or player_state == 8) then
+        -- Recenter View on entering a vehicle
+        uevr.params.vr.recenter_view()
+      end
     end
   end
 end)
