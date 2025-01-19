@@ -44,19 +44,23 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void UpdateRightTriggerState(bool RT);
 
+	/** Please add a function description */
+	// UFUNCTION(BlueprintCallable)
+	// void UpdateVRPlayerState(TEnumAsByte<EVRPlayerState> State);
+
 	/** Called by UEVR plugin when UEVR injects (switching game to VR mode).  */
 	UFUNCTION(BlueprintCallable)
 	void InitUEVRBridge(FString Profile, FString UEVR);
 
 	/** Called on Tick to check button states and call input actions as required. */
 	UFUNCTION(BlueprintCallable)
-	void ButtonActionsTick();
+	void InputActionsTick();
 
 	/** Translate a button state into an Input Action call. */
-	void CheckButtonAction(bool Condition, const UInputAction* Action);
+	void CheckButtonAction(bool Condition, UInputAction* Action);
 
 	/** Called on Tick to translate a stick position into an Input Action. */
-	void CheckStickPosAction(double X, double Y, const UInputAction* Action, bool _isNotZero);
+	void CheckStickPosAction(double X, double Y, UInputAction* Action);
 
 	/** Starts a new haptics effect for the right controller. */
 	UFUNCTION(BlueprintCallable)
@@ -91,6 +95,11 @@ public:
 	DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FDoInputAction, bool, Condition, const UInputAction*, Action);
 	UPROPERTY(BlueprintAssignable, EditDefaultsOnly, Category="Input")
 	FDoInputAction DoInputAction;
+
+	/** Called when an Input Action with vector data needs to be handled, to pass to a Blueprint for processing. */
+	DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FDoVectorInputAction, FVector2D, StickPos, const UInputAction*, Action);
+	UPROPERTY(BlueprintAssignable, EditDefaultsOnly, Category="Input")
+	FDoVectorInputAction DoVectorInputAction;
 
 	/** Called when UEVR is first injected and the module is initialised. */
 	DECLARE_DYNAMIC_MULTICAST_DELEGATE(FUEVRBridgeInitialised);

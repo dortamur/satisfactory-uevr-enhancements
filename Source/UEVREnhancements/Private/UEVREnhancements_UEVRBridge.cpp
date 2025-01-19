@@ -8,19 +8,19 @@ float ScaleStickPosition(int32 IntPos) {
 }
 
 TArray<FName> InputActionPaths = {
-    TEXT("/UEVREnhancements/Inputs/Actions/IA_VRLeftButtonX"),
-    TEXT("/UEVREnhancements/Inputs/Actions/IA_VRLeftButtonY"),
-    TEXT("/UEVREnhancements/Inputs/Actions/IA_VRRightButtonA"),
-    TEXT("/UEVREnhancements/Inputs/Actions/IA_VRRightButtonB"),
-    TEXT("/UEVREnhancements/Inputs/Actions/IA_VRLeftClick"),
-    TEXT("/UEVREnhancements/Inputs/Actions/IA_VRLeftGrip"),
-    TEXT("/UEVREnhancements/Inputs/Actions/IA_VRLeftTrigger"),
-    TEXT("/UEVREnhancements/Inputs/Actions/IA_VRRightClick"),
-    TEXT("/UEVREnhancements/Inputs/Actions/IA_VRRightGrip"),
-    TEXT("/UEVREnhancements/Inputs/Actions/IA_VRRightTrigger"),
-    TEXT("/UEVREnhancements/Inputs/Actions/IA_VRLeftStick"),
-    TEXT("/UEVREnhancements/Inputs/Actions/IA_VRRightStick"),
-    TEXT("/UEVREnhancements/Inputs/Actions/IA_VRStartButton")
+    TEXT("/UEVREnhancements/Inputs/Actions/IA_VRLeftButtonX"),  // 0
+    TEXT("/UEVREnhancements/Inputs/Actions/IA_VRLeftButtonY"),  // 1
+    TEXT("/UEVREnhancements/Inputs/Actions/IA_VRRightButtonA"), // 2
+    TEXT("/UEVREnhancements/Inputs/Actions/IA_VRRightButtonB"), // 3
+    TEXT("/UEVREnhancements/Inputs/Actions/IA_VRLeftClick"),    // 4
+    TEXT("/UEVREnhancements/Inputs/Actions/IA_VRLeftGrip"),     // 5
+    TEXT("/UEVREnhancements/Inputs/Actions/IA_VRLeftTrigger"),  // 6
+    TEXT("/UEVREnhancements/Inputs/Actions/IA_VRRightClick"),   // 7
+    TEXT("/UEVREnhancements/Inputs/Actions/IA_VRRightGrip"),    // 8
+    TEXT("/UEVREnhancements/Inputs/Actions/IA_VRRightTrigger"), // 9
+    TEXT("/UEVREnhancements/Inputs/Actions/IA_VRStartButton"),  // 10
+    TEXT("/UEVREnhancements/Inputs/Actions/IA_VRLeftStick"),    // 11
+    TEXT("/UEVREnhancements/Inputs/Actions/IA_VRRightStick")    // 12
 };
 
 UUEVREnhancements_UEVRBridge::UUEVREnhancements_UEVRBridge() {
@@ -120,7 +120,7 @@ void UUEVREnhancements_UEVRBridge::InitUEVRBridge(FString Profile, FString UEVR)
   }
 }
 
-void UUEVREnhancements_UEVRBridge::ButtonActionsTick() {
+void UUEVREnhancements_UEVRBridge::InputActionsTick() {
   this->CheckButtonAction(this->button_x, this->InputActions[0]);
   this->CheckButtonAction(this->button_y, this->InputActions[1]);
   this->CheckButtonAction(this->button_a, this->InputActions[2]);
@@ -132,25 +132,42 @@ void UUEVREnhancements_UEVRBridge::ButtonActionsTick() {
   this->CheckButtonAction(this->button_right_grip, this->InputActions[8]);
   this->CheckButtonAction(this->button_right_trigger, this->InputActions[9]);
   this->CheckButtonAction(this->button_start, this->InputActions[10]);
+  this->CheckStickPosAction(this->stick_left_x, this->stick_left_y, this->InputActions[11]);
+  this->CheckStickPosAction(this->stick_right_x, this->stick_right_y, this->InputActions[12]);
 }
 
 /** Called on Tick to translate a button state into an Input Action. */
-void UUEVREnhancements_UEVRBridge::CheckButtonAction(bool Condition, const UInputAction *Action) {
-  bool last_state = LastActions[Action];
+void UUEVREnhancements_UEVRBridge::CheckButtonAction(bool Condition, UInputAction *Action) {
+  bool last_state = LastActions.FindRef(Action);
 
-  this->DebugLog(FString::Printf(TEXT("CheckButtonAction Tick: %s => %s"), last_state ? TEXT("true") : TEXT("false"), Condition ? TEXT("true") : TEXT("false")));
+  this->DebugLog(FString::Printf(TEXT("CheckButtonAction Tick: %s: %s => %s"), *Action->GetName(), last_state ? TEXT("true") : TEXT("false"), Condition ? TEXT("true") : TEXT("false")));
   if (Condition || last_state) {
+    // this->DebugLog(FString::Printf(TEXT("CheckButtonAction Broadcast: %s = %s"), *Action->GetName(), Condition ? TEXT("true") : TEXT("false")));
     DoInputAction.Broadcast(Condition, Action);
   }
 
   if (Condition != last_state) {
-    LastActions[Action] = Condition;
+    // this->DebugLog(FString::Printf(TEXT("CheckButtonAction Updating State: %s = %s"), *Action->GetName(), Condition ? TEXT("true") : TEXT("false")));
+    LastActions.Emplace(Action, Condition);
   }
 }
 
 /** Called on Tick to translate a stick position into an Input Action. */
-void UUEVREnhancements_UEVRBridge::CheckStickPosAction(double X, double Y, const UInputAction *Action,
-                                                       bool _isNotZero) {}
+void UUEVREnhancements_UEVRBridge::CheckStickPosAction(double X, double Y, UInputAction *Action) {
+  bool last_state = LastActions.FindRef(Action);
+
+  bool new_state = !(FMath::IsNearlyEqual(X, 0.0, 0.001) && FMath::IsNearlyEqual(Y, 0.0, 0.001));
+  if (new_state || last_state) {
+    // this->DebugLog(FString::Printf(TEXT("CheckButtonAction Broadcast: %s = %s"), *Action->GetName(), Condition ? TEXT("true") : TEXT("false")));
+    FVector2D StickPos = new_state ? FVector2D(X, Y) : FVector2D(0.0f, 0.0f);
+    DoVectorInputAction.Broadcast(StickPos, Action);
+  }
+
+  if (new_state != last_state) {
+    // this->DebugLog(FString::Printf(TEXT("CheckButtonAction Updating State: %s = %s"), *Action->GetName(), Condition ? TEXT("true") : TEXT("false")));
+    LastActions.Emplace(Action, new_state);
+  }
+}
 
 /** Starts a new haptics effect for the right controller. */
 void UUEVREnhancements_UEVRBridge::SetHapticsRightEffect(FS_VRHapticEffect effect) {
