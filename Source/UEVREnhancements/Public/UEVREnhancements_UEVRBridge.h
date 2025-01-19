@@ -1,5 +1,3 @@
-
-
 #pragma once
 
 #include "CoreMinimal.h"
@@ -7,6 +5,7 @@
 #include "UEVREnhancements_VRHapticEffectStruct.h"
 #include "EnhancedInputComponent.h"
 #include "InputActionValue.h"
+#include "UEVREnhancements_Enumerators.h"
 #include "UEVREnhancements_UEVRBridge.generated.h"
 
 /**
@@ -45,8 +44,8 @@ public:
 	void UpdateRightTriggerState(bool RT);
 
 	/** Please add a function description */
-	// UFUNCTION(BlueprintCallable)
-	// void UpdateVRPlayerState(TEnumAsByte<EVRPlayerState> State);
+	UFUNCTION(BlueprintCallable)
+	void UpdateVRPlayerState(TEnumAsByte<EVRPlayerState> PlayerState, int32 DefaultMovementMode);
 
 	/** Called by UEVR plugin when UEVR injects (switching game to VR mode).  */
 	UFUNCTION(BlueprintCallable)

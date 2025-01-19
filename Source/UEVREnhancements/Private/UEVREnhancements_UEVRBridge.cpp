@@ -52,6 +52,39 @@ void UUEVREnhancements_UEVRBridge::DebugLog(FString DebugString) {
   UE_LOG(UEVREnhancements, Verbose, TEXT("[UEVRBridge] %s"), *DebugString);
 }
 
+/**  */
+void UUEVREnhancements_UEVRBridge::UpdateVRPlayerState(TEnumAsByte<EVRPlayerState> PlayerState, int32 DefaultMovementMode) {
+  // Check change to UEVR Game Aim Mode
+  bool game_aim_mode = false;
+  switch (PlayerState) {
+    case EVRPlayerState::UIInteract:
+    case EVRPlayerState::Vehicle:
+    case EVRPlayerState::Train:
+    case EVRPlayerState::Hypertube:
+    case EVRPlayerState::PauseMenu:
+      game_aim_mode = true;
+      break;
+  }
+  if (game_aim_mode != this->GameAimMode) {
+    this->DebugLog(FString::Printf(TEXT("GameAimMode changed: %s"), game_aim_mode ? TEXT("true") : TEXT("false")));
+    this->GameAimMode = game_aim_mode;
+  }
+
+  // Check change to UEVR Movement Mode
+  int32 movement_mode = DefaultMovementMode;
+  switch (PlayerState) {
+    case EVRPlayerState::Vehicle:
+    case EVRPlayerState::Train:
+      movement_mode = 0;
+      break;
+  }
+  if (movement_mode != this->MovementMode) {
+    this->DebugLog(FString::Printf(TEXT("MovementMode changed: %d"), movement_mode));
+    this->MovementMode = movement_mode;
+  }
+
+}
+
 /** Called by UEVR plugin. Updates state of main controller buttons. */
 void UUEVREnhancements_UEVRBridge::UpdateButtonState(bool A, bool B, bool X, bool Y, bool LS, bool LG, bool RS, bool RG,
                                                      bool Start) {
