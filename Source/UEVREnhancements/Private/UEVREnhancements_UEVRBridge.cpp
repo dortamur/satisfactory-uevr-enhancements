@@ -55,19 +55,22 @@ void UUEVREnhancements_UEVRBridge::DebugLog(FString DebugString) {
 /**  */
 void UUEVREnhancements_UEVRBridge::UpdateVRPlayerState(TEnumAsByte<EVRPlayerState> PlayerState, int32 DefaultMovementMode) {
   // Check change to UEVR Game Aim Mode
-  bool game_aim_mode = false;
+  // 0 - Game Aim Mode
+  // 1 - HMD Aim Mode
+  // 2 - Right Hand Aim Mode
+  int32 aim_mode = 2;
   switch (PlayerState) {
     case EVRPlayerState::UIInteract:
     case EVRPlayerState::Vehicle:
     case EVRPlayerState::Train:
     case EVRPlayerState::Hypertube:
     case EVRPlayerState::PauseMenu:
-      game_aim_mode = true;
+      aim_mode = 0;
       break;
   }
-  if (game_aim_mode != this->GameAimMode) {
-    this->DebugLog(FString::Printf(TEXT("GameAimMode changed: %s"), game_aim_mode ? TEXT("true") : TEXT("false")));
-    this->GameAimMode = game_aim_mode;
+  if (aim_mode != this->AimMode) {
+    this->DebugLog(FString::Printf(TEXT("GameAimMode changed: %d"), aim_mode));
+    this->AimMode = aim_mode;
   }
 
   // Check change to UEVR Movement Mode
@@ -83,6 +86,13 @@ void UUEVREnhancements_UEVRBridge::UpdateVRPlayerState(TEnumAsByte<EVRPlayerStat
     this->MovementMode = movement_mode;
   }
 
+  // Check change to Roomscale mode
+  bool roomscale_mode = true;
+  // TODO: Cases where it should be false
+  if (roomscale_mode != this->RoomscaleMode) {
+    this->DebugLog(FString::Printf(TEXT("RoomscaleMode changed: %s"), roomscale_mode ? TEXT("true") : TEXT("false")));
+    this->RoomscaleMode = roomscale_mode;
+  }
 }
 
 /** Called by UEVR plugin. Updates state of main controller buttons. */

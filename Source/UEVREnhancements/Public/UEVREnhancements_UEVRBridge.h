@@ -87,36 +87,58 @@ public:
 
 public:
 	/** Indicates if UEVR has been initialised aka injected. */
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="Default")
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="UEVR")
 	bool IsInitialised;
 
 	/** Called when an Input Action event needs to be handled, to pass to a Blueprint for processing. */
 	DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FDoInputAction, bool, Condition, const UInputAction*, Action);
-	UPROPERTY(BlueprintAssignable, EditDefaultsOnly, Category="Input")
+	UPROPERTY(BlueprintAssignable, EditDefaultsOnly, Category="UEVR")
 	FDoInputAction DoInputAction;
 
 	/** Called when an Input Action with vector data needs to be handled, to pass to a Blueprint for processing. */
 	DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FDoVectorInputAction, FVector2D, StickPos, const UInputAction*, Action);
-	UPROPERTY(BlueprintAssignable, EditDefaultsOnly, Category="Input")
+	UPROPERTY(BlueprintAssignable, EditDefaultsOnly, Category="UEVR")
 	FDoVectorInputAction DoVectorInputAction;
 
 	/** Called when UEVR is first injected and the module is initialised. */
 	DECLARE_DYNAMIC_MULTICAST_DELEGATE(FUEVRBridgeInitialised);
-	UPROPERTY(BlueprintAssignable, EditDefaultsOnly, Category="Default")
+	UPROPERTY(BlueprintAssignable, EditDefaultsOnly, Category="UEVR")
 	FUEVRBridgeInitialised UEVRBridgeInitialised;
 
 	/** Please add a variable description */
 	DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FUpdateUIInteraction, bool, UIInteraction);
-	UPROPERTY(BlueprintAssignable, EditDefaultsOnly, Category="Default")
+	UPROPERTY(BlueprintAssignable, EditDefaultsOnly, Category="UEVR")
 	FUpdateUIInteraction UpdateUIInteraction;
 
 	/** Please add a variable description */
-	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category="Default")
+	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category="UEVR")
 	FString ProfileVersion;
 
 	/** Please add a variable description */
-	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category="Default", meta=(MultiLine="true"))
+	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category="UEVR", meta=(MultiLine="true"))
 	FString APIVersion;
+
+	/** Please add a variable description */
+	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category="UEVR")
+	bool UIInteractMode;
+
+	/** Please add a variable description */
+	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category="UEVR")
+	int32 AimMode;
+
+	/** Please add a variable description */
+	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category="UEVR")
+	bool RoomscaleMode;
+
+	/** Read by UEVR to change Movement Mode. 0 = Game, 1 = HMD */
+	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category="UEVR")
+	int32 MovementMode;
+
+	/** Read by UEVR to detect if there is a Haptic event to process. */
+	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category="UEVR")
+	bool HapticsLeftPending;
+	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category="UEVR")
+	bool HapticsRightPending;
 
 private:
 	/** Current button and stick states */
@@ -141,19 +163,6 @@ private:
 
 	/** Map to track state of active actions */
 	TMap<UInputAction*,bool> LastActions;
-
-	/** Please add a variable description */
-	bool UIInteractMode;
-
-	/** Please add a variable description */
-	bool GameAimMode;
-
-	/** Read by UEVR to change Movement Mode. 0 = Game, 1 = HMD */
-	int32 MovementMode;
-
-	/** Read by UEVR to detect if there is a Haptic event to process. */
-	bool HapticsLeftPending;
-	bool HapticsRightPending;
 
 	/** Please add a variable description */
 	FS_VRHapticEffect HapticsLeftEffect;
