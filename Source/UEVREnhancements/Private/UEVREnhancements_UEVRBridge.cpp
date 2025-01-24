@@ -220,8 +220,11 @@ void UUEVREnhancements_UEVRBridge::CheckStickPosAction(double X, double Y, UInpu
 
 /** Starts a new haptics effect for the right controller. */
 void UUEVREnhancements_UEVRBridge::SetHapticsRightEffect(FS_VRHapticEffect effect) {
-  // TODO: Migrate from Blueprint
-
+  this->DebugLog(FString::Printf(TEXT("SetHapticsRightEffect: %f, %f, %f, %d, %f"), effect.duration, effect.frequency, effect.amplitude, effect.repeat, effect.delay));
+  this->HapticsRightEffect = effect;
+  this->haptics_right_duration = effect.duration;
+  this->haptics_right_amplitude = effect.amplitude;
+  this->haptics_right_frequency = effect.frequency;
 }
 
 /** Continues a repeated haptics effect for the right controller. */
@@ -230,6 +233,11 @@ void UUEVREnhancements_UEVRBridge::RepeatHapticsRightEffect(int32 _repeat) {}
 /** Starts a new haptics effect for the left controller. */
 void UUEVREnhancements_UEVRBridge::SetHapticsLeftEffect(FS_VRHapticEffect effect) {\
   // TODO: Migrate from Blueprint
+  this->DebugLog(FString::Printf(TEXT("SetHapticsLeftEffect: %f, %f, %f, %d, %f"), effect.duration, effect.frequency, effect.amplitude, effect.repeat, effect.delay));
+  this->HapticsLeftEffect = effect;
+  this->haptics_left_duration = effect.duration;
+  this->haptics_left_amplitude = effect.amplitude;
+  this->haptics_left_frequency = effect.frequency;
 }
 
 /** Continues a repeated haptics effect for the left controller. */

@@ -52,30 +52,28 @@ local function update_movement_mode()
   -- uevr.params.vr.set_movement_orientation()
 end
 
-local function update_haptics()
+local function update_haptics_left()
   local vr = uevr.params.vr
+  -- vr_log('Haptics Left Update!')
+  local source_handle = vr.get_left_joystick_source()
+  -- uevr_bridge.HapticsLeftPending = false
+  local duration = uevr_bridge.haptics_left_duration
+  local frequency = uevr_bridge.haptics_left_frequency
+  local amplitude = uevr_bridge.haptics_left_amplitude
+  vr_log('Haptics Left: '..tostring(duration)..', '..tostring(frequency)..', '..tostring(amplitude))
+  vr.trigger_haptic_vibration(0.0, duration, frequency, amplitude, source_handle)
+end
 
-  if (uevr_bridge.HapticsLeftPending) then
-    -- vr_log('Haptics Left Update!')
-    local source_handle = vr.get_left_joystick_source()
-    uevr_bridge.HapticsLeftPending = false
-    local duration = uevr_bridge.haptics_left_duration
-    local frequency = uevr_bridge.haptics_left_frequency
-    local amplitude = uevr_bridge.haptics_left_amplitude
-    vr_log('Haptics Left: '..tostring(duration)..', '..tostring(frequency)..', '..tostring(amplitude))
-    vr.trigger_haptic_vibration(0.0, duration, frequency, amplitude, source_handle)
-  end
-
-  if (uevr_bridge.HapticsRightPending) then
-    -- vr_log('Haptics Right Update!')
-    local source_handle = vr.get_right_joystick_source()
-    uevr_bridge.HapticsRightPending = false
-    local duration = uevr_bridge.haptics_right_duration
-    local frequency = uevr_bridge.haptics_right_frequency
-    local amplitude = uevr_bridge.haptics_right_amplitude
-    vr_log('Haptics Right: '..tostring(duration)..', '..tostring(frequency)..', '..tostring(amplitude))
-    vr.trigger_haptic_vibration(0.0, duration, frequency, amplitude, source_handle)
-  end
+local function update_haptics_right()
+  local vr = uevr.params.vr
+  -- vr_log('Haptics Right Update!')
+  local source_handle = vr.get_right_joystick_source()
+  -- uevr_bridge.HapticsRightPending = false
+  local duration = uevr_bridge.haptics_right_duration
+  local frequency = uevr_bridge.haptics_right_frequency
+  local amplitude = uevr_bridge.haptics_right_amplitude
+  vr_log('Haptics Right: '..tostring(duration)..', '..tostring(frequency)..', '..tostring(amplitude))
+  vr.trigger_haptic_vibration(0.0, duration, frequency, amplitude, source_handle)
 end
 
 local function init_bridge()
@@ -131,6 +129,36 @@ local function init_bridge()
     uevr_bridge:DebugLog('Test')
     uevr_bridge:InitUEVRBridge(uevr_profile_version, tostring(pv.major)..'.'..tostring(pv.minor)..'.'..tostring(pv.patch))
     -- uevr_bridge.IsInitialised = true
+
+    uevr_bridge.SetHapticsRightEffect:hook_ptr(nil, function(fn, obj, locals, result)
+        update_haptics_right()
+        vr_log('SetHapticsRightEffect: '..obj:get_fname():to_string() .. " called")
+      end
+    )
+
+    uevr_bridge.SetHapticsLeftEffect:hook_ptr(nil, function(fn, obj, locals, result)
+        update_haptics_left()
+        vr_log('SetHapticsLeftEffect: '..obj:get_fname():to_string() .. " called")
+      end
+    )
+
+    uevr_bridge.UpdateVRPlayerState:hook_ptr(nil, function(fn, obj, locals, result)
+        if (uevr_bridge.AimMode ~= aim_mode) then
+          -- Interaction/Vehicle mode changed!! Update UEVR Input Aim mode
+          update_aim_mode()
+        end
+
+        if (uevr_bridge.MovementMode ~= movement_mode) then
+          -- Interaction mode changed!! Update UEVR Input Aim mode
+          update_movement_mode()
+        end
+
+        if (uevr_bridge.RoomscaleMode ~= roomscale_mode) then
+          -- Interaction mode changed!! Update UEVR Input Aim mode
+          update_roomscale_mode()
+        end
+      end
+    )
 
     -- Update Aim mode to initial state
     update_aim_mode()
@@ -267,33 +295,8 @@ uevr.sdk.callbacks.on_pre_engine_tick(function(engine, delta)
 
   tick_countdown = tick_countdown - 1
   if (tick_countdown <= 0) then
-    vr_log('States: AM='..tostring(uevr_bridge.AimMode)..' UII='..tostring(uevr_bridge.UIInteractMode)..' MM='..tostring(uevr_bridge.MovementMode)..' RS='..tostring(uevr_bridge.RoomscaleMode))
+    -- vr_log('States: AM='..tostring(uevr_bridge.AimMode)..' UII='..tostring(uevr_bridge.UIInteractMode)..' MM='..tostring(uevr_bridge.MovementMode)..' RS='..tostring(uevr_bridge.RoomscaleMode))
     tick_countdown = 200
-  end
-
-  if (uevr_bridge.AimMode ~= aim_mode) then
-    -- Interaction/Vehicle mode changed!! Update UEVR Input Aim mode
-    update_aim_mode()
-  end
-
-  -- if (uevr_bridge.UIInteractMode ~= ui_interact_mode) then
-  --   -- Different from Game mode - just UI Interaction mode, for streaming stabilisation switch
-  --   ui_interact_mode = uevr_bridge.UIInteractMode
-  --   vr_log('UI Interact Change [UIInteract='..tostring(ui_interact_mode)..']')
-  -- end
-
-  if (uevr_bridge.MovementMode ~= movement_mode) then
-    -- Interaction mode changed!! Update UEVR Input Aim mode
-    update_movement_mode()
-  end
-
-  if (uevr_bridge.RoomscaleMode ~= roomscale_mode) then
-    -- Interaction mode changed!! Update UEVR Input Aim mode
-    update_roomscale_mode()
-  end
-
-  if (uevr_bridge.HapticsLeftPending or uevr_bridge.HapticsRightPending) then
-    update_haptics()
   end
 
 end)

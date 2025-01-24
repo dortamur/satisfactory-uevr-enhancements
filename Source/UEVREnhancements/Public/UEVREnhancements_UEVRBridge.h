@@ -134,11 +134,24 @@ public:
 	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category="UEVR")
 	int32 MovementMode;
 
-	/** Read by UEVR to detect if there is a Haptic event to process. */
-	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category="UEVR")
-	bool HapticsLeftPending;
-	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category="UEVR")
-	bool HapticsRightPending;
+	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly, Category="UEVR")
+	FS_VRHapticEffect HapticsLeftEffect;
+	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly, Category="UEVR")
+	FS_VRHapticEffect HapticsRightEffect;
+
+	/** Haptics event breakdown read by UEVR - can be phased out if UEVR can read HapticsLeft/RightEffect struct? */
+	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly, Category="UEVR")
+	double haptics_left_duration;
+	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly, Category="UEVR")
+	double haptics_left_frequency;
+	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly, Category="UEVR")
+	double haptics_left_amplitude;
+	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly, Category="UEVR")
+	double haptics_right_duration;
+	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly, Category="UEVR")
+	double haptics_right_frequency;
+	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly, Category="UEVR")
+	double haptics_right_amplitude;
 
 private:
 	/** Current button and stick states */
@@ -164,15 +177,4 @@ private:
 	/** Map to track state of active actions */
 	TMap<UInputAction*,bool> LastActions;
 
-	/** Please add a variable description */
-	FS_VRHapticEffect HapticsLeftEffect;
-	FS_VRHapticEffect HapticsRightEffect;
-
-	/** Haptics event breakdown read by UEVR - can be phased out if UEVR can read HapticsLeft/RightEffect struct? */
-	double haptics_left_duration;
-	double haptics_left_frequency;
-	double haptics_left_amplitude;
-	double haptics_right_duration;
-	double haptics_right_frequency;
-	double haptics_right_amplitude;
 };
