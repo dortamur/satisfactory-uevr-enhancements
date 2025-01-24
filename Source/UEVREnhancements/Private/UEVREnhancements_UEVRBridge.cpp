@@ -108,33 +108,39 @@ void UUEVREnhancements_UEVRBridge::UpdateButtonState(bool A, bool B, bool X, boo
   this->button_right_grip = RG;
   this->button_start = Start;
 
-  FString debug_msg = FString::Printf(TEXT("Buttons: A=%s B=%s X=%s Y=%s LS=%s RS=%s LG=%s RG=%s Start=%s"),
-    A ? TEXT("true") : TEXT("false"),
-    B ? TEXT("true") : TEXT("false"),
-    X ? TEXT("true") : TEXT("false"),
-    Y ? TEXT("true") : TEXT("false"),
-    LS ? TEXT("true") : TEXT("false"),
-    RS ? TEXT("true") : TEXT("false"),
-    LG ? TEXT("true") : TEXT("false"),
-    RG ? TEXT("true") : TEXT("false"),
-    Start ? TEXT("true") : TEXT("false"));
-  this->DebugLog(debug_msg);
+  if (false) {
+    FString debug_msg = FString::Printf(TEXT("Buttons: A=%s B=%s X=%s Y=%s LS=%s RS=%s LG=%s RG=%s Start=%s"),
+      A ? TEXT("true") : TEXT("false"),
+      B ? TEXT("true") : TEXT("false"),
+      X ? TEXT("true") : TEXT("false"),
+      Y ? TEXT("true") : TEXT("false"),
+      LS ? TEXT("true") : TEXT("false"),
+      RS ? TEXT("true") : TEXT("false"),
+      LG ? TEXT("true") : TEXT("false"),
+      RG ? TEXT("true") : TEXT("false"),
+      Start ? TEXT("true") : TEXT("false"));
+    this->DebugLog(debug_msg);
+  }
 }
 
 /** Called by UEVR plugin. Updates state of Left Stick. */
 void UUEVREnhancements_UEVRBridge::UpdateLeftStickState(int32 X, int32 Y) {
   this->stick_left_x = ScaleStickPosition(X);
   this->stick_left_y = ScaleStickPosition(Y);
-  FString debug_msg = FString::Printf(TEXT("Left Stick: X=%d Y=%d SX=%.2f SY=%.2f"), X, Y, this->stick_left_x, this->stick_left_y);
-  this->DebugLog(debug_msg);
+  if (false) {
+    FString debug_msg = FString::Printf(TEXT("Left Stick: X=%d Y=%d SX=%.2f SY=%.2f"), X, Y, this->stick_left_x, this->stick_left_y);
+    this->DebugLog(debug_msg);
+  }
 }
 
 /** Called by UEVR plugin. Updates state of Right Stick. */
 void UUEVREnhancements_UEVRBridge::UpdateRightStickState(int32 X, int32 Y) {
   this->stick_right_x = ScaleStickPosition(X);
   this->stick_right_y = ScaleStickPosition(Y);
-  FString debug_msg = FString::Printf(TEXT("Right Stick: X=%d Y=%d SX=%.2f SY=%.2f"), X, Y, this->stick_right_x, this->stick_right_y);
-  this->DebugLog(debug_msg);
+  if (false) {
+    FString debug_msg = FString::Printf(TEXT("Right Stick: X=%d Y=%d SX=%.2f SY=%.2f"), X, Y, this->stick_right_x, this->stick_right_y);
+    this->DebugLog(debug_msg);
+  }
 }
 
 /** Called by UEVR plugin. Updates state of Left Trigger. */
