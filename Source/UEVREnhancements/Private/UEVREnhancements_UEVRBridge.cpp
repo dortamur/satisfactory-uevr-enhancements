@@ -189,7 +189,7 @@ void UUEVREnhancements_UEVRBridge::InputActionsTick() {
 void UUEVREnhancements_UEVRBridge::CheckButtonAction(bool Condition, UInputAction *Action) {
   bool last_state = LastActions.FindRef(Action);
 
-  this->DebugLog(FString::Printf(TEXT("CheckButtonAction Tick: %s: %s => %s"), *Action->GetName(), last_state ? TEXT("true") : TEXT("false"), Condition ? TEXT("true") : TEXT("false")));
+  // this->DebugLog(FString::Printf(TEXT("CheckButtonAction Tick: %s: %s => %s"), *Action->GetName(), last_state ? TEXT("true") : TEXT("false"), Condition ? TEXT("true") : TEXT("false")));
   if (Condition || last_state) {
     // this->DebugLog(FString::Printf(TEXT("CheckButtonAction Broadcast: %s = %s"), *Action->GetName(), Condition ? TEXT("true") : TEXT("false")));
     DoInputAction.Broadcast(Condition, Action);
@@ -221,6 +221,7 @@ void UUEVREnhancements_UEVRBridge::CheckStickPosAction(double X, double Y, UInpu
 /** Starts a new haptics effect for the right controller. */
 void UUEVREnhancements_UEVRBridge::SetHapticsRightEffect(FS_VRHapticEffect effect) {
   // TODO: Migrate from Blueprint
+
 }
 
 /** Continues a repeated haptics effect for the right controller. */
