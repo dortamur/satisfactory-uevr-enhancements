@@ -144,19 +144,26 @@ local function init_bridge()
 
     uevr_bridge.UpdateVRPlayerState:hook_ptr(nil, function(fn, obj, locals, result)
         if (uevr_bridge.AimMode ~= aim_mode) then
-          -- Interaction/Vehicle mode changed!! Update UEVR Input Aim mode
+          -- Interaction/Vehicle mode changed! Update UEVR Input Aim mode
           update_aim_mode()
         end
 
         if (uevr_bridge.MovementMode ~= movement_mode) then
-          -- Interaction mode changed!! Update UEVR Input Aim mode
+          -- Movement mode changed!
           update_movement_mode()
         end
 
         if (uevr_bridge.RoomscaleMode ~= roomscale_mode) then
-          -- Interaction mode changed!! Update UEVR Input Aim mode
+          -- Roomscale mode changed!
           update_roomscale_mode()
         end
+
+        if (uevr_bridge.UIInteractMode ~= ui_interact_mode) then
+          --  UI Interaction mode changed - log for streaming stabilisation switch
+          ui_interact_mode = uevr_bridge.UIInteractMode
+          vr_log('UI Interact Change [UIInteract='..tostring(ui_interact_mode)..']')
+        end
+
       end
     )
 

@@ -69,7 +69,7 @@ void UUEVREnhancements_UEVRBridge::UpdateVRPlayerState(TEnumAsByte<EVRPlayerStat
       break;
   }
   if (aim_mode != this->AimMode) {
-    this->DebugLog(FString::Printf(TEXT("GameAimMode changed: %d"), aim_mode));
+    this->DebugLog(FString::Printf(TEXT("AimMode changed: %d"), aim_mode));
     this->AimMode = aim_mode;
   }
 
@@ -84,6 +84,19 @@ void UUEVREnhancements_UEVRBridge::UpdateVRPlayerState(TEnumAsByte<EVRPlayerStat
   if (movement_mode != this->MovementMode) {
     this->DebugLog(FString::Printf(TEXT("MovementMode changed: %d"), movement_mode));
     this->MovementMode = movement_mode;
+  }
+
+  // Check change to Interaction Mode (used for streaming camera stabilisation switches)
+  bool interact_mode = false;
+  switch (PlayerState) {
+    case EVRPlayerState::UIInteract:
+    case EVRPlayerState::PauseMenu:
+      interact_mode = true;
+      break;
+  }
+  if (interact_mode != this->UIInteractMode) {
+    this->DebugLog(FString::Printf(TEXT("UIInteractMode changed: %d"), interact_mode ? TEXT("true") : TEXT("false")));
+    this->UIInteractMode = interact_mode;
   }
 
   // Check change to Roomscale mode
