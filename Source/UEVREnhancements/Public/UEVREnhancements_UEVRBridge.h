@@ -43,7 +43,19 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void UpdateRightTriggerState(bool RT);
 
-	/** Please add a function description */
+	/** Manually set UEVR Aim Mode. Used for manual camera transitions eg; over-the-shoulder gesture inventory opening. */
+	UFUNCTION(BlueprintCallable)
+	void SetAimMode(int32 aim_mode);
+
+	/** Manually set UEVR Movement Mode. */
+	UFUNCTION(BlueprintCallable)
+	void SetMovementMode(int32 movement_mode);
+
+	/** Manually set UEVR Roomscale Mode. */
+	UFUNCTION(BlueprintCallable)
+	void SetRoomscaleMode(bool roomscale_mode);
+
+	/** Update the UEVR state based on new player state. */
 	UFUNCTION(BlueprintCallable)
 	void UpdateVRPlayerState(TEnumAsByte<EVRPlayerState> PlayerState, int32 DefaultMovementMode);
 

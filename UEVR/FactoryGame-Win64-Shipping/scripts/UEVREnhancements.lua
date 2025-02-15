@@ -1,5 +1,5 @@
 -- Profile version to match against UEVR Enhancements mod expected version
-local uevr_profile_version = 'v0.9.10-1'
+local uevr_profile_version = 'v0.9.10-2'
 
 local log_functions = uevr.params.functions
 
@@ -139,6 +139,33 @@ local function init_bridge()
     uevr_bridge.SetHapticsLeftEffect:hook_ptr(nil, function(fn, obj, locals, result)
         update_haptics_left()
         vr_log('SetHapticsLeftEffect: '..obj:get_fname():to_string() .. " called")
+      end
+    )
+
+    uevr_bridge.SetAimMode:hook_ptr(nil, function(fn, obj, locals, result)
+        -- vr_log('SetAimMode called: '..tostring(aim_mode)..' '..tostring(uevr_bridge.AimMode))
+        if (uevr_bridge.AimMode ~= aim_mode) then
+          -- Interaction/Vehicle mode changed! Update UEVR Input Aim mode
+          update_aim_mode()
+        end
+      end
+    )
+
+    uevr_bridge.SetMovementMode:hook_ptr(nil, function(fn, obj, locals, result)
+        -- vr_log('SetMovementMode called: '..tostring(aim_mode)..' '..tostring(uevr_bridge.AimMode))
+        if (uevr_bridge.MovementMode ~= movement_mode) then
+          -- Movement mode changed!
+          update_movement_mode()
+        end
+      end
+    )
+
+    uevr_bridge.SetRoomscaleMode:hook_ptr(nil, function(fn, obj, locals, result)
+        -- vr_log('SetRoomscaleMode called: '..tostring(aim_mode)..' '..tostring(uevr_bridge.AimMode))
+        if (uevr_bridge.RoomscaleMode ~= roomscale_mode) then
+          -- Roomscale mode changed!
+          update_roomscale_mode()
+        end
       end
     )
 

@@ -52,9 +52,33 @@ void UUEVREnhancements_UEVRBridge::DebugLog(FString DebugString) {
   UE_LOG(UEVREnhancements, Verbose, TEXT("[UEVRBridge] %s"), *DebugString);
 }
 
+/** Manually set UEVR Aim Mode. Used for manual camera transitions eg; over-the-shoulder gesture inventory opening. */
+void UUEVREnhancements_UEVRBridge::SetAimMode(int32 aim_mode) {
+  if (aim_mode != this->AimMode) {
+    this->DebugLog(FString::Printf(TEXT("AimMode changed: %d"), aim_mode));
+    this->AimMode = aim_mode;
+  }
+}
+
+/** Manually set UEVR Movement Mode. */
+void UUEVREnhancements_UEVRBridge::SetMovementMode(int32 movement_mode) {
+  if (movement_mode != this->MovementMode) {
+    this->DebugLog(FString::Printf(TEXT("MovementMode changed: %d"), movement_mode));
+    this->MovementMode = movement_mode;
+  }
+}
+
+/** Manually set UEVR Roomscale Mode. */
+void UUEVREnhancements_UEVRBridge::SetRoomscaleMode(bool roomscale_mode) {
+  if (roomscale_mode != this->RoomscaleMode) {
+    this->DebugLog(FString::Printf(TEXT("RoomscaleMode changed: %s"), roomscale_mode ? TEXT("true") : TEXT("false")));
+    this->RoomscaleMode = roomscale_mode;
+  }
+}
+
 /**  */
 void UUEVREnhancements_UEVRBridge::UpdateVRPlayerState(TEnumAsByte<EVRPlayerState> PlayerState, int32 DefaultMovementMode) {
-  // Check change to UEVR Game Aim Mode
+  // Check change to UEVR Aim Mode
   // 0 - Game Aim Mode
   // 1 - HMD Aim Mode
   // 2 - Right Hand Aim Mode
@@ -101,7 +125,12 @@ void UUEVREnhancements_UEVRBridge::UpdateVRPlayerState(TEnumAsByte<EVRPlayerStat
 
   // Check change to Roomscale mode
   bool roomscale_mode = true;
-  // TODO: Cases where it should be false
+  switch (PlayerState) {
+    case EVRPlayerState::Vehicle:
+    case EVRPlayerState::Train:
+      roomscale_mode = false;
+      break;
+  }
   if (roomscale_mode != this->RoomscaleMode) {
     this->DebugLog(FString::Printf(TEXT("RoomscaleMode changed: %s"), roomscale_mode ? TEXT("true") : TEXT("false")));
     this->RoomscaleMode = roomscale_mode;
