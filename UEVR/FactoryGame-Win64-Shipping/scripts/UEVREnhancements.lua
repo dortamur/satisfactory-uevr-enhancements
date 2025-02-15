@@ -30,8 +30,7 @@ local function update_aim_mode()
   -- Aim mode changed!! Update UEVR Input Aim mode
   aim_mode = uevr_bridge.AimMode
   uevr.params.vr.set_aim_method(aim_mode)
-  vr_log('Aim Method changed: '..tostring(aim_mode)..' => '..tostring(aim_methods[aim_mode or 0]))
-
+  vr_log('Aim Mode changed: '..tostring(aim_mode)..' => '..tostring(aim_methods[aim_mode or 0]))
 end
 
 local function update_roomscale_mode()
@@ -143,7 +142,7 @@ local function init_bridge()
     )
 
     uevr_bridge.SetAimMode:hook_ptr(nil, function(fn, obj, locals, result)
-        -- vr_log('SetAimMode called: '..tostring(aim_mode)..' '..tostring(uevr_bridge.AimMode))
+        vr_log('SetAimMode called: '..tostring(aim_mode)..' '..tostring(uevr_bridge.AimMode))
         if (uevr_bridge.AimMode ~= aim_mode) then
           -- Interaction/Vehicle mode changed! Update UEVR Input Aim mode
           update_aim_mode()
