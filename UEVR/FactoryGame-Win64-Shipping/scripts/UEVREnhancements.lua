@@ -26,11 +26,15 @@ local roomscale_mode = false
 local tick_countdown = 0
 local aim_methods = {'Game', 'HMD', 'Right Hand', 'Left Hand'}
 
+local function aim_method_label(aim_mode)
+  return tostring(aim_methods[(aim_mode or 0)+1])
+end
+
 local function update_aim_mode()
   -- Aim mode changed!! Update UEVR Input Aim mode
   aim_mode = uevr_bridge.AimMode
   uevr.params.vr.set_aim_method(aim_mode)
-  vr_log('Aim Mode changed: '..tostring(aim_mode)..' => '..tostring(aim_methods[aim_mode or 0]))
+  vr_log('Aim Mode changed: '..tostring(aim_mode)..' => '..aim_method_label(aim_mode))
 end
 
 local function update_roomscale_mode()
@@ -142,7 +146,7 @@ local function init_bridge()
     )
 
     uevr_bridge.SetAimMode:hook_ptr(nil, function(fn, obj, locals, result)
-        vr_log('SetAimMode called: '..tostring(aim_mode)..' '..tostring(uevr_bridge.AimMode))
+        -- vr_log('SetAimMode called: '..tostring(uevr_bridge.AimMode)..' => '..aim_method_label(uevr_bridge.AimMode))
         if (uevr_bridge.AimMode ~= aim_mode) then
           -- Interaction/Vehicle mode changed! Update UEVR Input Aim mode
           update_aim_mode()
