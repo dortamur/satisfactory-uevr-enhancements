@@ -1,10 +1,11 @@
 #pragma once
 #include "CoreMinimal.h"
+#include "Engine/DataTable.h"
 #include "UEVREnhancements_VRHapticEffectStruct.generated.h"
 
 /** Structure for Haptic event for VR controllers via UEVR. */
 USTRUCT(BlueprintType)
-struct FS_VRHapticEffect
+struct FS_VRHapticEffect : public FTableRowBase
 {
 	GENERATED_BODY()
 public:
