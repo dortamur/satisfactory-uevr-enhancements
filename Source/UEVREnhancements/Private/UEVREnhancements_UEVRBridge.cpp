@@ -1,7 +1,7 @@
 
 #include "UEVREnhancements_UEVRBridge.h"
 #include "Math/UnrealMathUtility.h"
-
+#include "Engine/World.h"
 
 float ScaleStickPosition(int32 IntPos) {
   return FMath::Clamp(static_cast<float>(IntPos) / 32000.0f, -1.0f, 1.0f);
@@ -125,6 +125,10 @@ void UUEVREnhancements_UEVRBridge::UpdateVRPlayerState(TEnumAsByte<EVRPlayerStat
 
   // Check change to Roomscale mode
   bool roomscale_mode = true;
+  // Disable "roomscale" if in Net Mode Client
+  if (GetWorld()->GetNetMode() == ENetMode::NM_Client) {
+    roomscale_mode = false;
+  }
   switch (PlayerState) {
     case EVRPlayerState::Vehicle:
     case EVRPlayerState::Train:
