@@ -1,5 +1,5 @@
 -- Profile version to match against UEVR Enhancements mod expected version
-local uevr_profile_version = 'v0.9.10-2'
+local uevr_profile_version = 'v0.9.10-3'
 
 local log_functions = uevr.params.functions
 
@@ -79,6 +79,16 @@ local function update_haptics_right()
   vr.trigger_haptic_vibration(0.0, duration, frequency, amplitude, source_handle)
 end
 
+local function recenter_view()
+  local vr = uevr.params.vr
+  local hmd_position = UEVR_Vector3f.new()
+  local hmd_rotation = UEVR_Quaternionf.new()
+  vr.get_pose(vr.get_hmd_index(), hmd_position, hmd_rotation)
+  vr.set_standing_origin(hmd_position)
+  vr.recenter_view()
+  vr_log('Recenter View and Reset Origin done')
+end
+
 local function init_bridge()
   -- Get UEVR Bridge via GameInstanceModule UEVRBridge
   local game_instance_module_c = api:find_uobject('Class /Script/SML.GameInstanceModule')
@@ -146,7 +156,7 @@ local function init_bridge()
     )
 
     uevr_bridge.SetAimMode:hook_ptr(nil, function(fn, obj, locals, result)
-        -- vr_log('SetAimMode called: '..tostring(uevr_bridge.AimMode)..' => '..aim_method_label(uevr_bridge.AimMode))
+        vr_log('SetAimMode called: '..tostring(uevr_bridge.AimMode)..' => '..aim_method_label(uevr_bridge.AimMode))
         if (uevr_bridge.AimMode ~= aim_mode) then
           -- Interaction/Vehicle mode changed! Update UEVR Input Aim mode
           update_aim_mode()
@@ -169,6 +179,12 @@ local function init_bridge()
           -- Roomscale mode changed!
           update_roomscale_mode()
         end
+      end
+    )
+
+    uevr_bridge.RecenterView:hook_ptr(nil, function(fn, obj, locals, result)
+        -- vr_log('RecenterView called')
+        recenter_view()
       end
     )
 
@@ -206,42 +222,6 @@ local function init_bridge()
     -- update roomscale mode to initial state
     update_roomscale_mode()
   end
-end
-
-local function check_state()
-  -- local game_engine_class = api:find_uobject("Class /Script/Engine.GameEngine")
-  -- local game_engine = UEVR_UObjectHook.get_first_object_by_class(game_engine_class)
-
-  -- local viewport = game_engine.GameViewport
-  -- if viewport == nil then
-  --     vr_log("Viewport is nil")
-  --     return
-  -- end
-  -- local world = viewport.World
-
-  -- if world == nil then
-  --     vr_log("World is nil")
-  --     -- Reset in-game mod connections
-  --     if (vrcoordinator ~= nil) then
-  --       vr_log("Clearing previous UEVR mod references")
-  --       vrcoordinator = nil
-  --       uevr_bridge = nil
-  --     end
-  --     return
-  -- end
-
-  -- if world ~= last_world then
-  --   vr_log("World changed")
-  --   last_world = world
-  --   -- Reset in-game mod connections
-  --   vrcoordinator = nil
-  --   uevr_bridge = nil
-  --   return
-  -- end
-
-  -- if (uevr_bridge == nil) then
-  --   init_bridge()
-  -- end
 end
 
 uevr.sdk.callbacks.on_xinput_get_state(function(retval, user_index, state)
@@ -303,17 +283,6 @@ uevr.sdk.callbacks.on_xinput_get_state(function(retval, user_index, state)
 
   -- vr_log('XState: '..tostring(user_index)..' / '..tostring(retval)..' / '..tostring(gamepad.wButtons)..' / '..tostring(left_trigger)..' / '..tostring(stick_left_x)..' / '..tostring(stick_left_y)..' / '..tostring(right_trigger)..' / '..tostring(stick_right_x)..' / '..tostring(stick_right_y))
 
-  if vrcoordinator ~= null then
-    local new_state = vrcoordinator.VRPlayerState.CurrentState
-    if (new_state ~= player_state) then
-      player_state = new_state
-      vr_log('Player State: '..tostring(player_state))
-      if (player_state == 7 or player_state == 8) then
-        -- Recenter View on entering a vehicle
-        uevr.params.vr.recenter_view()
-      end
-    end
-  end
 end)
 
 uevr.sdk.callbacks.on_post_engine_tick(function(engine, delta)
@@ -321,7 +290,6 @@ uevr.sdk.callbacks.on_post_engine_tick(function(engine, delta)
 end)
 
 uevr.sdk.callbacks.on_pre_engine_tick(function(engine, delta)
-  -- check_state()
   -- if true then return end -- Breakpoint
   if (uevr_bridge == nil) then
     init_bridge()

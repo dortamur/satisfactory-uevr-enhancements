@@ -57,7 +57,11 @@ public:
 
 	/** Update the UEVR state based on new player state. */
 	UFUNCTION(BlueprintCallable)
-	void UpdateVRPlayerState(TEnumAsByte<EVRPlayerState> PlayerState, int32 DefaultMovementMode);
+	void UpdateVRPlayerState(EVRPlayerState PlayerState, int32 DefaultMovementMode);
+
+	/** Function for UEVR hook to Recenter View. */
+	UFUNCTION(BlueprintCallable)
+	void RecenterView();
 
 	/** Called by UEVR plugin when UEVR injects (switching game to VR mode).  */
 	UFUNCTION(BlueprintCallable)
@@ -182,6 +186,8 @@ private:
 	double stick_left_y;
 	double stick_right_x;
 	double stick_right_y;
+
+	EVRPlayerState PlayerState;
 
 	// Array of Input Actions to the list of above input state variables.
 	TArray<UInputAction*> InputActions;

@@ -77,7 +77,12 @@ void UUEVREnhancements_UEVRBridge::SetRoomscaleMode(bool roomscale_mode) {
 }
 
 /**  */
-void UUEVREnhancements_UEVRBridge::UpdateVRPlayerState(TEnumAsByte<EVRPlayerState> PlayerState, int32 DefaultMovementMode) {
+void UUEVREnhancements_UEVRBridge::UpdateVRPlayerState(EVRPlayerState PlayerState, int32 DefaultMovementMode) {
+  if (this->PlayerState != PlayerState) {
+    this->DebugLog(FString::Printf(TEXT("PlayerState changed: %d => %d"), static_cast<uint8>(this->PlayerState), static_cast<uint8>(PlayerState)));
+    this->PlayerState = PlayerState;
+  }
+
   // Check change to UEVR Aim Mode
   // 0 - Game Aim Mode
   // 1 - HMD Aim Mode
@@ -119,7 +124,7 @@ void UUEVREnhancements_UEVRBridge::UpdateVRPlayerState(TEnumAsByte<EVRPlayerStat
       break;
   }
   if (interact_mode != this->UIInteractMode) {
-    this->DebugLog(FString::Printf(TEXT("UIInteractMode changed: %d"), interact_mode ? TEXT("true") : TEXT("false")));
+    this->DebugLog(FString::Printf(TEXT("UIInteractMode changed: %s"), interact_mode ? TEXT("true") : TEXT("false")));
     this->UIInteractMode = interact_mode;
   }
 
@@ -139,6 +144,12 @@ void UUEVREnhancements_UEVRBridge::UpdateVRPlayerState(TEnumAsByte<EVRPlayerStat
     this->DebugLog(FString::Printf(TEXT("RoomscaleMode changed: %s"), roomscale_mode ? TEXT("true") : TEXT("false")));
     this->RoomscaleMode = roomscale_mode;
   }
+
+}
+
+/** Function for UEVR hook to Recenter View. */
+void UUEVREnhancements_UEVRBridge::RecenterView() {
+  this->DebugLog(FString::Printf(TEXT("RecenterView called!")));
 }
 
 /** Called by UEVR plugin. Updates state of main controller buttons. */

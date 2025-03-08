@@ -1,7 +1,7 @@
 #pragma once
 
 UENUM(BlueprintType)
-enum class EVRPlayerState {
+enum class EVRPlayerState : uint8 {
   Default               UMETA(DisplayName = "Default"),
   UIInteract            UMETA(DisplayName = "UIInteract"),
   WristInteractLeft     UMETA(DisplayName = "WristInteractLeft"),
