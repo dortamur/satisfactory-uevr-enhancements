@@ -18,7 +18,6 @@ local vrcoordinator
 local uevr_bridge
 local last_world
 local last_level
-local player_state
 local aim_mode = 0 -- 2
 local ui_interact_mode = nil -- false
 local movement_mode = 0 -- -1
