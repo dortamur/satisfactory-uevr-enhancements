@@ -6,8 +6,8 @@
 You will also need:
 - UEVR Injector Tool version [nightly 983 or newer](https://github.com/praydog/UEVR-nightly/releases) 
 - The Satisfactory profile for UEVR depending on where you bought Satisfactory:
-	- [UEVR Profile for Steam Satisfactory](https://github.com/dortamur/satisfactory-uevr-enhancements/raw/master/UEVR/FactoryGameSteam-Win64-Shipping.zip) from version 0.9.6
-	- [UEVR Profile for Epic Store Satisfactory](https://github.com/dortamur/satisfactory-uevr-enhancements/raw/master/UEVR/FactoryGameEGS-Win64-Shipping.zip) from version 0.9.6
+	- [UEVR Profile for Steam Satisfactory](https://github.com/dortamur/satisfactory-uevr-enhancements/raw/master/UEVR/FactoryGameSteam-Win64-Shipping.zip) from version 0.9.10
+	- [UEVR Profile for Epic Store Satisfactory](https://github.com/dortamur/satisfactory-uevr-enhancements/raw/master/UEVR/FactoryGameEGS-Win64-Shipping.zip) from version 0.9.10
 
 See the [Getting Started](https://github.com/dortamur/satisfactory-uevr-enhancements/wiki/Getting-Started) page for full installation details, and the [Troubleshooting](https://github.com/dortamur/satisfactory-uevr-enhancements/wiki/Troubleshooting) page if you have problems getting it working.
 See the [Controls](https://github.com/dortamur/satisfactory-uevr-enhancements/wiki/Controls) for tips on usage, and check the [Roadmap](https://github.com/dortamur/satisfactory-uevr-enhancements/wiki/Roadmap) for current progress and future goals.
