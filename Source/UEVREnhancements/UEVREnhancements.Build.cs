@@ -35,7 +35,7 @@ public class UEVREnhancements : ModuleRules
 			"CinematicCamera",
 			"Foliage",
 			//"Niagara",
-			//"EnhancedInput",
+			"EnhancedInput",
 			//"GameplayCameras",
 			//"TemplateSequence",
 			"NetCore",

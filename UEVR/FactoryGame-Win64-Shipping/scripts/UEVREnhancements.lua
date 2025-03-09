@@ -1,5 +1,5 @@
 -- Profile version to match against UEVR Enhancements mod expected version
-local uevr_profile_version = 'v0.9.6-2'
+local uevr_profile_version = 'v0.9.10-3'
 
 local log_functions = uevr.params.functions
 
@@ -18,28 +18,34 @@ local vrcoordinator
 local uevr_bridge
 local last_world
 local last_level
-local player_state
-local game_aim_mode = false
-local ui_interact_mode = false
-local movement_mode = -1
+local aim_mode = 0 -- 2
+local ui_interact_mode = nil -- false
+local movement_mode = 0 -- -1
+local roomscale_mode = false
+local tick_countdown = 0
+local aim_methods = {'Game', 'HMD', 'Right Hand', 'Left Hand'}
+
+local function aim_method_label(aim_mode)
+  return tostring(aim_methods[(aim_mode or 0)+1])
+end
 
 local function update_aim_mode()
-  -- Interaction mode changed!! Update UEVR Input Aim mode
-  game_aim_mode = uevr_bridge.GameAimMode
-  vr_log('Aim Method changed: '..tostring(game_aim_mode))
+  -- Aim mode changed!! Update UEVR Input Aim mode
+  aim_mode = uevr_bridge.AimMode
+  uevr.params.vr.set_aim_method(aim_mode)
+  vr_log('Aim Mode changed: '..tostring(aim_mode)..' => '..aim_method_label(aim_mode))
+end
 
-  if (game_aim_mode == true) then
-    -- uevr.params.vr:set_mod_value("VR_AimMethod","1")
-    uevr.params.vr.set_aim_method(0)
-    vr_log("Aim Method: Game")
-  else
-    uevr.params.vr.set_aim_method(2)
-    vr_log("Aim Method: Right Hand")
-  end
+local function update_roomscale_mode()
+  -- Roomscale mode changed!!
+  roomscale_mode = uevr_bridge.RoomscaleMode
+  vr_log('Roomscale Mode changed: '..tostring(roomscale_mode))
+
+  uevr.params.vr.set_mod_value("VR_RoomscaleMovement",tostring(roomscale_mode))
 end
 
 local function update_movement_mode()
-  -- Interaction mode changed!! Update UEVR Input Aim mode
+  -- Movement mode changed!!
   movement_mode = uevr_bridge.MovementMode
   vr_log('Movement Mode changed: '..tostring(movement_mode))
 
@@ -48,126 +54,172 @@ local function update_movement_mode()
   -- uevr.params.vr.set_movement_orientation()
 end
 
-local function update_haptics()
+local function update_haptics_left()
   local vr = uevr.params.vr
+  -- vr_log('Haptics Left Update!')
+  local source_handle = vr.get_left_joystick_source()
+  -- uevr_bridge.HapticsLeftPending = false
+  local duration = uevr_bridge.haptics_left_duration
+  local frequency = uevr_bridge.haptics_left_frequency
+  local amplitude = uevr_bridge.haptics_left_amplitude
+  vr_log('Haptics Left: '..tostring(duration)..', '..tostring(frequency)..', '..tostring(amplitude))
+  vr.trigger_haptic_vibration(0.0, duration, frequency, amplitude, source_handle)
+end
 
-  if (uevr_bridge.HapticsLeftPending) then
-    -- vr_log('Haptics Left Update!')
-    local source_handle = vr.get_left_joystick_source()
-    uevr_bridge.HapticsLeftPending = false
-    local duration = uevr_bridge.haptics_left_duration
-    local frequency = uevr_bridge.haptics_left_frequency
-    local amplitude = uevr_bridge.haptics_left_amplitude
-    vr_log('Haptics Left: '..tostring(duration)..', '..tostring(frequency)..', '..tostring(amplitude))
-    vr.trigger_haptic_vibration(0.0, duration, frequency, amplitude, source_handle)
-  end
+local function update_haptics_right()
+  local vr = uevr.params.vr
+  -- vr_log('Haptics Right Update!')
+  local source_handle = vr.get_right_joystick_source()
+  -- uevr_bridge.HapticsRightPending = false
+  local duration = uevr_bridge.haptics_right_duration
+  local frequency = uevr_bridge.haptics_right_frequency
+  local amplitude = uevr_bridge.haptics_right_amplitude
+  vr_log('Haptics Right: '..tostring(duration)..', '..tostring(frequency)..', '..tostring(amplitude))
+  vr.trigger_haptic_vibration(0.0, duration, frequency, amplitude, source_handle)
+end
 
-  if (uevr_bridge.HapticsRightPending) then
-    -- vr_log('Haptics Right Update!')
-    local source_handle = vr.get_right_joystick_source()
-    uevr_bridge.HapticsRightPending = false
-    local duration = uevr_bridge.haptics_right_duration
-    local frequency = uevr_bridge.haptics_right_frequency
-    local amplitude = uevr_bridge.haptics_right_amplitude
-    vr_log('Haptics Right: '..tostring(duration)..', '..tostring(frequency)..', '..tostring(amplitude))
-    vr.trigger_haptic_vibration(0.0, duration, frequency, amplitude, source_handle)
-  end
+local function recenter_view()
+  local vr = uevr.params.vr
+  local hmd_position = UEVR_Vector3f.new()
+  local hmd_rotation = UEVR_Quaternionf.new()
+  vr.get_pose(vr.get_hmd_index(), hmd_position, hmd_rotation)
+  vr.set_standing_origin(hmd_position)
+  vr.recenter_view()
+  vr_log('Recenter View and Reset Origin done')
 end
 
 local function init_bridge()
-  local mod_subsystem_c = api:find_uobject("Class /Script/SML.ModSubsystem")
-  if mod_subsystem_c == nil then
-      vr_log("Class ModSubsystem not found")
+  -- Get UEVR Bridge via GameInstanceModule UEVRBridge
+  local game_instance_module_c = api:find_uobject('Class /Script/SML.GameInstanceModule')
+  if game_instance_module_c == nil then
+      vr_log("Class GameInstanceModule not found")
   else
-    vr_log("Subsystem Class: "..mod_subsystem_c:get_full_name())
-    local subsystems = UEVR_UObjectHook.get_objects_by_class(mod_subsystem_c, false)
+    vr_log("GameInstanceModule Class: "..game_instance_module_c:get_full_name())
+    local game_instance_modules = UEVR_UObjectHook.get_objects_by_class(game_instance_module_c, false)
 
-    vr_log("Subsystems: ")
-    for i, subsystem in ipairs(subsystems) do
-      vr_log(" - "..subsystem:get_fname():to_string()..' / '..subsystem:get_full_name())
-      if (subsystem:get_fname():to_string() == 'UEVREnhancements_VRCoordinatorSystem_C') then
-        vrcoordinator = subsystem
+    vr_log("GameInstanceModules: ")
+    for i, module in ipairs(game_instance_modules) do
+      vr_log(" - "..module:get_fname():to_string()..' / '..module:get_full_name())
+      if (module:get_fname():to_string() == 'UEVREnhancements_UEVRBridge') then
+        vr_log('Found UEVRBridge module as GameInstanceModule!')
+        uevr_bridge = module
       end
     end
   end
 
-  if vrcoordinator ~= nil then
-    -- if true then return end -- Breakpoint
-    uevr_bridge = vrcoordinator.UEVRBridge
-    if uevr_bridge == nil then
-      vr_log("UEVRBridge not found")
+  -- Legacy Support for Get UEVR Bridge via ModSubsystem VRCoordinator
+  if uevr_bridge == nil then
+    local mod_subsystem_c = api:find_uobject("Class /Script/SML.ModSubsystem")
+    if mod_subsystem_c == nil then
+        vr_log("Class ModSubsystem not found")
     else
-      vr_log("UEVRBridge found!")
-      local pv = uevr.params.version
-      vr_log("PV: "..tostring(pv)..' / '..tostring(pv.major)..'.'..tostring(pv.minor)..'.'..tostring(pv.patch))
-      uevr_bridge:InitUEVRBridge(uevr_profile_version, tostring(pv.major)..'.'..tostring(pv.minor)..'.'..tostring(pv.patch))
-      -- uevr_bridge.IsInitialised = true
-      vr_log("UEVRBridge: "..uevr_bridge:get_fname():to_string()..' / '..uevr_bridge:get_full_name())
+      vr_log("Subsystem Class: "..mod_subsystem_c:get_full_name())
+      local subsystems = UEVR_UObjectHook.get_objects_by_class(mod_subsystem_c, false)
 
-      -- Update Aim mode to initial state
-      update_aim_mode()
-
-      -- Update movement mode to initial state
-      update_movement_mode()
-
-      if false then
-      -- vr_print("UEVRBridge Event Dispatch: "..uevr_bridge:as_class(UEVR_BlueprintGeneratedClass))
-      -- Init UI Interaction hook
-      -- local uevr_bridge_bpc = api:find_uobject("BlueprintGeneratedClass /UEVREnhancements/Blueprints/UEVRBridge.UEVRBridge_C")
-
-
-      -- ui_interact_fn = uevr_bridge_bpc:find_function("UpdateUIInteraction2")
-      -- ui_interact_fn = uevr_bridge_bpc:find_function("DebugLog")
-      ui_interact_fn = uevr_bridge.UpdateUIInteraction
-
-      if ui_interact_fn ~= nil then
-          vr_print("Found UIInteraction function")
-
-          ui_interact_fn:hook_ptr(function(fn, obj, locals, result)
-              vr_print('Foo')
-              vr_print("UIInteraction! " .. tostring(locals).." ------------------------------------------------------")
-          end, nil)
-      else
-          vr_print("Failed to find UIInteraction function")
-      end
+      vr_log("Subsystems: ")
+      for i, subsystem in ipairs(subsystems) do
+        vr_log(" - "..subsystem:get_fname():to_string()..' / '..subsystem:get_full_name())
+        if (subsystem:get_fname():to_string() == 'UEVREnhancements_VRCoordinatorSystem_C') then
+          vrcoordinator = subsystem
+        end
       end
     end
+    if vrcoordinator ~= nil then
+      -- if true then return end -- Breakpoint
+      vr_log('Found legacy UEVRBridge module via VRCoordinator Subsystem!')
+      uevr_bridge = vrcoordinator.UEVRBridge
+    end
   end
-end
 
-local function check_state()
-  local game_engine_class = api:find_uobject("Class /Script/Engine.GameEngine")
-  local game_engine = UEVR_UObjectHook.get_first_object_by_class(game_engine_class)
+  if uevr_bridge == nil then
+    vr_log("UEVRBridge not found")
+  else
+    vr_log("UEVRBridge found!")
+    local pv = uevr.params.version
+    vr_log("PV: "..tostring(pv)..' / '..tostring(pv.major)..'.'..tostring(pv.minor)..'.'..tostring(pv.patch))
+    vr_log("UEVRBridge: "..uevr_bridge:get_fname():to_string()..' / '..uevr_bridge:get_full_name())
+    uevr_bridge:DebugLog('Test')
+    uevr_bridge:InitUEVRBridge(uevr_profile_version, tostring(pv.major)..'.'..tostring(pv.minor)..'.'..tostring(pv.patch))
+    -- uevr_bridge.IsInitialised = true
 
-  local viewport = game_engine.GameViewport
-  if viewport == nil then
-      vr_log("Viewport is nil")
-      return
-  end
-  local world = viewport.World
-
-  if world == nil then
-      vr_log("World is nil")
-      -- Reset in-game mod connections
-      if (vrcoordinator ~= nil) then
-        vr_log("Clearing previous UEVR mod references")
-        vrcoordinator = nil
-        uevr_bridge = nil
+    uevr_bridge.SetHapticsRightEffect:hook_ptr(nil, function(fn, obj, locals, result)
+        update_haptics_right()
+        vr_log('SetHapticsRightEffect: '..obj:get_fname():to_string() .. " called")
       end
-      return
-  end
+    )
 
-  if world ~= last_world then
-    vr_log("World changed")
-    last_world = world
-    -- Reset in-game mod connections
-    vrcoordinator = nil
-    uevr_bridge = nil
-    return
-  end
+    uevr_bridge.SetHapticsLeftEffect:hook_ptr(nil, function(fn, obj, locals, result)
+        update_haptics_left()
+        vr_log('SetHapticsLeftEffect: '..obj:get_fname():to_string() .. " called")
+      end
+    )
 
-  if (vrcoordinator == nil) then
-    init_bridge()
+    uevr_bridge.SetAimMode:hook_ptr(nil, function(fn, obj, locals, result)
+        vr_log('SetAimMode called: '..tostring(uevr_bridge.AimMode)..' => '..aim_method_label(uevr_bridge.AimMode))
+        if (uevr_bridge.AimMode ~= aim_mode) then
+          -- Interaction/Vehicle mode changed! Update UEVR Input Aim mode
+          update_aim_mode()
+        end
+      end
+    )
+
+    uevr_bridge.SetMovementMode:hook_ptr(nil, function(fn, obj, locals, result)
+        -- vr_log('SetMovementMode called: '..tostring(aim_mode)..' '..tostring(uevr_bridge.AimMode))
+        if (uevr_bridge.MovementMode ~= movement_mode) then
+          -- Movement mode changed!
+          update_movement_mode()
+        end
+      end
+    )
+
+    uevr_bridge.SetRoomscaleMode:hook_ptr(nil, function(fn, obj, locals, result)
+        -- vr_log('SetRoomscaleMode called: '..tostring(aim_mode)..' '..tostring(uevr_bridge.AimMode))
+        if (uevr_bridge.RoomscaleMode ~= roomscale_mode) then
+          -- Roomscale mode changed!
+          update_roomscale_mode()
+        end
+      end
+    )
+
+    uevr_bridge.RecenterView:hook_ptr(nil, function(fn, obj, locals, result)
+        -- vr_log('RecenterView called')
+        recenter_view()
+      end
+    )
+
+    uevr_bridge.UpdateVRPlayerState:hook_ptr(nil, function(fn, obj, locals, result)
+        if (uevr_bridge.AimMode ~= aim_mode) then
+          -- Interaction/Vehicle mode changed! Update UEVR Input Aim mode
+          update_aim_mode()
+        end
+
+        if (uevr_bridge.MovementMode ~= movement_mode) then
+          -- Movement mode changed!
+          update_movement_mode()
+        end
+
+        if (uevr_bridge.RoomscaleMode ~= roomscale_mode) then
+          -- Roomscale mode changed!
+          update_roomscale_mode()
+        end
+
+        if (uevr_bridge.UIInteractMode ~= ui_interact_mode) then
+          --  UI Interaction mode changed - log for streaming stabilisation switch
+          ui_interact_mode = uevr_bridge.UIInteractMode
+          vr_log('UI Interact Change [UIInteract='..tostring(ui_interact_mode)..']')
+        end
+
+      end
+    )
+
+    -- Update Aim mode to initial state
+    update_aim_mode()
+
+    -- Update movement mode to initial state
+    update_movement_mode()
+
+    -- update roomscale mode to initial state
+    update_roomscale_mode()
   end
 end
 
@@ -230,15 +282,6 @@ uevr.sdk.callbacks.on_xinput_get_state(function(retval, user_index, state)
 
   -- vr_log('XState: '..tostring(user_index)..' / '..tostring(retval)..' / '..tostring(gamepad.wButtons)..' / '..tostring(left_trigger)..' / '..tostring(stick_left_x)..' / '..tostring(stick_left_y)..' / '..tostring(right_trigger)..' / '..tostring(stick_right_x)..' / '..tostring(stick_right_y))
 
-  local new_state = vrcoordinator.VRPlayerState.CurrentState
-  if (new_state ~= player_state) then
-    player_state = new_state
-    vr_log('Player State: '..tostring(player_state))
-    if (player_state == 7 or player_state == 8) then
-      -- Recenter View on entering a vehicle
-      uevr.params.vr.recenter_view()
-    end
-  end
 end)
 
 uevr.sdk.callbacks.on_post_engine_tick(function(engine, delta)
@@ -246,30 +289,18 @@ uevr.sdk.callbacks.on_post_engine_tick(function(engine, delta)
 end)
 
 uevr.sdk.callbacks.on_pre_engine_tick(function(engine, delta)
-  check_state()
   -- if true then return end -- Breakpoint
   if (uevr_bridge == nil) then
-    return
+    init_bridge()
+    if (uevr_bridge == nil) then
+      return
+    end
   end
 
-  if (uevr_bridge.GameAimMode ~= game_aim_mode) then
-    -- Interaction/Vehicle mode changed!! Update UEVR Input Aim mode
-    update_aim_mode()
-  end
-
-  if (uevr_bridge.UIInteractMode ~= ui_interact_mode) then
-    -- Different from Game mode - just UI Interaction mode, for streaming stabilisation switch
-    ui_interact_mode = uevr_bridge.UIInteractMode
-    vr_log('UI Interact Change [UIInteract='..tostring(ui_interact_mode)..']')
-  end
-
-  if (uevr_bridge.MovementMode ~= movement_mode) then
-    -- Interaction mode changed!! Update UEVR Input Aim mode
-    update_movement_mode()
-  end
-
-  if (uevr_bridge.HapticsLeftPending or uevr_bridge.HapticsRightPending) then
-    update_haptics()
+  tick_countdown = tick_countdown - 1
+  if (tick_countdown <= 0) then
+    -- vr_log('States: AM='..tostring(uevr_bridge.AimMode)..' UII='..tostring(uevr_bridge.UIInteractMode)..' MM='..tostring(uevr_bridge.MovementMode)..' RS='..tostring(uevr_bridge.RoomscaleMode))
+    tick_countdown = 200
   end
 
 end)
