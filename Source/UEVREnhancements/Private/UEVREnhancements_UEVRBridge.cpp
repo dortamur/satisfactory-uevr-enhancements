@@ -238,19 +238,37 @@ void UUEVREnhancements_UEVRBridge::InitUEVRBridge(FString Profile, FString UEVR)
 }
 
 void UUEVREnhancements_UEVRBridge::InputActionsTick() {
-  this->CheckButtonAction(this->button_x, this->InputActions[0]);
-  this->CheckButtonAction(this->button_y, this->InputActions[1]);
-  this->CheckButtonAction(this->button_a, this->InputActions[2]);
-  this->CheckButtonAction(this->button_b, this->InputActions[3]);
-  this->CheckButtonAction(this->button_left_stick, this->InputActions[4]);
-  this->CheckButtonAction(this->button_left_grip, this->InputActions[5]);
-  this->CheckButtonAction(this->button_left_trigger, this->InputActions[6]);
-  this->CheckButtonAction(this->button_right_stick, this->InputActions[7]);
-  this->CheckButtonAction(this->button_right_grip, this->InputActions[8]);
-  this->CheckButtonAction(this->button_right_trigger, this->InputActions[9]);
-  this->CheckButtonAction(this->button_start, this->InputActions[10]);
-  this->CheckStickPosAction(this->stick_left_x, this->stick_left_y, this->InputActions[11]);
-  this->CheckStickPosAction(this->stick_right_x, this->stick_right_y, this->InputActions[12]);
+  if (!this->LeftHandMode) {
+    // Right Hand / Default mapping
+    this->CheckButtonAction(this->button_x, this->InputActions[0]);
+    this->CheckButtonAction(this->button_y, this->InputActions[1]);
+    this->CheckButtonAction(this->button_a, this->InputActions[2]);
+    this->CheckButtonAction(this->button_b, this->InputActions[3]);
+    this->CheckButtonAction(this->button_left_stick, this->InputActions[4]);
+    this->CheckButtonAction(this->button_left_grip, this->InputActions[5]);
+    this->CheckButtonAction(this->button_left_trigger, this->InputActions[6]);
+    this->CheckButtonAction(this->button_right_stick, this->InputActions[7]);
+    this->CheckButtonAction(this->button_right_grip, this->InputActions[8]);
+    this->CheckButtonAction(this->button_right_trigger, this->InputActions[9]);
+    this->CheckButtonAction(this->button_start, this->InputActions[10]);
+    this->CheckStickPosAction(this->stick_left_x, this->stick_left_y, this->InputActions[11]);
+    this->CheckStickPosAction(this->stick_right_x, this->stick_right_y, this->InputActions[12]);
+  } else {
+    // Left Hand / Reverse mapping
+    this->CheckButtonAction(this->button_x, this->InputActions[2]);
+    this->CheckButtonAction(this->button_y, this->InputActions[3]);
+    this->CheckButtonAction(this->button_a, this->InputActions[0]);
+    this->CheckButtonAction(this->button_b, this->InputActions[1]);
+    this->CheckButtonAction(this->button_left_stick, this->InputActions[7]);
+    this->CheckButtonAction(this->button_left_grip, this->InputActions[8]);
+    this->CheckButtonAction(this->button_left_trigger, this->InputActions[9]);
+    this->CheckButtonAction(this->button_right_stick, this->InputActions[4]);
+    this->CheckButtonAction(this->button_right_grip, this->InputActions[5]);
+    this->CheckButtonAction(this->button_right_trigger, this->InputActions[6]);
+    this->CheckButtonAction(this->button_start, this->InputActions[10]);
+    this->CheckStickPosAction(this->stick_left_x, this->stick_left_y, this->InputActions[12]);
+    this->CheckStickPosAction(this->stick_right_x, this->stick_right_y, this->InputActions[11]);
+  }
 }
 
 /** Called on Tick to translate a button state into an Input Action. */
