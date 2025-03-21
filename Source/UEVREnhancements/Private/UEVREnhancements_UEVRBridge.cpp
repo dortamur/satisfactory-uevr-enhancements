@@ -52,6 +52,16 @@ void UUEVREnhancements_UEVRBridge::DebugLog(FString DebugString) {
   UE_LOG(UEVREnhancements, Verbose, TEXT("[UEVRBridge] %s"), *DebugString);
 }
 
+void UUEVREnhancements_UEVRBridge::SetLeftHandMode(bool left_hand_mode) {
+  if (left_hand_mode != this->LeftHandMode) {
+    this->DebugLog(FString::Printf(TEXT("LeftHandMode changed: %d"), left_hand_mode));
+    this->LeftHandMode = left_hand_mode;
+    if (this->AimMode == 2 || this->AimMode == 3) {
+      this->SetAimMode(this->LeftHandMode ? 3 : 2);
+    }
+  }
+}
+
 /** Manually set UEVR Aim Mode. Used for manual camera transitions eg; over-the-shoulder gesture inventory opening. */
 void UUEVREnhancements_UEVRBridge::SetAimMode(int32 aim_mode) {
   if (aim_mode != this->AimMode) {
@@ -87,7 +97,8 @@ void UUEVREnhancements_UEVRBridge::UpdateVRPlayerState(EVRPlayerState PlayerStat
   // 0 - Game Aim Mode
   // 1 - HMD Aim Mode
   // 2 - Right Hand Aim Mode
-  int32 aim_mode = 2;
+  // 3 - Left Hand Aim Mode
+  int32 aim_mode = this->LeftHandMode ? 3 : 2;
   switch (PlayerState) {
     case EVRPlayerState::UIInteract:
     case EVRPlayerState::Vehicle:

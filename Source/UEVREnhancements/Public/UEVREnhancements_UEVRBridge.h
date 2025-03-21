@@ -43,6 +43,9 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void UpdateRightTriggerState(bool RT);
 
+	UFUNCTION(BlueprintCallable)
+	void SetLeftHandMode(bool left_hand_mode);
+
 	/** Manually set UEVR Aim Mode. Used for manual camera transitions eg; over-the-shoulder gesture inventory opening. */
 	UFUNCTION(BlueprintCallable)
 	void SetAimMode(int32 aim_mode);
@@ -137,6 +140,10 @@ public:
 	/** Please add a variable description */
 	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category="UEVR")
 	bool UIInteractMode;
+
+	/** True if Left Handed Mode is active (swaps controllers/tracking/aim). */
+	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category="UEVR")
+	bool LeftHandMode;
 
 	/** Please add a variable description */
 	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category="UEVR")
