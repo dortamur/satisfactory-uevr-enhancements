@@ -20,3 +20,14 @@ enum class EVRPlayerState : uint8 {
   Ziplining             UMETA(DisplayName = "Ziplining"),
   Portal                UMETA(DisplayName = "Portal")
 };
+
+UENUM(BlueprintType)
+enum class EVRControllerState : uint8 {
+  None                  UMETA(DisplayName = "None"),
+  Controller            UMETA(DisplayName = "Controller"),
+  Hand                  UMETA(DisplayName = "Hand"),
+  Pointer               UMETA(DisplayName = "Pointer"),
+  Hover                 UMETA(DisplayName = "Hover"),
+  Equipment             UMETA(DisplayName = "Equipment"),
+  Build                 UMETA(DisplayName = "Build")
+};
