@@ -52,6 +52,16 @@ void UUEVREnhancements_UEVRBridge::DebugLog(FString DebugString) {
   UE_LOG(UEVREnhancements, Verbose, TEXT("[UEVRBridge] %s"), *DebugString);
 }
 
+void UUEVREnhancements_UEVRBridge::SetLeftHandMode(bool left_hand_mode) {
+  if (left_hand_mode != this->LeftHandMode) {
+    this->DebugLog(FString::Printf(TEXT("LeftHandMode changed: %d"), left_hand_mode));
+    this->LeftHandMode = left_hand_mode;
+    if (this->AimMode == 2 || this->AimMode == 3) {
+      this->SetAimMode(this->LeftHandMode ? 3 : 2);
+    }
+  }
+}
+
 /** Manually set UEVR Aim Mode. Used for manual camera transitions eg; over-the-shoulder gesture inventory opening. */
 void UUEVREnhancements_UEVRBridge::SetAimMode(int32 aim_mode) {
   if (aim_mode != this->AimMode) {
@@ -87,7 +97,8 @@ void UUEVREnhancements_UEVRBridge::UpdateVRPlayerState(EVRPlayerState PlayerStat
   // 0 - Game Aim Mode
   // 1 - HMD Aim Mode
   // 2 - Right Hand Aim Mode
-  int32 aim_mode = 2;
+  // 3 - Left Hand Aim Mode
+  int32 aim_mode = this->LeftHandMode ? 3 : 2;
   switch (PlayerState) {
     case EVRPlayerState::UIInteract:
     case EVRPlayerState::Vehicle:
@@ -227,19 +238,37 @@ void UUEVREnhancements_UEVRBridge::InitUEVRBridge(FString Profile, FString UEVR)
 }
 
 void UUEVREnhancements_UEVRBridge::InputActionsTick() {
-  this->CheckButtonAction(this->button_x, this->InputActions[0]);
-  this->CheckButtonAction(this->button_y, this->InputActions[1]);
-  this->CheckButtonAction(this->button_a, this->InputActions[2]);
-  this->CheckButtonAction(this->button_b, this->InputActions[3]);
-  this->CheckButtonAction(this->button_left_stick, this->InputActions[4]);
-  this->CheckButtonAction(this->button_left_grip, this->InputActions[5]);
-  this->CheckButtonAction(this->button_left_trigger, this->InputActions[6]);
-  this->CheckButtonAction(this->button_right_stick, this->InputActions[7]);
-  this->CheckButtonAction(this->button_right_grip, this->InputActions[8]);
-  this->CheckButtonAction(this->button_right_trigger, this->InputActions[9]);
-  this->CheckButtonAction(this->button_start, this->InputActions[10]);
-  this->CheckStickPosAction(this->stick_left_x, this->stick_left_y, this->InputActions[11]);
-  this->CheckStickPosAction(this->stick_right_x, this->stick_right_y, this->InputActions[12]);
+  if (!this->LeftHandMode) {
+    // Right Hand / Default mapping
+    this->CheckButtonAction(this->button_x, this->InputActions[0]);
+    this->CheckButtonAction(this->button_y, this->InputActions[1]);
+    this->CheckButtonAction(this->button_a, this->InputActions[2]);
+    this->CheckButtonAction(this->button_b, this->InputActions[3]);
+    this->CheckButtonAction(this->button_left_stick, this->InputActions[4]);
+    this->CheckButtonAction(this->button_left_grip, this->InputActions[5]);
+    this->CheckButtonAction(this->button_left_trigger, this->InputActions[6]);
+    this->CheckButtonAction(this->button_right_stick, this->InputActions[7]);
+    this->CheckButtonAction(this->button_right_grip, this->InputActions[8]);
+    this->CheckButtonAction(this->button_right_trigger, this->InputActions[9]);
+    this->CheckButtonAction(this->button_start, this->InputActions[10]);
+    this->CheckStickPosAction(this->stick_left_x, this->stick_left_y, this->InputActions[11]);
+    this->CheckStickPosAction(this->stick_right_x, this->stick_right_y, this->InputActions[12]);
+  } else {
+    // Left Hand / Reverse mapping
+    this->CheckButtonAction(this->button_x, this->InputActions[2]);
+    this->CheckButtonAction(this->button_y, this->InputActions[3]);
+    this->CheckButtonAction(this->button_a, this->InputActions[0]);
+    this->CheckButtonAction(this->button_b, this->InputActions[1]);
+    this->CheckButtonAction(this->button_left_stick, this->InputActions[7]);
+    this->CheckButtonAction(this->button_left_grip, this->InputActions[8]);
+    this->CheckButtonAction(this->button_left_trigger, this->InputActions[9]);
+    this->CheckButtonAction(this->button_right_stick, this->InputActions[4]);
+    this->CheckButtonAction(this->button_right_grip, this->InputActions[5]);
+    this->CheckButtonAction(this->button_right_trigger, this->InputActions[6]);
+    this->CheckButtonAction(this->button_start, this->InputActions[10]);
+    this->CheckStickPosAction(this->stick_left_x, this->stick_left_y, this->InputActions[12]);
+    this->CheckStickPosAction(this->stick_right_x, this->stick_right_y, this->InputActions[11]);
+  }
 }
 
 /** Called on Tick to translate a button state into an Input Action. */
