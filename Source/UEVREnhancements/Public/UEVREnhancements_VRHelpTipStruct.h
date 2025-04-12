@@ -29,4 +29,8 @@ public:
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, meta=(DisplayName="HelpTipTextLH", MultiLine="true"))
 	FText HelpTipTextLH;
 
+	/** Delay in seconds between repeats */
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, meta=(DisplayName="ShowTime", MakeStructureDefaultValue="10.0"))
+	double ShowTime = 0.0f;
+
 };
