@@ -60,7 +60,7 @@ public:
 
 	/** Update the UEVR state based on new player state. */
 	UFUNCTION(BlueprintCallable)
-	void UpdateVRPlayerState(EVRPlayerState PlayerState, int32 DefaultMovementMode);
+	void UpdateVRPlayerState(EVRPlayerState NewPlayerState, int32 DefaultMovementMode);
 
 	/** Function for UEVR hook to Recenter View. */
 	UFUNCTION(BlueprintCallable)

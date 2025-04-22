@@ -87,10 +87,10 @@ void UUEVREnhancements_UEVRBridge::SetRoomscaleMode(bool roomscale_mode) {
 }
 
 /**  */
-void UUEVREnhancements_UEVRBridge::UpdateVRPlayerState(EVRPlayerState PlayerState, int32 DefaultMovementMode) {
-  if (this->PlayerState != PlayerState) {
-    this->DebugLog(FString::Printf(TEXT("PlayerState changed: %d => %d"), static_cast<uint8>(this->PlayerState), static_cast<uint8>(PlayerState)));
-    this->PlayerState = PlayerState;
+void UUEVREnhancements_UEVRBridge::UpdateVRPlayerState(EVRPlayerState NewPlayerState, int32 DefaultMovementMode) {
+  if (this->PlayerState != NewPlayerState) {
+    this->DebugLog(FString::Printf(TEXT("PlayerState changed: %d => %d"), static_cast<uint8>(this->PlayerState), static_cast<uint8>(NewPlayerState)));
+    this->PlayerState = NewPlayerState;
   }
 
   // Check change to UEVR Aim Mode
@@ -99,7 +99,7 @@ void UUEVREnhancements_UEVRBridge::UpdateVRPlayerState(EVRPlayerState PlayerStat
   // 2 - Right Hand Aim Mode
   // 3 - Left Hand Aim Mode
   int32 aim_mode = this->LeftHandMode ? 3 : 2;
-  switch (PlayerState) {
+  switch (NewPlayerState) {
     case EVRPlayerState::UIInteract:
     case EVRPlayerState::Vehicle:
     case EVRPlayerState::Train:
@@ -115,7 +115,7 @@ void UUEVREnhancements_UEVRBridge::UpdateVRPlayerState(EVRPlayerState PlayerStat
 
   // Check change to UEVR Movement Mode
   int32 movement_mode = DefaultMovementMode;
-  switch (PlayerState) {
+  switch (NewPlayerState) {
     case EVRPlayerState::Vehicle:
     case EVRPlayerState::Train:
       movement_mode = 0;
@@ -128,7 +128,7 @@ void UUEVREnhancements_UEVRBridge::UpdateVRPlayerState(EVRPlayerState PlayerStat
 
   // Check change to Interaction Mode (used for streaming camera stabilisation switches)
   bool interact_mode = false;
-  switch (PlayerState) {
+  switch (NewPlayerState) {
     case EVRPlayerState::UIInteract:
     case EVRPlayerState::PauseMenu:
       interact_mode = true;
@@ -145,7 +145,7 @@ void UUEVREnhancements_UEVRBridge::UpdateVRPlayerState(EVRPlayerState PlayerStat
   if (GetWorld()->GetNetMode() == ENetMode::NM_Client) {
     roomscale_mode = false;
   }
-  switch (PlayerState) {
+  switch (NewPlayerState) {
     case EVRPlayerState::Vehicle:
     case EVRPlayerState::Train:
       roomscale_mode = false;
@@ -229,7 +229,7 @@ void UUEVREnhancements_UEVRBridge::InitUEVRBridge(FString Profile, FString UEVR)
 
   this->DebugLog(FString::Printf(TEXT("Init UEVRBridge: Profile=%s UEVR=%s"), *Profile, *UEVR));
 
-  UButtonHintBarFix::RegisterUEVRFixHooks();
+  // UButtonHintBarFix::RegisterUEVRFixHooks();
 
   if (UEVRBridgeInitialised.IsBound())
   {
