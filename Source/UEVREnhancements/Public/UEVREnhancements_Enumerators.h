@@ -31,3 +31,10 @@ enum class EVRControllerState : uint8 {
   Equipment             UMETA(DisplayName = "Equipment"),
   Build                 UMETA(DisplayName = "Build")
 };
+
+UENUM(BlueprintType)
+enum class EVRInputActionState : uint8 {
+  Start                 UMETA(DisplayName = "Start"),
+  Ongoing               UMETA(DisplayName = "Ongoing"),
+  End                   UMETA(DisplayName = "End")
+};

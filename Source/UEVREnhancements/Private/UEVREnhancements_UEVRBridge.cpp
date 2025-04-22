@@ -274,11 +274,12 @@ void UUEVREnhancements_UEVRBridge::InputActionsTick() {
 /** Called on Tick to translate a button state into an Input Action. */
 void UUEVREnhancements_UEVRBridge::CheckButtonAction(bool Condition, UInputAction *Action) {
   bool last_state = LastActions.FindRef(Action);
+  EVRInputActionState ActionState = Condition == last_state ? EVRInputActionState::Ongoing : (Condition ? EVRInputActionState::Start : EVRInputActionState::End );
 
   // this->DebugLog(FString::Printf(TEXT("CheckButtonAction Tick: %s: %s => %s"), *Action->GetName(), last_state ? TEXT("true") : TEXT("false"), Condition ? TEXT("true") : TEXT("false")));
   if (Condition || last_state) {
-    // this->DebugLog(FString::Printf(TEXT("CheckButtonAction Broadcast: %s = %s"), *Action->GetName(), Condition ? TEXT("true") : TEXT("false")));
-    DoInputAction.Broadcast(Condition, Action);
+    // this->DebugLog(FString::Printf(TEXT("CheckButtonAction Broadcast: %s = %s:%d"), *Action->GetName(), Condition ? TEXT("true") : TEXT("false"), static_cast<uint8>(ActionState)));
+    DoInputAction.Broadcast(Condition, Action, ActionState);
   }
 
   if (Condition != last_state) {

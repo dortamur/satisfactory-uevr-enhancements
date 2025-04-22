@@ -110,7 +110,7 @@ public:
 	bool IsInitialised;
 
 	/** Called when an Input Action event needs to be handled, to pass to a Blueprint for processing. */
-	DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FDoInputAction, bool, Condition, const UInputAction*, Action);
+	DECLARE_DYNAMIC_MULTICAST_DELEGATE_ThreeParams(FDoInputAction, bool, Condition, const UInputAction*, Action, EVRInputActionState, ActionState);
 	UPROPERTY(BlueprintAssignable, EditDefaultsOnly, Category="UEVR")
 	FDoInputAction DoInputAction;
 
