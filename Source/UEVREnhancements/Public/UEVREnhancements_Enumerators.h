@@ -6,6 +6,7 @@ enum class EVRPlayerState : uint8 {
   UIInteract            UMETA(DisplayName = "UIInteract"),
   WristInteractLeft     UMETA(DisplayName = "WristInteractLeft"),
   WristInteractRight    UMETA(DisplayName = "WristInteractRight"),
+  RadialInteract        UMETA(DisplayName = "RadialInteract"),
   Build                 UMETA(DisplayName = "Build"),
   Nudge                 UMETA(DisplayName = "Nudge"),
   Dismantle             UMETA(DisplayName = "Dismantle"),
