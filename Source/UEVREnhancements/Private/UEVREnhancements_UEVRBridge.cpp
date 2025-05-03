@@ -101,7 +101,6 @@ void UUEVREnhancements_UEVRBridge::UpdateVRPlayerState(EVRPlayerState NewPlayerS
   int32 aim_mode = this->LeftHandMode ? 3 : 2;
   switch (NewPlayerState) {
     case EVRPlayerState::UIInteract:
-    case EVRPlayerState::RadialInteract:
     case EVRPlayerState::Vehicle:
     case EVRPlayerState::Train:
     case EVRPlayerState::Hypertube:
