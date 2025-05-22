@@ -78,7 +78,19 @@ void UMouseEmulation::SimulateMouseButtonWithModifier(const FKey MouseButton, bo
         0,
         FModifierKeysState(bShift, false, bCtrl, false, bAlt, false, false, false, false)
     );
-    // World click
+
+    // Get the main game application window even if it does not have focus
+    // TSharedPtr<SWindow> MainSlateWindow = SlateApp.GetActiveTopLevelWindow();
+    // if (!MainSlateWindow.IsValid())
+    // {
+    //     TArray<TSharedRef<SWindow>> AllWindows = SlateApp.GetWindows();
+    //     if (AllWindows.Num() > 0)
+    //     {
+    //         MainSlateWindow = AllWindows[0];
+    //     }
+    // }
+    // TSharedPtr<FGenericWindow> NativeWindow = MainSlateWindow.IsValid() ? MainSlateWindow->GetNativeWindow() : nullptr;
+
     if (bButtonDown) {
         TSharedPtr<FGenericWindow, ESPMode::ThreadSafe> NullWindow;
         SlateApp.ProcessMouseButtonDownEvent(NullWindow, MouseEvent);
@@ -86,7 +98,6 @@ void UMouseEmulation::SimulateMouseButtonWithModifier(const FKey MouseButton, bo
     else {
         SlateApp.ProcessMouseButtonUpEvent(MouseEvent);
     }
-    return;
 }
 
 void UMouseEmulation::SimulateMouseDoubleClick(const FKey MouseButton)
