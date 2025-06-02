@@ -1,7 +1,7 @@
 {
 	"FileVersion": 3,
 	"Version": 1,
-	"VersionName": "1.0.0-alpha1",
+	"VersionName": "1.0.0-alpha2",
 	"FriendlyName": "UEVR Enhancements",
 	"Description": "Controller support, VR UI, gestures, and other enhancements for using the UEVR Plugin with Satisfactory",
 	"Category": "Modding",
@@ -28,7 +28,7 @@
 			"LoadingPhase": "Default"
 		}
 	],
-	"SemVersion": "1.0.0-alpha1",
+	"SemVersion": "1.0.0-alpha2",
 	"AcceptsAnyRemoteVersion": true,
 	"GameVersion": ">=410840",
 	"RequiredOnRemote": false,
