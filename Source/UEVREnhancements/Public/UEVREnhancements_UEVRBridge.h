@@ -58,6 +58,14 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void SetRoomscaleMode(bool roomscale_mode);
 
+	/** Manually enable/disable UObjectHook updates. */
+	UFUNCTION(BlueprintCallable)
+	void SetUObjectHookDisabled(bool disabled);
+
+	/** Set UEVR mod value. */
+	UFUNCTION(BlueprintCallable)
+	void SetUEVRModValue(FString property, FString value);
+
 	/** Update the UEVR state based on new player state. */
 	UFUNCTION(BlueprintCallable)
 	void UpdateVRPlayerState(EVRPlayerState NewPlayerState, int32 DefaultMovementMode);
@@ -156,6 +164,10 @@ public:
 	/** Read by UEVR to change Movement Mode. 0 = Game, 1 = HMD */
 	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category="UEVR")
 	int32 MovementMode;
+
+	/** Whether UEVR UObjectHook is enabled or disabled (by this mod) */
+	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category="UEVR")
+  bool UObjectHookDisabled;
 
 	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly, Category="UEVR")
 	FS_VRHapticEffect HapticsLeftEffect;

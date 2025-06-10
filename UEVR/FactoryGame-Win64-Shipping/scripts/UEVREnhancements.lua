@@ -1,5 +1,5 @@
 -- Profile version to match against UEVR Enhancements mod expected version
-local uevr_profile_version = 'v0.9.10-3'
+local uevr_profile_version = 'v1.0.0-0'
 
 local log_functions = uevr.params.functions
 
@@ -184,6 +184,41 @@ local function init_bridge()
     uevr_bridge.RecenterView:hook_ptr(nil, function(fn, obj, locals, result)
         -- vr_log('RecenterView called')
         recenter_view()
+      end
+    )
+
+    uevr_bridge.SetUObjectHookDisabled:hook_ptr(nil, function(fn, obj, locals, result)
+        vr_log('SetUObjectHookDisabled called: '..tostring(uevr_bridge.UObjectHookDisabled))
+        -- Disable UObject Hook
+        if (uevr_bridge.UObjectHookDisabled) then
+          vr_log('Disabling UObject Hook')
+          UEVR_UObjectHook.set_disabled(true)
+        else
+          -- vr_log('Enabling UObject Hook')
+          vr_log('Reactivating UObject Hook')
+          UEVR_UObjectHook.activate()
+          UEVR_UObjectHook.set_disabled(false)
+        end
+
+      end
+    )
+
+    uevr_bridge.SetUEVRModValue:hook_ptr(nil, function(fn, obj, locals, result)
+        vr_log("SetUEVRModValue...")
+        vr_log("SetUEVRModValue! " .. tostring(locals))
+
+        -- get locals def
+        local desc = locals:get_struct()
+        vr_log("Locals: " .. tostring(desc))
+
+        -- Print all fields
+        local first = desc:get_child_properties()
+
+        while first ~= nil do
+            vr_log("Field: " .. first:get_fname():to_string() .. " = " .. tostring(locals[first:get_fname():to_string()]))
+            first = first:get_next()
+        end
+        vr_log('SetUEVRModValue called: '..locals.find_property('property') ..' = '..tostring(locals.find_property('value')))
       end
     )
 

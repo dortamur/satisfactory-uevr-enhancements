@@ -86,6 +86,19 @@ void UUEVREnhancements_UEVRBridge::SetRoomscaleMode(bool roomscale_mode) {
   }
 }
 
+/** Manually enable/disable UObjectHook updates. */
+void UUEVREnhancements_UEVRBridge::SetUObjectHookDisabled(bool disabled) {
+  if (disabled != this->UObjectHookDisabled) {
+    this->DebugLog(FString::Printf(TEXT("UObjectHookDisabled changed: %s"), disabled ? TEXT("true") : TEXT("false")));
+    this->UObjectHookDisabled = disabled;
+  }
+}
+
+/** Set UEVR mod value. */
+void UUEVREnhancements_UEVRBridge::SetUEVRModValue(FString property, FString value) {
+  this->DebugLog(FString::Printf(TEXT("Set UEVR Mod Value: %s = %s"), *property, *value));
+}
+
 /**  */
 void UUEVREnhancements_UEVRBridge::UpdateVRPlayerState(EVRPlayerState NewPlayerState, int32 DefaultMovementMode) {
   if (this->PlayerState != NewPlayerState) {
