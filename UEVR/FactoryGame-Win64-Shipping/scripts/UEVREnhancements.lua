@@ -187,31 +187,37 @@ local function init_bridge()
       end
     )
 
-    uevr_bridge.SetUObjectHookDisabled:hook_ptr(nil, function(fn, obj, locals, result)
-        vr_log('SetUObjectHookDisabled called: '..tostring(uevr_bridge.UObjectHookDisabled))
-        -- Disable UObject Hook
-        if (uevr_bridge.UObjectHookDisabled) then
-          vr_log('Disabling UObject Hook')
-          UEVR_UObjectHook.set_disabled(true)
-        else
-          -- vr_log('Enabling UObject Hook')
-          vr_log('Reactivating UObject Hook')
-          UEVR_UObjectHook.activate()
-          UEVR_UObjectHook.set_disabled(false)
+    -- Check if SetUObjectHookDisabled can be hooked
+    if (uevr_bridge.SetUObjectHookDisabled ~= nil) then
+      uevr_bridge.SetUObjectHookDisabled:hook_ptr(nil, function(fn, obj, locals, result)
+          vr_log('SetUObjectHookDisabled called: '..tostring(uevr_bridge.UObjectHookDisabled))
+          -- Disable UObject Hook
+          if (uevr_bridge.UObjectHookDisabled) then
+            vr_log('Disabling UObject Hook')
+            UEVR_UObjectHook.set_disabled(true)
+          else
+            -- vr_log('Enabling UObject Hook')
+            vr_log('Reactivating UObject Hook')
+            UEVR_UObjectHook.activate()
+            UEVR_UObjectHook.set_disabled(false)
+          end
+
         end
+      )
+    end
 
-      end
-    )
+    -- Check if SetUEVRModValue can be hooked
+    if (uevr_bridge.SetUEVRModValue ~= nil) then
+      uevr_bridge.SetUEVRModValue:hook_ptr(nil, function(fn, obj, locals, result)
+          vr_log("SetUEVRModValue:")
+          vr_log('  Name='..tostring(uevr_bridge.UEVRModPropName))
+          vr_log('  Value='..tostring(uevr_bridge.UEVRModPropValue))
 
-    uevr_bridge.SetUEVRModValue:hook_ptr(nil, function(fn, obj, locals, result)
-        vr_log("SetUEVRModValue:")
-        vr_log('  Name='..tostring(uevr_bridge.UEVRModPropName))
-        vr_log('  Value='..tostring(uevr_bridge.UEVRModPropValue))
-
-        -- Set the UEVR property based on mod settings
-        uevr.params.vr.set_mod_value(tostring(uevr_bridge.UEVRModPropName), tostring(uevr_bridge.UEVRModPropValue))
-      end
-    )
+          -- Set the UEVR property based on mod settings
+          uevr.params.vr.set_mod_value(tostring(uevr_bridge.UEVRModPropName), tostring(uevr_bridge.UEVRModPropValue))
+        end
+      )
+    end
 
     uevr_bridge.UpdateVRPlayerState:hook_ptr(nil, function(fn, obj, locals, result)
         if (uevr_bridge.AimMode ~= aim_mode) then
