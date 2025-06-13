@@ -204,21 +204,12 @@ local function init_bridge()
     )
 
     uevr_bridge.SetUEVRModValue:hook_ptr(nil, function(fn, obj, locals, result)
-        vr_log("SetUEVRModValue...")
-        vr_log("SetUEVRModValue! " .. tostring(locals))
+        vr_log("SetUEVRModValue:")
+        vr_log('  Name='..tostring(uevr_bridge.UEVRModPropName))
+        vr_log('  Value='..tostring(uevr_bridge.UEVRModPropValue))
 
-        -- get locals def
-        local desc = locals:get_struct()
-        vr_log("Locals: " .. tostring(desc))
-
-        -- Print all fields
-        local first = desc:get_child_properties()
-
-        while first ~= nil do
-            vr_log("Field: " .. first:get_fname():to_string() .. " = " .. tostring(locals[first:get_fname():to_string()]))
-            first = first:get_next()
-        end
-        vr_log('SetUEVRModValue called: '..locals.find_property('property') ..' = '..tostring(locals.find_property('value')))
+        -- Set the UEVR property based on mod settings
+        uevr.params.vr.set_mod_value(tostring(uevr_bridge.UEVRModPropName), tostring(uevr_bridge.UEVRModPropValue))
       end
     )
 

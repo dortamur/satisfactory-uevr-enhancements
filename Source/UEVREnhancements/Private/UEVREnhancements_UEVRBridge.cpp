@@ -96,7 +96,9 @@ void UUEVREnhancements_UEVRBridge::SetUObjectHookDisabled(bool disabled) {
 
 /** Set UEVR mod value. */
 void UUEVREnhancements_UEVRBridge::SetUEVRModValue(FString property, FString value) {
-  this->DebugLog(FString::Printf(TEXT("Set UEVR Mod Value: %s = %s"), *property, *value));
+  this->DebugLog(FString::Printf(TEXT("SetUEVRModValue: %s = %s"), *property, *value));
+  this->UEVRModPropName = property;
+  this->UEVRModPropValue = value;
 }
 
 /**  */

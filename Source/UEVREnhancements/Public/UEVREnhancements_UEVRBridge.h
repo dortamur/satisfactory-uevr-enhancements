@@ -169,6 +169,14 @@ public:
 	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category="UEVR")
   bool UObjectHookDisabled;
 
+	/** Name of the UEVR mod property to set. */
+	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category="UEVR")
+	FString UEVRModPropName;
+
+	/** Value of the UEVR mod property to set. */
+	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category="UEVR")
+	FString UEVRModPropValue;
+
 	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly, Category="UEVR")
 	FS_VRHapticEffect HapticsLeftEffect;
 	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly, Category="UEVR")
