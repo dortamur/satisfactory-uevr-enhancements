@@ -1,7 +1,7 @@
 // Copyright Epic Games, Inc. All Rights Reserved.
 
 #include "UEVREnhancements.h"
-#include "ButtonHintBarFix.h"
+// #include "ButtonHintBarFix.h"
 
 #define LOCTEXT_NAMESPACE "FUEVREnhancementsModule"
 

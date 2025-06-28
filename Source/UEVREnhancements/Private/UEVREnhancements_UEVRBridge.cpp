@@ -86,11 +86,26 @@ void UUEVREnhancements_UEVRBridge::SetRoomscaleMode(bool roomscale_mode) {
   }
 }
 
+/** Manually enable/disable UObjectHook updates. */
+void UUEVREnhancements_UEVRBridge::SetUObjectHookDisabled(bool disabled) {
+  if (disabled != this->UObjectHookDisabled) {
+    this->DebugLog(FString::Printf(TEXT("UObjectHookDisabled changed: %s"), disabled ? TEXT("true") : TEXT("false")));
+    this->UObjectHookDisabled = disabled;
+  }
+}
+
+/** Set UEVR mod value. */
+void UUEVREnhancements_UEVRBridge::SetUEVRModValue(FString property, FString value) {
+  this->DebugLog(FString::Printf(TEXT("SetUEVRModValue: %s = %s"), *property, *value));
+  this->UEVRModPropName = property;
+  this->UEVRModPropValue = value;
+}
+
 /**  */
-void UUEVREnhancements_UEVRBridge::UpdateVRPlayerState(EVRPlayerState PlayerState, int32 DefaultMovementMode) {
-  if (this->PlayerState != PlayerState) {
-    this->DebugLog(FString::Printf(TEXT("PlayerState changed: %d => %d"), static_cast<uint8>(this->PlayerState), static_cast<uint8>(PlayerState)));
-    this->PlayerState = PlayerState;
+void UUEVREnhancements_UEVRBridge::UpdateVRPlayerState(EVRPlayerState NewPlayerState, int32 DefaultMovementMode) {
+  if (this->PlayerState != NewPlayerState) {
+    this->DebugLog(FString::Printf(TEXT("PlayerState changed: %d => %d"), static_cast<uint8>(this->PlayerState), static_cast<uint8>(NewPlayerState)));
+    this->PlayerState = NewPlayerState;
   }
 
   // Check change to UEVR Aim Mode
@@ -99,7 +114,7 @@ void UUEVREnhancements_UEVRBridge::UpdateVRPlayerState(EVRPlayerState PlayerStat
   // 2 - Right Hand Aim Mode
   // 3 - Left Hand Aim Mode
   int32 aim_mode = this->LeftHandMode ? 3 : 2;
-  switch (PlayerState) {
+  switch (NewPlayerState) {
     case EVRPlayerState::UIInteract:
     case EVRPlayerState::Vehicle:
     case EVRPlayerState::Train:
@@ -115,7 +130,7 @@ void UUEVREnhancements_UEVRBridge::UpdateVRPlayerState(EVRPlayerState PlayerStat
 
   // Check change to UEVR Movement Mode
   int32 movement_mode = DefaultMovementMode;
-  switch (PlayerState) {
+  switch (NewPlayerState) {
     case EVRPlayerState::Vehicle:
     case EVRPlayerState::Train:
       movement_mode = 0;
@@ -128,7 +143,7 @@ void UUEVREnhancements_UEVRBridge::UpdateVRPlayerState(EVRPlayerState PlayerStat
 
   // Check change to Interaction Mode (used for streaming camera stabilisation switches)
   bool interact_mode = false;
-  switch (PlayerState) {
+  switch (NewPlayerState) {
     case EVRPlayerState::UIInteract:
     case EVRPlayerState::PauseMenu:
       interact_mode = true;
@@ -145,7 +160,7 @@ void UUEVREnhancements_UEVRBridge::UpdateVRPlayerState(EVRPlayerState PlayerStat
   if (GetWorld()->GetNetMode() == ENetMode::NM_Client) {
     roomscale_mode = false;
   }
-  switch (PlayerState) {
+  switch (NewPlayerState) {
     case EVRPlayerState::Vehicle:
     case EVRPlayerState::Train:
       roomscale_mode = false;
@@ -229,7 +244,7 @@ void UUEVREnhancements_UEVRBridge::InitUEVRBridge(FString Profile, FString UEVR)
 
   this->DebugLog(FString::Printf(TEXT("Init UEVRBridge: Profile=%s UEVR=%s"), *Profile, *UEVR));
 
-  UButtonHintBarFix::RegisterUEVRFixHooks();
+  // UButtonHintBarFix::RegisterUEVRFixHooks();
 
   if (UEVRBridgeInitialised.IsBound())
   {
@@ -274,11 +289,12 @@ void UUEVREnhancements_UEVRBridge::InputActionsTick() {
 /** Called on Tick to translate a button state into an Input Action. */
 void UUEVREnhancements_UEVRBridge::CheckButtonAction(bool Condition, UInputAction *Action) {
   bool last_state = LastActions.FindRef(Action);
+  EVRInputActionState ActionState = Condition == last_state ? EVRInputActionState::Ongoing : (Condition ? EVRInputActionState::Start : EVRInputActionState::End );
 
   // this->DebugLog(FString::Printf(TEXT("CheckButtonAction Tick: %s: %s => %s"), *Action->GetName(), last_state ? TEXT("true") : TEXT("false"), Condition ? TEXT("true") : TEXT("false")));
   if (Condition || last_state) {
-    // this->DebugLog(FString::Printf(TEXT("CheckButtonAction Broadcast: %s = %s"), *Action->GetName(), Condition ? TEXT("true") : TEXT("false")));
-    DoInputAction.Broadcast(Condition, Action);
+    // this->DebugLog(FString::Printf(TEXT("CheckButtonAction Broadcast: %s = %s:%d"), *Action->GetName(), Condition ? TEXT("true") : TEXT("false"), static_cast<uint8>(ActionState)));
+    DoInputAction.Broadcast(Condition, Action, ActionState);
   }
 
   if (Condition != last_state) {

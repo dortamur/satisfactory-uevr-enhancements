@@ -58,9 +58,17 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void SetRoomscaleMode(bool roomscale_mode);
 
+	/** Manually enable/disable UObjectHook updates. */
+	UFUNCTION(BlueprintCallable)
+	void SetUObjectHookDisabled(bool disabled);
+
+	/** Set UEVR mod value. */
+	UFUNCTION(BlueprintCallable)
+	void SetUEVRModValue(FString property, FString value);
+
 	/** Update the UEVR state based on new player state. */
 	UFUNCTION(BlueprintCallable)
-	void UpdateVRPlayerState(EVRPlayerState PlayerState, int32 DefaultMovementMode);
+	void UpdateVRPlayerState(EVRPlayerState NewPlayerState, int32 DefaultMovementMode);
 
 	/** Function for UEVR hook to Recenter View. */
 	UFUNCTION(BlueprintCallable)
@@ -110,7 +118,7 @@ public:
 	bool IsInitialised;
 
 	/** Called when an Input Action event needs to be handled, to pass to a Blueprint for processing. */
-	DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FDoInputAction, bool, Condition, const UInputAction*, Action);
+	DECLARE_DYNAMIC_MULTICAST_DELEGATE_ThreeParams(FDoInputAction, bool, Condition, const UInputAction*, Action, EVRInputActionState, ActionState);
 	UPROPERTY(BlueprintAssignable, EditDefaultsOnly, Category="UEVR")
 	FDoInputAction DoInputAction;
 
@@ -156,6 +164,18 @@ public:
 	/** Read by UEVR to change Movement Mode. 0 = Game, 1 = HMD */
 	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category="UEVR")
 	int32 MovementMode;
+
+	/** Whether UEVR UObjectHook is enabled or disabled (by this mod) */
+	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category="UEVR")
+  bool UObjectHookDisabled;
+
+	/** Name of the UEVR mod property to set. */
+	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category="UEVR")
+	FString UEVRModPropName;
+
+	/** Value of the UEVR mod property to set. */
+	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category="UEVR")
+	FString UEVRModPropValue;
 
 	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly, Category="UEVR")
 	FS_VRHapticEffect HapticsLeftEffect;

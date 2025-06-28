@@ -6,6 +6,8 @@ enum class EVRPlayerState : uint8 {
   UIInteract            UMETA(DisplayName = "UIInteract"),
   WristInteractLeft     UMETA(DisplayName = "WristInteractLeft"),
   WristInteractRight    UMETA(DisplayName = "WristInteractRight"),
+  RadialInteractLeft    UMETA(DisplayName = "RadialInteractLeft"),
+  RadialInteractRight   UMETA(DisplayName = "RadialInteractRight"),
   Build                 UMETA(DisplayName = "Build"),
   Nudge                 UMETA(DisplayName = "Nudge"),
   Dismantle             UMETA(DisplayName = "Dismantle"),
@@ -30,4 +32,11 @@ enum class EVRControllerState : uint8 {
   Hover                 UMETA(DisplayName = "Hover"),
   Equipment             UMETA(DisplayName = "Equipment"),
   Build                 UMETA(DisplayName = "Build")
+};
+
+UENUM(BlueprintType)
+enum class EVRInputActionState : uint8 {
+  Start                 UMETA(DisplayName = "Start"),
+  Ongoing               UMETA(DisplayName = "Ongoing"),
+  End                   UMETA(DisplayName = "End")
 };
