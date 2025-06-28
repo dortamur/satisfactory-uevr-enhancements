@@ -6,8 +6,8 @@
 You will also need:
 - UEVR Injector Tool version [nightly 983 or newer](https://github.com/praydog/UEVR-nightly/releases)
 - The Satisfactory profile for UEVR depending on where you bought Satisfactory:
-	- [UEVR Profile for Steam Satisfactory](https://github.com/dortamur/satisfactory-uevr-enhancements/raw/refs/heads/feature/1.0.0-updates/UEVR/FactoryGameSteam-Win64-Shipping.zip) from version 1.0.0-alpha3
-	- [UEVR Profile for Epic Store Satisfactory](https://github.com/dortamur/satisfactory-uevr-enhancements/raw/refs/heads/feature/1.0.0-updates/UEVR/FactoryGameEGS-Win64-Shipping.zip) from version 1.0.0-alpha3
+  - [UEVR Profile for Steam Satisfactory](https://github.com/dortamur/satisfactory-uevr-enhancements/raw/master/UEVR/FactoryGameSteam-Win64-Shipping.zip) from version 1.0.0
+  - [UEVR Profile for Epic Store Satisfactory](https://github.com/dortamur/satisfactory-uevr-enhancements/raw/master/UEVR/FactoryGameEGS-Win64-Shipping.zip) from version 1.0.0
 
 See the [Getting Started](https://github.com/dortamur/satisfactory-uevr-enhancements/wiki/Getting-Started) page for full installation details, and the [Troubleshooting](https://github.com/dortamur/satisfactory-uevr-enhancements/wiki/Troubleshooting) page if you have problems getting it working.
 See the [Controls](https://github.com/dortamur/satisfactory-uevr-enhancements/wiki/Controls) for tips on usage, and check the [Roadmap](https://github.com/dortamur/satisfactory-uevr-enhancements/wiki/Roadmap) for current progress and future goals.
@@ -28,7 +28,7 @@ You can also [pop by my twitch channel](https://www.twitch.tv/dortamur) to see t
 
 ## Support this project
 
-<a href='https://ko-fi.com/dortamur' target='_blank'><img height='36' style='border:0px;height:36px;float:right;' src='https://storage.ko-fi.com/cdn/kofi5.png?v=6' border='0' alt='Buy Me a Coffee at ko-fi.com' /></a>If you enjoy this mod or my other content, please consider donating to my [completely optional tip jar](https://ko-fi.com/dortamur) or on [patreon](https://patreon.com/Dortamur).
+<a href='https://ko-fi.com/dortamur' target='_blank'><img height='36' style='border:0px;height:36px;float:right;' src='https://storage.ko-fi.com/cdn/kofi5.png?v=6' border='0' alt='Buy Me a Coffee at ko-fi.com' /></a>If you enjoy this mod or my other content, please consider donating to my [completely optional tip jar](https://ko-fi.com/dortamur) or join my [Patreon](https://patreon.com/Dortamur).
 
 If you're interested in purchasing a Quest VR headset, using my [referral link](https://www.meta.com/referrals/link/Dortamur) supports me and gives you store credit!
 
