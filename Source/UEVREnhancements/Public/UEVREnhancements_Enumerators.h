@@ -20,7 +20,8 @@ enum class EVRPlayerState : uint8 {
   HandMining            UMETA(DisplayName = "HandMining"),
   Swimming              UMETA(DisplayName = "Swimming"),
   Ziplining             UMETA(DisplayName = "Ziplining"),
-  Portal                UMETA(DisplayName = "Portal")
+  Portal                UMETA(DisplayName = "Portal"),
+  Cinematic             UMETA(DisplayName = "Cinematic")
 };
 
 UENUM(BlueprintType)
