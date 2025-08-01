@@ -1,0 +1,12 @@
+{
+  "ID": "00000000-0000-0000-0000-000000000000",
+  "exeName": "FactoryGameSteam-Win64-Shipping",
+  "gameName": "Satisfactory",
+  "gameVersion": "V1.1 (Steam)",
+  "authorName": "Dortamur",
+  "minUEVRNightlyNumber": 983,
+  "nullifyPlugins": false,
+  "lateInjection": true,
+  "modifiedDate": "2025-07-15T00:00:00+01:00",
+  "remarks": "v1.0.1, requires game mod installed"
+}
