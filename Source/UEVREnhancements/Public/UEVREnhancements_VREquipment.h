@@ -3,21 +3,24 @@
 #include "CoreMinimal.h"
 #include "Patching/NativeHookManager.h"
 #include "Module/GameInstanceModule.h"
-#include "UEVREnhancements_VRNobeliskThrow.generated.h"
+#include "UEVREnhancements_VREquipment.generated.h"
 
 UCLASS()
-class UEVRENHANCEMENTS_API UUEVREnhancements_VRNobeliskThrow : public UGameInstanceModule
+class UEVRENHANCEMENTS_API UUEVREnhancements_VREquipment : public UGameInstanceModule
 {
   GENERATED_BODY()
 
 public:
-	UUEVREnhancements_VRNobeliskThrow();
+	UUEVREnhancements_VREquipment();
 
 	UFUNCTION(BlueprintCallable)
-	static void RegisterVRNobeliskThrowHooks();
+	static void DebugLog(FString DebugString);
 
 	UFUNCTION(BlueprintCallable)
-	static void UnregisterVRNobeliskThrowHooks();
+	static void RegisterVREquipmentHooks();
+
+	UFUNCTION(BlueprintCallable)
+	static void UnregisterVREquipmentHooks();
 
 	UFUNCTION(BlueprintCallable)
 	static void SetVRThrowParameters(FTransform spawnTransform, int32 throwForce);
