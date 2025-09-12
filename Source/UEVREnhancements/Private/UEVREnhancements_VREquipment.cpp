@@ -1,10 +1,12 @@
 #include "UEVREnhancements_VREquipment.h"
 #include "FGChargedWeapon.h"
+#include "FGAmmoType.h"
 #include "UEVREnhancements.h"
 #include "Kismet/GameplayStatics.h"
 
 static FDelegateHandle AFGChargedWeapon_SpawnChargedProjectile;
 static FDelegateHandle AFGEquipment_PlayCameraAnimation;
+static FDelegateHandle AFGEquipment_AmmoTypeFiringTransform;
 
 class VRNobeliskThrowHooks {
 public:
@@ -14,28 +16,10 @@ public:
     UUEVREnhancements_VREquipment::DebugLog(FString::Printf(TEXT("TweakSpawnChargedProjectile: Adjusting Nobelisk spawn for VR... Force: %d Transform: %s"),
            throwForce, *spawnTransform.ToString()));
 
-    // UWorld* World = ChargedWeapon->GetWorld();
-    // UGameplayStatics::GetAllActorsOfClass(World, AVRCoordinatorSystem::StaticClass(), Found);
-    // if (Found.Num() > 0)
-    // {
-    //     AVRCoordinatorSystem* VRCoordinator = Cast<AVRCoordinatorSystem>(Found[0]);
-    //     UUEVREnhancements_VREquipment::DebugLog(FString::Printf(TEXT("VR Coordinator Subsystem: %s"), VRCoordinator ? TEXT("Found") : TEXT("Not Found"));
-    // if (VRCoordinator) {
-    //   UUEVREnhancements_VREquipment::DebugLog(FString::Printf(TEXT("VR Initialised: %s"), VRCoordinator->IsVRInitialised ? TEXT("Yes") : TEXT("No"));
-    //   // Get variable ControllerRight from the subsystem
-    //   AVRControllerRight* ControllerRight = VRCoordinator ? VRCoordinator->ControllerRight : nullptr;
-    //   UUEVREnhancements_VREquipment::DebugLog(FString::Printf(TEXT("VR Controller Right: %s"), ControllerRight ? TEXT("Found") : TEXT("Not Found"));
-    // }
-    // }
-
-    // UGameInstance* GameInstance = ChargedWeapon->GetWorld()->GetGameInstance();
-    // AVRCoordinatorSystem* VRCoordinator = GameInstance->GetSubsystem<AVRCoordinatorSystem>();
-
     if (UUEVREnhancements_VREquipment::HasVRThrowParameters()) {
+      // Override the spawn transform and force to use parameters based on VR throw
       spawnTransform = UUEVREnhancements_VREquipment::GetVRThrowTransform();
       throwForce = UUEVREnhancements_VREquipment::GetVRThrowForce();
-      // ChargedWeapon->SetCurrentDispersion(0.0f); // No dispersion for VR throws
-      // ChargedWeapon->mCurrentDispersion = 0.0f; // No dispersion for VR throws
       UUEVREnhancements_VREquipment::DebugLog(FString::Printf(TEXT("TweakSpawnChargedProjectile: Using stored VR parameters: Transform: %s Force: %d"),
              *spawnTransform.ToString(), throwForce));
     }
@@ -49,9 +33,27 @@ public:
   static void TweakPlayCameraAnimation(
       TCallScope<void (__cdecl *)(AFGEquipment *,UCameraAnimationSequence *)> &Scope,
       AFGEquipment *Equipment, UCameraAnimationSequence* cameraAnimationSequence) {
-    UUEVREnhancements_VREquipment::DebugLog(FString::Printf(TEXT("TweakPlayCameraAnimation: Suppressing equipment camera animation for VR...")));
+    UUEVREnhancements_VREquipment::DebugLog(FString::Printf(TEXT("Suppressing equipment camera animation for VR...")));
     // Suppress camera animations for VR
     Scope.Cancel();
+  }
+};
+
+class VRAmmoTypeHooks {
+public:
+  static void TweakSetFiringTransform(
+      TCallScope<void (__cdecl *)(UFGAmmoType *, const FTransform&)> &Scope,
+      UFGAmmoType *AmmoType, const FTransform& firingTransform) {
+    if (UUEVREnhancements_VREquipment::HasVRThrowParameters()
+      && AmmoType->HasAuthority() && AmmoType->GetWeapon()->IsA(AFGChargedWeapon::StaticClass()) ) // && AmmoType->mInstigator == CharacterPlayer)
+    {
+      // Override the firing transform for the Nobelisk when we have VR parameters set (to set actual rotation instead of dispersed rotation)
+      FTransform throwTransform = UUEVREnhancements_VREquipment::GetVRThrowTransform();
+      UUEVREnhancements_VREquipment::DebugLog(FString::Printf(TEXT("TweakSetFiringTransform: Overriding firing transform: %s vs %s"), *firingTransform.Rotator().ToString(), *throwTransform.Rotator().ToString()));
+      Scope(AmmoType, throwTransform);
+    } else {
+      Scope(AmmoType, firingTransform);
+    }
   }
 };
 
@@ -79,6 +81,9 @@ void UUEVREnhancements_VREquipment::RegisterVREquipmentHooks() {
     UUEVREnhancements_VREquipment::DebugLog(FString::Printf(TEXT("Adding Hooks to override equipment camera animations for VR...")));
     AFGEquipment_PlayCameraAnimation =
         SUBSCRIBE_METHOD(AFGEquipment::PlayCameraAnimation, &VREquipmentCameraAnimHooks::TweakPlayCameraAnimation);
+    UUEVREnhancements_VREquipment::DebugLog(FString::Printf(TEXT("Adding Hooks to override ammo type transform...")));
+    AFGEquipment_AmmoTypeFiringTransform =
+        SUBSCRIBE_METHOD(UFGAmmoType::SetFiringTransform, &VRAmmoTypeHooks::TweakSetFiringTransform);
   }
 }
 
@@ -91,6 +96,10 @@ void UUEVREnhancements_VREquipment::UnregisterVREquipmentHooks() {
     UUEVREnhancements_VREquipment::DebugLog(FString::Printf(TEXT("Removing equipment camera animation Hooks...")));
     if (AFGEquipment_PlayCameraAnimation.IsValid()) {
       UNSUBSCRIBE_METHOD(AFGEquipment::PlayCameraAnimation, AFGEquipment_PlayCameraAnimation);
+    }
+    UUEVREnhancements_VREquipment::DebugLog(FString::Printf(TEXT("Removing ammo type transform Hooks...")));
+    if (AFGEquipment_AmmoTypeFiringTransform.IsValid()) {
+      UNSUBSCRIBE_METHOD(UFGAmmoType::SetFiringTransform, AFGEquipment_AmmoTypeFiringTransform);
     }
   }
 }
