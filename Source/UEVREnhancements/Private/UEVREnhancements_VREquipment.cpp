@@ -3,6 +3,7 @@
 #include "FGAmmoType.h"
 #include "UEVREnhancements.h"
 #include "Kismet/GameplayStatics.h"
+#include "GameFramework/Character.h"
 
 static FDelegateHandle AFGChargedWeapon_SpawnChargedProjectile;
 static FDelegateHandle AFGEquipment_PlayCameraAnimation;
@@ -41,12 +42,31 @@ public:
 
 class VRAmmoTypeHooks {
 public:
+  // Hook UFGAmmoType::SetFiringTransform to override the firing transform for Nobelisk projectiles when we have VR throw parameters set
+  // This overrides the random angle offset normally added to a nobelisk throw
   static void TweakSetFiringTransform(
       TCallScope<void (__cdecl *)(UFGAmmoType *, const FTransform&)> &Scope,
       UFGAmmoType *AmmoType, const FTransform& firingTransform) {
-    if (UUEVREnhancements_VREquipment::HasVRThrowParameters()
-      && AmmoType->HasAuthority() && AmmoType->GetWeapon()->IsA(AFGChargedWeapon::StaticClass()) ) // && AmmoType->mInstigator == CharacterPlayer)
-    {
+    if (!AmmoType) {
+      // AmmoType should not be null, but just in case...
+      UUEVREnhancements_VREquipment::DebugLog(TEXT("TweakSetFiringTransform: AmmoType is null!"));
+      Scope(AmmoType, firingTransform);
+      return;
+    }
+    AFGWeapon* Weapon = AmmoType->GetWeapon();
+    if (!Weapon) {
+      // Weapon can be null! eg; if the ammo is shot from a Hog/Spitter
+      UUEVREnhancements_VREquipment::DebugLog(FString::Printf(TEXT("TweakSetFiringTransform: Weapon is null for Ammo Type %s!"), *AmmoType->GetName()));
+      Scope(AmmoType, firingTransform);
+      return;
+    }
+    // UUEVREnhancements_VREquipment::DebugLog(FString::Printf(TEXT("TweakSetFiringTransform: Owner: %s Instigator: %s Player: %s"),
+    //        *Weapon->GetOwner()->GetName(),
+    //        *Weapon->GetInstigator()->GetName(),
+    //        *UGameplayStatics::GetPlayerCharacter(Weapon->GetWorld(), 0)->GetName()));
+    if (UUEVREnhancements_VREquipment::HasVRThrowParameters() && AmmoType->HasAuthority()
+      && Weapon->IsA(AFGChargedWeapon::StaticClass())
+      && Weapon->GetInstigator() == UGameplayStatics::GetPlayerCharacter(Weapon->GetWorld(), 0)) {
       // Override the firing transform for the Nobelisk when we have VR parameters set (to set actual rotation instead of dispersed rotation)
       FTransform throwTransform = UUEVREnhancements_VREquipment::GetVRThrowTransform();
       UUEVREnhancements_VREquipment::DebugLog(FString::Printf(TEXT("TweakSetFiringTransform: Overriding firing transform: %s vs %s"), *firingTransform.Rotator().ToString(), *throwTransform.Rotator().ToString()));
@@ -63,6 +83,8 @@ FTransform UUEVREnhancements_VREquipment::spawnTransform;
 int32 UUEVREnhancements_VREquipment::throwForce;
 AActor* UUEVREnhancements_VREquipment::originActor = nullptr;
 AActor* UUEVREnhancements_VREquipment::targetActor = nullptr;
+// TODO: Track parameters per specific players
+// AFGCharacterPlayer* UUEVREnhancements_VREquipment::originPlayer = nullptr;
 
 UUEVREnhancements_VREquipment::UUEVREnhancements_VREquipment() {
   UUEVREnhancements_VREquipment::bHasParams = false;
