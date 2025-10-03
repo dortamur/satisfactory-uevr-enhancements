@@ -62,7 +62,12 @@ void UUEVREnhancements_UEVRBridge::SetLeftHandMode(bool left_hand_mode) {
   }
 }
 
-/** Manually set UEVR Aim Mode. Used for manual camera transitions eg; over-the-shoulder gesture inventory opening. */
+/** Manually set UEVR Aim Mode. Used for manual camera transitions eg; over-the-shoulder gesture inventory opening.
+ * 0 - Game Aim Mode
+ * 1 - HMD Aim Mode
+ * 2 - Right Hand Aim Mode
+ * 3 - Left Hand Aim Mode
+*/
 void UUEVREnhancements_UEVRBridge::SetAimMode(int32 aim_mode) {
   if (aim_mode != this->AimMode) {
     this->DebugLog(FString::Printf(TEXT("AimMode changed: %d"), aim_mode));
