@@ -126,6 +126,7 @@ void UUEVREnhancements_UEVRBridge::UpdateVRPlayerState(EVRPlayerState NewPlayerS
     case EVRPlayerState::Hypertube:
     case EVRPlayerState::PauseMenu:
     case EVRPlayerState::Cinematic:
+    case EVRPlayerState::PhotoMode:
       aim_mode = 0;
       break;
   }
