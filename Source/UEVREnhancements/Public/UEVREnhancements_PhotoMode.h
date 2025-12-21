@@ -18,4 +18,8 @@ public:
   DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FVRChangePhotoMode, bool, ModeEnabled);
   UPROPERTY(BlueprintAssignable, EditDefaultsOnly, Category = "VR")
   FVRChangePhotoMode VRChangePhotoMode;
+
+	UFUNCTION(BlueprintCallable)
+  void UpdateDecoupledMovement(float ForwardBack, float LeftRight, float UpDown, float Turn, float DeltaTime,
+                             float DeadZone, float Scale, class UFGPhotoModeComponent *PhotoModeComponent);
 };
