@@ -127,6 +127,7 @@ void UUEVREnhancements_UEVRBridge::UpdateVRPlayerState(EVRPlayerState NewPlayerS
     case EVRPlayerState::PauseMenu:
     case EVRPlayerState::Cinematic:
     case EVRPlayerState::PhotoModeUI:
+    case EVRPlayerState::KeyboardUI:
       aim_mode = 0;
       break;
     case EVRPlayerState::PhotoMode:
@@ -156,6 +157,7 @@ void UUEVREnhancements_UEVRBridge::UpdateVRPlayerState(EVRPlayerState NewPlayerS
   switch (NewPlayerState) {
     case EVRPlayerState::UIInteract:
     case EVRPlayerState::PauseMenu:
+    case EVRPlayerState::KeyboardUI:
       interact_mode = true;
       break;
   }

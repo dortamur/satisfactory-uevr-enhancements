@@ -23,7 +23,8 @@ enum class EVRPlayerState : uint8 {
   Portal                UMETA(DisplayName = "Portal"),
   Cinematic             UMETA(DisplayName = "Cinematic"),
   PhotoMode             UMETA(DisplayName = "PhotoMode"),
-  PhotoModeUI           UMETA(DisplayName = "PhotoModeUI")
+  PhotoModeUI           UMETA(DisplayName = "PhotoModeUI"),
+  KeyboardUI            UMETA(DisplayName = "KeyboardUI")
 };
 
 UENUM(BlueprintType)
