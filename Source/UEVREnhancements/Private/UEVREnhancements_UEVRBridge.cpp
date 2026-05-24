@@ -301,7 +301,7 @@ void UUEVREnhancements_UEVRBridge::InputActionsTick() {
 /** Called on Tick to translate a button state into an Input Action. */
 void UUEVREnhancements_UEVRBridge::CheckButtonAction(bool Condition, UInputAction *Action) {
   bool last_state = LastActions.FindRef(Action);
-  EVRInputActionState ActionState = Condition == last_state ? EVRInputActionState::Ongoing : (Condition ? EVRInputActionState::Start : EVRInputActionState::End );
+  EVRInputActionState ActionState = Condition && last_state ? EVRInputActionState::Ongoing : (Condition ? EVRInputActionState::Start : EVRInputActionState::End );
 
   // this->DebugLog(FString::Printf(TEXT("CheckButtonAction Tick: %s: %s => %s"), *Action->GetName(), last_state ? TEXT("true") : TEXT("false"), Condition ? TEXT("true") : TEXT("false")));
   if (Condition || last_state) {
@@ -321,13 +321,13 @@ void UUEVREnhancements_UEVRBridge::CheckStickPosAction(double X, double Y, UInpu
 
   bool new_state = !(FMath::IsNearlyEqual(X, 0.0, 0.001) && FMath::IsNearlyEqual(Y, 0.0, 0.001));
   if (new_state || last_state) {
-    // this->DebugLog(FString::Printf(TEXT("CheckButtonAction Broadcast: %s = %s"), *Action->GetName(), Condition ? TEXT("true") : TEXT("false")));
+    // this->DebugLog(FString::Printf(TEXT("CheckStickPosAction Broadcast: %s = %s"), *Action->GetName(), new_state ? TEXT("true") : TEXT("false")));
     FVector2D StickPos = new_state ? FVector2D(X, Y) : FVector2D(0.0f, 0.0f);
     DoVectorInputAction.Broadcast(StickPos, Action);
   }
 
   if (new_state != last_state) {
-    // this->DebugLog(FString::Printf(TEXT("CheckButtonAction Updating State: %s = %s"), *Action->GetName(), Condition ? TEXT("true") : TEXT("false")));
+    // this->DebugLog(FString::Printf(TEXT("CheckStickPosAction Updating State: %s = %s"), *Action->GetName(), new_state ? TEXT("true") : TEXT("false")));
     LastActions.Emplace(Action, new_state);
   }
 }
