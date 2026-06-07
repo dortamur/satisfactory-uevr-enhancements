@@ -2,7 +2,7 @@
 #include "FGPlayerState.h"
 #include "GameFramework/PlayerState.h"
 #include <FGPhotoModeComponent.h>
-#include <NativeHookManager.h>
+#include <Patching/NativeHookManager.h>
 
 void UUEVREnhancements_PhotoMode::DebugLog(FString DebugString) {
   UE_LOG(UEVREnhancements, Verbose, TEXT("[VRPhotoMode] %s"), *DebugString);
@@ -58,6 +58,7 @@ void UUEVREnhancements_PhotoMode::UpdateDecoupledMovement(float ForwardBack, flo
 
   if (Turn > DeadZone || Turn < -DeadZone) {
     UUEVREnhancements_PhotoMode::DebugLog(FString::Printf(TEXT("Turn: %f"), Turn * TimeScaled));
-    PhotoModeComponent->MoveMouseX(Turn * TimeScaled);
+
+    PhotoModeComponent->LookAxis(FVector2D(Turn * TimeScaled, 0));
   }
 }
