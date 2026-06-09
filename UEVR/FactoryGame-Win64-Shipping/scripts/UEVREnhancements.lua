@@ -1,5 +1,5 @@
 -- Profile version to match against UEVR Enhancements mod expected version
-local uevr_profile_version = 'v1.0.1-1'
+local uevr_profile_version = 'v1.2.0-0'
 
 local log_functions = uevr.params.functions
 

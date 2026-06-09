@@ -101,6 +101,7 @@ VR_SnapturnTurnAngle=45
 VR_SplitscreenViewIndex=0
 VR_SwapControllerInputs=false
 VR_SyncedSequentialMethod=1
+VR_SynchronizationMode=2
 VR_Toggle2DScreenKey=-1
 VR_ToggleSlateGUIKey=-1
 VR_UncapFramerate=true
