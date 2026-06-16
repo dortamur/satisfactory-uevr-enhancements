@@ -84,53 +84,37 @@ void UMouseEmulation::SimulateMouseButtonWithModifier(const FKey MouseButton, bo
         FModifierKeysState(bShift, false, bCtrl, false, bAlt, false, false, false, false)
     );
 
-    // ProcessMouseButtonDownEvent checks application active state and window focus,
-    // which fail when the game is paused. Instead, use RoutePointerDownEvent/RoutePointerUpEvent
-    // with an explicit widget path to bypass those checks entirely.
-    TArray<TSharedRef<SWindow>> AllWindows;
-    SlateApp.GetAllVisibleWindowsOrdered(AllWindows);
-    FWidgetPath WidgetPath = SlateApp.LocateWindowUnderMouse(SlateApp.GetCursorPos(), AllWindows);
-
-    UMouseEmulation::DebugLog(FString::Printf(TEXT("SimulateMouseButtonWithModifier: Button=%s Down=%d WidgetPath=%s"),
-        *MouseButton.ToString(), bButtonDown, WidgetPath.IsValid() ? TEXT("Valid") : TEXT("Invalid")));
+    UMouseEmulation::DebugLog(FString::Printf(TEXT("SimulateMouseButtonWithModifier: Button=%s Down=%d Shift=%d Ctrl=%d Alt=%d"),
+        *MouseButton.ToString(), bButtonDown, bShift, bCtrl, bAlt));
 
     if (bButtonDown)
     {
-        if (WidgetPath.IsValid())
+        TSharedPtr<FGenericWindow> NativeWindow;
+        TSharedPtr<SWindow> ActiveWindow = SlateApp.GetActiveTopLevelWindow();
+        if (ActiveWindow.IsValid())
         {
-            UMouseEmulation::DebugLog(TEXT("SimulateMouseButtonWithModifier: RoutePointerDownEvent via WidgetPath"));
-            SlateApp.RoutePointerDownEvent(WidgetPath, MouseEvent);
+            NativeWindow = ActiveWindow->GetNativeWindow();
+            UMouseEmulation::DebugLog(TEXT("SimulateMouseButtonWithModifier: ProcessMouseButtonDownEvent via ActiveTopLevelWindow (fallback)"));
         }
         else
         {
-            // Fallback: use window-level processing if no widget path found
-            TSharedPtr<FGenericWindow> NativeWindow;
-            TSharedPtr<SWindow> ActiveWindow = SlateApp.GetActiveTopLevelWindow();
-            if (ActiveWindow.IsValid())
-            {
-                NativeWindow = ActiveWindow->GetNativeWindow();
-                UMouseEmulation::DebugLog(TEXT("SimulateMouseButtonWithModifier: ProcessMouseButtonDownEvent via ActiveTopLevelWindow (fallback)"));
-            }
-            else
-            {
-                UMouseEmulation::DebugLog(TEXT("SimulateMouseButtonWithModifier: ProcessMouseButtonDownEvent via NullWindow (no active window found)"));
-            }
-            SlateApp.ProcessMouseButtonDownEvent(NativeWindow, MouseEvent);
+            UMouseEmulation::DebugLog(TEXT("SimulateMouseButtonWithModifier: ProcessMouseButtonDownEvent via NullWindow (no active window found)"));
         }
+        SlateApp.ProcessMouseButtonDownEvent(NativeWindow, MouseEvent);
     }
     else
     {
-        if (WidgetPath.IsValid())
-        {
-            UMouseEmulation::DebugLog(TEXT("SimulateMouseButtonWithModifier: RoutePointerUpEvent via WidgetPath"));
-            SlateApp.RoutePointerUpEvent(WidgetPath, MouseEvent);
-        }
-        else
-        {
-            UMouseEmulation::DebugLog(TEXT("SimulateMouseButtonWithModifier: ProcessMouseButtonUpEvent (fallback)"));
-            SlateApp.ProcessMouseButtonUpEvent(MouseEvent);
-        }
+        UMouseEmulation::DebugLog(TEXT("SimulateMouseButtonWithModifier: ProcessMouseButtonUpEvent (fallback)"));
+        SlateApp.ProcessMouseButtonUpEvent(MouseEvent);
     }
+
+    // if (bButtonDown) {
+    //     TSharedPtr<FGenericWindow, ESPMode::ThreadSafe> NullWindow;
+    //     SlateApp.ProcessMouseButtonDownEvent(NullWindow, MouseEvent);
+    // }
+    // else {
+    //     SlateApp.ProcessMouseButtonUpEvent(MouseEvent);
+    // }
 }
 
 void UMouseEmulation::SimulateMouseDoubleClick(const FKey MouseButton)
