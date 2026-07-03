@@ -76,7 +76,7 @@ public:
 
 	/** Called by UEVR plugin when UEVR injects (switching game to VR mode).  */
 	UFUNCTION(BlueprintCallable)
-	void InitUEVRBridge(FString Profile, FString UEVR);
+	void InitUEVRBridge(FString Profile, FString UEVR, FString BuildDate = FString(""), FString CommitHash = FString(""), FString Branch = FString(""));
 
 	/** Called on Tick to check button states and call input actions as required. */
 	UFUNCTION(BlueprintCallable)
@@ -104,11 +104,15 @@ public:
 
 	/** Compares the current UEVR API version against the provided version and returns true if the same or newer. */
 	UFUNCTION(BlueprintPure)
-	void CheckAPIVersion(FString MinVersion, bool& Valid);
+	void CheckUEVRVersion(FString MinVersion, FString CommitHash, FString BuildDate, bool& Valid);
 
 	/** Given a semantic version as a string, converts and returns it to as an array of integers for numeric comparison. */
 	UFUNCTION(BlueprintCallable)
 	void VersionStringToArrayInt(FString Version, TArray<int32>& VersionInts);
+
+	// Given a string of format DD.MM.YY, return an Integer representation for simple comparison
+	UFUNCTION(BlueprintCallable)
+	int32 DateStringToInt(FString Date);
 
 	virtual void DispatchLifecycleEvent(ELifecyclePhase Phase) override;
 
@@ -145,7 +149,15 @@ public:
 	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category="UEVR", meta=(MultiLine="true"))
 	FString APIVersion;
 
-	/** Please add a variable description */
+	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category="UEVR")
+	FString UEVRBuildDate;
+
+	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category="UEVR")
+	FString UEVRCommitHash;
+
+	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category="UEVR")
+	FString UEVRBranch;
+
 	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category="UEVR")
 	bool UIInteractMode;
 
