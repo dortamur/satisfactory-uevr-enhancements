@@ -2,17 +2,15 @@
 
 <img align="right" src="Resources/Icon128.png"/>This is a [mod for Satisfactory](https://ficsit.app/mod/UEVREnhancements) intended to accompany Praydog's [Unreal Engine Virtual Reality (UEVR) Tool](https://uevr.io/), to provide VR-specific UI and interaction enhancements, to make playing Satisfactory in VR more practical and enjoyable.
 
-**Note: UEVR Enhancements v1.2.0 is in *early alpha* and works with Satisfactory 1.2!**
+**Note: UEVR Enhancements v1.2.0 for Satisfactory 1.2 currently requires a UEVR patch!**
 
-**See the post on [patreon](https://www.patreon.com/Dortamur/posts/161584478) or the [#sf-experimental](https://discord.com/channels/747967102895390741/1247531061093863424) channel on the [Flat2VR Community](https://flat2vr.com/).**
-
-**This mod does not enable VR by itself!**<br/>
+**This mod does not enable VR by itself!**
 You will also need:
 - UEVR Injector Tool version [nightly 1133 or newer](https://github.com/praydog/UEVR-nightly/releases)
-- UEVR Injector Tool [Satisfactory Patch](https://github.com/dortamur/satisfactory-uevr-enhancements/raw/refs/heads/feature/1.2.0-updates/UEVR/UEVR-Satisfactory-1.2-fix.zip)
-- The Satisfactory profile for UEVR depending on where you bought Satisfactory:
-  - [UEVR Profile for Steam Satisfactory](https://github.com/dortamur/satisfactory-uevr-enhancements/raw/refs/heads/feature/1.2.0-updates/UEVR/FactoryGameSteam-Win64-Shipping.zip)
-  - [UEVR Profile for Epic Store Satisfactory](https://github.com/dortamur/satisfactory-uevr-enhancements/raw/refs/heads/feature/1.2.0-updates/UEVR/FactoryGameEGS-Win64-Shipping.zip)
+- UEVR Injector Tool [Satisfactory Patch](https://github.com/dortamur/satisfactory-uevr-enhancements/raw/master/UEVR/UEVR-Satisfactory-fix.zip)
+  - The Satisfactory profile for UEVR depending on where you bought Satisfactory:
+	- [UEVR Profile for Steam Satisfactory](https://github.com/dortamur/satisfactory-uevr-enhancements/raw/master/UEVR/FactoryGameSteam-Win64-Shipping.zip)
+	- [UEVR Profile for Epic Store Satisfactory](https://github.com/dortamur/satisfactory-uevr-enhancements/raw/master/UEVR/FactoryGameEGS-Win64-Shipping.zip)
 
 See the [Getting Started](https://github.com/dortamur/satisfactory-uevr-enhancements/wiki/Getting-Started) page for full installation details, and the [Troubleshooting](https://github.com/dortamur/satisfactory-uevr-enhancements/wiki/Troubleshooting) page if you have problems getting it working.
 See the [Controls](https://github.com/dortamur/satisfactory-uevr-enhancements/wiki/Controls) for tips on usage, and check the [Roadmap](https://github.com/dortamur/satisfactory-uevr-enhancements/wiki/Roadmap) for current progress and future goals.
@@ -29,6 +27,7 @@ For further information, see:
 - [Roadmap](https://github.com/dortamur/satisfactory-uevr-enhancements/wiki/Roadmap)
 
 If you prefer a video guide, check out the [Setup Guide](https://www.youtube.com/watch?v=Hxy5kKsCVNw) for step-by-step installation, as well as the older [Satisfactory in VR Guide](https://www.youtube.com/watch?v=5PAEs0eoGuk) for how to use the mod once installed.
+**Note: This is an older guide and does not include downloading and installing the required extra UEVR patch!**
 You can also [pop by my twitch channel](https://www.twitch.tv/dortamur) to see the mod in action!
 
 ## Support this project
