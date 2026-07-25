@@ -1,6 +1,6 @@
 #include "UEVREnhancements_VREquipment.h"
-#include "FGChargedWeapon.h"
-#include "FGAmmoType.h"
+#include "Equipment/FGChargedWeapon.h"
+#include "Equipment/FGAmmoType.h"
 #include "UEVREnhancements.h"
 #include "Kismet/GameplayStatics.h"
 #include "GameFramework/Character.h"

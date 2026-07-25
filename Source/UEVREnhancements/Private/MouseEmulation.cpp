@@ -1,5 +1,10 @@
 #include "MouseEmulation.h"
 #include "Framework/Application/SlateApplication.h"
+#include "UEVREnhancements.h"
+
+void UMouseEmulation::DebugLog(FString DebugString) {
+  UE_LOG(UEVREnhancements, Verbose, TEXT("[MouseEmulation] %s"), *DebugString);
+}
 
 // Derived from:
 //  https://forums.unrealengine.com/t/how-to-inject-simulate-mouse-clicks/25602/12
@@ -79,25 +84,37 @@ void UMouseEmulation::SimulateMouseButtonWithModifier(const FKey MouseButton, bo
         FModifierKeysState(bShift, false, bCtrl, false, bAlt, false, false, false, false)
     );
 
-    // Get the main game application window even if it does not have focus
-    // TSharedPtr<SWindow> MainSlateWindow = SlateApp.GetActiveTopLevelWindow();
-    // if (!MainSlateWindow.IsValid())
-    // {
-    //     TArray<TSharedRef<SWindow>> AllWindows = SlateApp.GetWindows();
-    //     if (AllWindows.Num() > 0)
-    //     {
-    //         MainSlateWindow = AllWindows[0];
-    //     }
-    // }
-    // TSharedPtr<FGenericWindow> NativeWindow = MainSlateWindow.IsValid() ? MainSlateWindow->GetNativeWindow() : nullptr;
+    UMouseEmulation::DebugLog(FString::Printf(TEXT("SimulateMouseButtonWithModifier: Button=%s Down=%d Shift=%d Ctrl=%d Alt=%d"),
+        *MouseButton.ToString(), bButtonDown, bShift, bCtrl, bAlt));
 
-    if (bButtonDown) {
-        TSharedPtr<FGenericWindow, ESPMode::ThreadSafe> NullWindow;
-        SlateApp.ProcessMouseButtonDownEvent(NullWindow, MouseEvent);
+    if (bButtonDown)
+    {
+        TSharedPtr<FGenericWindow> NativeWindow;
+        TSharedPtr<SWindow> ActiveWindow = SlateApp.GetActiveTopLevelWindow();
+        if (ActiveWindow.IsValid())
+        {
+            NativeWindow = ActiveWindow->GetNativeWindow();
+            UMouseEmulation::DebugLog(TEXT("SimulateMouseButtonWithModifier: ProcessMouseButtonDownEvent via ActiveTopLevelWindow (fallback)"));
+        }
+        else
+        {
+            UMouseEmulation::DebugLog(TEXT("SimulateMouseButtonWithModifier: ProcessMouseButtonDownEvent via NullWindow (no active window found)"));
+        }
+        SlateApp.ProcessMouseButtonDownEvent(NativeWindow, MouseEvent);
     }
-    else {
+    else
+    {
+        UMouseEmulation::DebugLog(TEXT("SimulateMouseButtonWithModifier: ProcessMouseButtonUpEvent (fallback)"));
         SlateApp.ProcessMouseButtonUpEvent(MouseEvent);
     }
+
+    // if (bButtonDown) {
+    //     TSharedPtr<FGenericWindow, ESPMode::ThreadSafe> NullWindow;
+    //     SlateApp.ProcessMouseButtonDownEvent(NullWindow, MouseEvent);
+    // }
+    // else {
+    //     SlateApp.ProcessMouseButtonUpEvent(MouseEvent);
+    // }
 }
 
 void UMouseEmulation::SimulateMouseDoubleClick(const FKey MouseButton)

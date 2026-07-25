@@ -1,5 +1,5 @@
 -- Profile version to match against UEVR Enhancements mod expected version
-local uevr_profile_version = 'v1.0.1-1'
+local uevr_profile_version = 'v1.2.0-1'
 
 local log_functions = uevr.params.functions
 
@@ -107,39 +107,17 @@ local function init_bridge()
     end
   end
 
-  -- Legacy Support for Get UEVR Bridge via ModSubsystem VRCoordinator
-  if uevr_bridge == nil then
-    local mod_subsystem_c = api:find_uobject("Class /Script/SML.ModSubsystem")
-    if mod_subsystem_c == nil then
-        vr_log("Class ModSubsystem not found")
-    else
-      vr_log("Subsystem Class: "..mod_subsystem_c:get_full_name())
-      local subsystems = UEVR_UObjectHook.get_objects_by_class(mod_subsystem_c, false)
-
-      vr_log("Subsystems: ")
-      for i, subsystem in ipairs(subsystems) do
-        vr_log(" - "..subsystem:get_fname():to_string()..' / '..subsystem:get_full_name())
-        if (subsystem:get_fname():to_string() == 'UEVREnhancements_VRCoordinatorSystem_C') then
-          vrcoordinator = subsystem
-        end
-      end
-    end
-    if vrcoordinator ~= nil then
-      -- if true then return end -- Breakpoint
-      vr_log('Found legacy UEVRBridge module via VRCoordinator Subsystem!')
-      uevr_bridge = vrcoordinator.UEVRBridge
-    end
-  end
-
   if uevr_bridge == nil then
     vr_log("UEVRBridge not found")
   else
     vr_log("UEVRBridge found!")
     local pv = uevr.params.version
-    vr_log("PV: "..tostring(pv)..' / '..tostring(pv.major)..'.'..tostring(pv.minor)..'.'..tostring(pv.patch))
+    local fn = uevr.params.functions
+    vr_log("UEVR API: "..tostring(pv)..' / '..tostring(pv.major)..'.'..tostring(pv.minor)..'.'..tostring(pv.patch))
+    vr_log("UEVR Build: "..tostring(fn.get_build_date())..' / '..tostring(fn.get_commit_hash())..' / '..tostring(fn.get_branch()))
     vr_log("UEVRBridge: "..uevr_bridge:get_fname():to_string()..' / '..uevr_bridge:get_full_name())
-    uevr_bridge:DebugLog('Test')
-    uevr_bridge:InitUEVRBridge(uevr_profile_version, tostring(pv.major)..'.'..tostring(pv.minor)..'.'..tostring(pv.patch))
+    -- uevr_bridge:DebugLog('Test')
+    uevr_bridge:InitUEVRBridge(uevr_profile_version, tostring(pv.major)..'.'..tostring(pv.minor)..'.'..tostring(pv.patch), tostring(fn.get_build_date()), tostring(fn.get_commit_hash()), tostring(fn.get_branch()))
     -- uevr_bridge.IsInitialised = true
 
     uevr_bridge.SetHapticsRightEffect:hook_ptr(nil, function(fn, obj, locals, result)
@@ -322,17 +300,21 @@ end)
 
 uevr.sdk.callbacks.on_pre_engine_tick(function(engine, delta)
   -- if true then return end -- Breakpoint
-  if (uevr_bridge == nil) then
-    init_bridge()
-    if (uevr_bridge == nil) then
-      return
-    end
-  end
 
+  -- Check every *n* ticks...
   tick_countdown = tick_countdown - 1
   if (tick_countdown <= 0) then
+    tick_countdown = 500
+
+    if (uevr_bridge == nil) then
+      init_bridge()
+      if (uevr_bridge == nil) then
+        vr_log('UEVR Enhancement Mod not found! Did you install the mod?')
+        return
+      end
+    end
+
     -- vr_log('States: AM='..tostring(uevr_bridge.AimMode)..' UII='..tostring(uevr_bridge.UIInteractMode)..' MM='..tostring(uevr_bridge.MovementMode)..' RS='..tostring(uevr_bridge.RoomscaleMode))
-    tick_countdown = 200
   end
 
 end)

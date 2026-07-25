@@ -40,12 +40,12 @@ UUEVREnhancements_UEVRBridge::UUEVREnhancements_UEVRBridge() {
 }
 
 void UUEVREnhancements_UEVRBridge::DispatchLifecycleEvent(ELifecyclePhase Phase) {
-    //Register default content before calling blueprint event logic
-    if (Phase == ELifecyclePhase::INITIALIZATION) {
-        UE_LOG(UEVREnhancements, Verbose, TEXT("[UEVRBridge] Initialisation!"));
-    }
+  //Register default content before calling blueprint event logic
+  if (Phase == ELifecyclePhase::INITIALIZATION) {
+    UE_LOG(UEVREnhancements, Verbose, TEXT("[UEVRBridge] Initialisation!"));
+  }
 
-    Super::DispatchLifecycleEvent(Phase);
+  Super::DispatchLifecycleEvent(Phase);
 }
 
 void UUEVREnhancements_UEVRBridge::DebugLog(FString DebugString) {
@@ -249,12 +249,15 @@ void UUEVREnhancements_UEVRBridge::UpdateRightTriggerState(bool RT) {
 }
 
 /** Called by UEVR plugin when UEVR injects (switching game to VR mode).  */
-void UUEVREnhancements_UEVRBridge::InitUEVRBridge(FString Profile, FString UEVR) {
+void UUEVREnhancements_UEVRBridge::InitUEVRBridge(FString Profile, FString UEVR, FString BuildDate, FString CommitHash, FString Branch) {
   this->ProfileVersion = Profile;
   this->APIVersion = UEVR;
+  this->UEVRBuildDate = BuildDate;
+  this->UEVRCommitHash = CommitHash;
+  this->UEVRBranch = Branch;
   this->IsInitialised = true;
 
-  this->DebugLog(FString::Printf(TEXT("Init UEVRBridge: Profile=%s UEVR=%s"), *Profile, *UEVR));
+  this->DebugLog(FString::Printf(TEXT("Init UEVRBridge: Profile=%s UEVR API=%s Build Date=%s Commit Hash=%s Branch=%s"), *Profile, *UEVR, *BuildDate, *CommitHash, *Branch));
 
   // UButtonHintBarFix::RegisterUEVRFixHooks();
 
@@ -358,28 +361,53 @@ void UUEVREnhancements_UEVRBridge::SetHapticsLeftEffect(FS_VRHapticEffect effect
 void UUEVREnhancements_UEVRBridge::RepeatHapticsLeftEffect(int32 _repeat) {}
 
 /** Compares the current UEVR API version against the provided version and returns true if the same or newer. */
-void UUEVREnhancements_UEVRBridge::CheckAPIVersion(FString MinVersion, bool &Valid) {
+void UUEVREnhancements_UEVRBridge::CheckUEVRVersion(FString MinVersion, FString CommitHash, FString BuildDate, bool &Valid) {
   TArray<int32> _minVersion, _actualVersion;
   VersionStringToArrayInt(this->APIVersion, _actualVersion);
   VersionStringToArrayInt(MinVersion, _minVersion);
 
-  // Compare versions at each level
+  // If a build date is required, check it's the same or newer
+  if (!BuildDate.IsEmpty() && DateStringToInt(this->UEVRBuildDate) < DateStringToInt(BuildDate))
+  {
+    this->DebugLog(FString::Printf(TEXT("UEVR Build Date is too old: %d < %d"), DateStringToInt(this->UEVRBuildDate), DateStringToInt(BuildDate)));
+    Valid = false;
+    return;
+  }
+
+  // If a git commit is specified, check it is the same or newer
+  if (!CommitHash.IsEmpty() && this->UEVRCommitHash != CommitHash)
+  {
+    this->DebugLog(FString::Printf(TEXT("UEVR commit hash mismatch: %s != %s"), *this->UEVRCommitHash, *CommitHash));
+    Valid = false;
+    return;
+  }
+
+    // Compare versions at each level
   for (int32 i = 0; i < FMath::Min(_actualVersion.Num(), _minVersion.Num()); ++i)
   {
-      if (_actualVersion[i] > _minVersion[i])
-      {
-          Valid = true;
-          return;
-      }
-      else if (_actualVersion[i] < _minVersion[i])
-      {
-          Valid = false;
-          return;
-      }
+    if (_actualVersion[i] > _minVersion[i])
+    {
+      Valid = true;
+      return;
+  }
+    else if (_actualVersion[i] < _minVersion[i])
+    {
+      this->DebugLog(FString::Printf(TEXT("UEVR API Version is too old: %s < %s"), *this->APIVersion, *MinVersion));
+      Valid = false;
+      return;
+    }
   }
 
   // All numbers equal - is one longer (minor revision)?
-  Valid = _actualVersion.Num() >= _minVersion.Num();
+  if (_actualVersion.Num() < _minVersion.Num()) {
+    this->DebugLog(FString::Printf(TEXT("UEVR API Version is too old: %s < %s"), *this->APIVersion, *MinVersion));
+    Valid = false;
+    return;
+  }
+
+  // All tests passed!
+  Valid = true;
+  return;
 }
 
 /** Given a semantic version as a string, converts and returns it to as an array of integers for numeric comparison. */
@@ -394,7 +422,24 @@ void UUEVREnhancements_UEVRBridge::VersionStringToArrayInt(FString Version, TArr
   // Convert each part to an integer and add to the output array
   for (const FString& Part : VersionParts)
   {
-      int32 VersionNumber = FCString::Atoi(*Part);
-      VersionInts.Add(VersionNumber);
+    int32 VersionNumber = FCString::Atoi(*Part);
+    VersionInts.Add(VersionNumber);
   }
+}
+
+// Given a string of format DD.MM.YY, return an Integer representation for simple comparison
+int32 UUEVREnhancements_UEVRBridge::DateStringToInt(FString Date)
+{
+  TArray<FString> Parts;
+  Date.ParseIntoArray(Parts, TEXT("."), true);
+  int32 DateInt = 0;
+  if (Parts.Num() == 3)
+  {
+    // Reorder DD.MM.YYYY → YYYYMMDD integer for direct comparison
+    DateInt = FCString::Atoi(*Parts[2]) * 10000
+            + FCString::Atoi(*Parts[1]) * 100
+            + FCString::Atoi(*Parts[0]);
+  }
+  this->DebugLog(FString::Printf(TEXT("Date String to Int: %s => %d"), *Date, DateInt));
+  return DateInt;
 }
