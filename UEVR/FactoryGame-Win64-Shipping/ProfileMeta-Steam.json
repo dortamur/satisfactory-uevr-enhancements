@@ -4,13 +4,13 @@
   "gameName": "Satisfactory",
   "gameVersion": "V1.2 (Steam)",
   "authorName": "Dortamur",
-  "uevrBackendName": "Satisfactory",
-  "minUEVRNightlyNumber": 1133,
+  "uevrBackendName": "Dortamur",
+  "minUEVRNightlyNumber": null,
   "maxUEVRNightlyNumber": null,
   "nullifyPlugins": false,
   "lateInjection": true,
   "modifiedDate": "2026-07-12T15:12:57.5438676",
-  "remarks": "Requires game mod installed: UEVR Enhancements mod v1.2.0 or newer",
+  "remarks": "Requires game mod installed: UEVR Enhancements mod v1.2.0 or newer, UEVR Easy Injector 3.3.0 or newer",
   "donateURL": "https://ko-fi.com/dortamur",
   "fileCopies": null
 }
