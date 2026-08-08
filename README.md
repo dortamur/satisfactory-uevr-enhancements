@@ -2,7 +2,7 @@
 
 <img align="right" src="Resources/Icon128.png"/>This is a [mod for Satisfactory](https://ficsit.app/mod/UEVREnhancements) intended to accompany Praydog's [Unreal Engine Virtual Reality (UEVR) Tool](https://uevr.io/), to provide VR-specific UI and interaction enhancements, to make playing Satisfactory in VR more practical and enjoyable.
 
-**Note: UEVR Enhancements v1.2.0 for Satisfactory 1.2 currently requires a UEVR patch!**
+**Note: UEVR Enhancements v1.2.1 for Satisfactory 1.2 currently requires a UEVR patch!**
 
 **This mod does not enable VR by itself!**
 You will also need:
