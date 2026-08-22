@@ -7,7 +7,7 @@ float ScaleStickPosition(int32 IntPos) {
   return FMath::Clamp(static_cast<float>(IntPos) / 32000.0f, -1.0f, 1.0f);
 }
 
-TArray<FName> InputActionPaths = {
+TArray<FName> UUEVREnhancements_UEVRBridge::InputActionPaths = {
     TEXT("/UEVREnhancements/Inputs/Actions/IA_VRLeftButtonX"),  // 0
     TEXT("/UEVREnhancements/Inputs/Actions/IA_VRLeftButtonY"),  // 1
     TEXT("/UEVREnhancements/Inputs/Actions/IA_VRRightButtonA"), // 2

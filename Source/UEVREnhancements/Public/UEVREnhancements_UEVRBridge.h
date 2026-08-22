@@ -225,8 +225,10 @@ private:
 	double stick_left_y;
 	double stick_right_x;
 	double stick_right_y;
-
 	EVRPlayerState PlayerState;
+
+	// Array of Input Action asset paths to load in the constructor.
+	static TArray<FName> InputActionPaths;
 
 	// Array of Input Actions to the list of above input state variables.
 	TArray<UInputAction*> InputActions;
