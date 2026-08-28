@@ -366,6 +366,14 @@ void UUEVREnhancements_UEVRBridge::CheckUEVRVersion(FString MinVersion, FString 
   VersionStringToArrayInt(this->APIVersion, _actualVersion);
   VersionStringToArrayInt(MinVersion, _minVersion);
 
+  // If a git commit is specified, and it matches, it's valid!
+  if (!CommitHash.IsEmpty() && this->UEVRCommitHash == CommitHash)
+  {
+    this->DebugLog(FString::Printf(TEXT("UEVR commit hash match: %s == %s"), *this->UEVRCommitHash, *CommitHash));
+    Valid = true;
+    return;
+  }
+
   // If a build date is required, check it's the same or newer
   if (!BuildDate.IsEmpty() && DateStringToInt(this->UEVRBuildDate) < DateStringToInt(BuildDate))
   {
@@ -374,15 +382,7 @@ void UUEVREnhancements_UEVRBridge::CheckUEVRVersion(FString MinVersion, FString 
     return;
   }
 
-  // If a git commit is specified, check it is the same or newer
-  if (!CommitHash.IsEmpty() && this->UEVRCommitHash != CommitHash)
-  {
-    this->DebugLog(FString::Printf(TEXT("UEVR commit hash mismatch: %s != %s"), *this->UEVRCommitHash, *CommitHash));
-    Valid = false;
-    return;
-  }
-
-    // Compare versions at each level
+  // Compare versions at each level
   for (int32 i = 0; i < FMath::Min(_actualVersion.Num(), _minVersion.Num()); ++i)
   {
     if (_actualVersion[i] > _minVersion[i])
