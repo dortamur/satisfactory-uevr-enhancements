@@ -57,7 +57,7 @@ UInputAction* UUEVREnhancements_VRVehicle::GetAirControlAction() {
 }
 
 void UUEVREnhancements_VRVehicle::ThrottleSteering(class AFGWheeledVehicle *vehicle, float throttle, float brake, float steeringAxis) {
-  this->DebugLog(FString::Printf(TEXT("ThrottleSteering: Throttle=%f, Brake=%f, SteeringAxis=%f"), throttle, brake, steeringAxis));
+  // this->DebugLog(FString::Printf(TEXT("ThrottleSteering: Throttle=%f, Brake=%f, SteeringAxis=%f"), throttle, brake, steeringAxis));
   if (vehicle) {
     vehicle->MoveForward(throttle, brake);
     vehicle->MoveRight(steeringAxis);
