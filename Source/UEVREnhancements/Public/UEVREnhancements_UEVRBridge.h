@@ -210,21 +210,21 @@ public:
 
 private:
 	/** Current button and stick states */
-	bool button_x;
-	bool button_y;
-	bool button_a;
-	bool button_b;
-	bool button_left_stick;
-	bool button_left_grip;
-	bool button_left_trigger;
-	bool button_right_stick;
-	bool button_right_grip;
-	bool button_right_trigger;
-	bool button_start;
-	double stick_left_x;
-	double stick_left_y;
-	double stick_right_x;
-	double stick_right_y;
+	bool button_x = false;
+	bool button_y = false;
+	bool button_a = false;
+	bool button_b = false;
+	bool button_left_stick = false;
+	bool button_left_grip = false;
+	bool button_left_trigger = false;
+	bool button_right_stick = false;
+	bool button_right_grip = false;
+	bool button_right_trigger = false;
+	bool button_start = false;
+	double stick_left_x = 0.0;
+	double stick_left_y = 0.0;
+	double stick_right_x = 0.0;
+	double stick_right_y = 0.0;
 	EVRPlayerState PlayerState;
 
 	// Array of Input Action asset paths to load in the constructor.

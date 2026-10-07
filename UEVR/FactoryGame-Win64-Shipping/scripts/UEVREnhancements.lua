@@ -1,5 +1,5 @@
 -- Profile version to match against UEVR Enhancements mod expected version
-local uevr_profile_version = 'v1.2.0-1'
+local uevr_profile_version = 'v1.2.2-1'
 
 local log_functions = uevr.params.functions
 
@@ -259,10 +259,12 @@ uevr.sdk.callbacks.on_xinput_get_state(function(retval, user_index, state)
 
   local gamepad = state.Gamepad
 
-    -- Lock onto the first slot that ever reports input; ignore the rest.
-  if active_controller == nil and gamepad.wButtons ~= 0 then
+  if active_controller == nil then
+    -- Lock onto the first slot that ever reports input (just check buttons+triggers); ignore the rest.
+    if gamepad.wButtons ~= 0 or gamepad.bLeftTrigger ~= 0 or gamepad.bRightTrigger ~= 0 then
       active_controller = user_index
       vr_log("Locked controller to index " .. user_index)
+    end
   end
 
   if active_controller ~= nil and user_index ~= active_controller then
