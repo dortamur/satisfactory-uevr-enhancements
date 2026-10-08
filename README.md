@@ -2,13 +2,11 @@
 
 <img align="right" src="Resources/Icon128.png"/>This is a [mod for Satisfactory](https://ficsit.app/mod/UEVREnhancements) intended to accompany Praydog's [Unreal Engine Virtual Reality (UEVR) Tool](https://uevr.io/), to provide VR-specific UI and interaction enhancements, to make playing Satisfactory in VR more practical and enjoyable.
 
-**Note: UEVR Enhancements v1.2.1 for Satisfactory 1.2 currently requires a UEVR patch!**
-
 **This mod does not enable VR by itself!**
+
 You will also need:
-- UEVR Injector Tool version [nightly 1133 or newer](https://github.com/praydog/UEVR-nightly/releases)
-- UEVR Injector Tool [Satisfactory Patch](https://github.com/dortamur/satisfactory-uevr-enhancements/raw/master/UEVR/UEVR-Satisfactory-fix.zip)
-  - The Satisfactory profile for UEVR depending on where you bought Satisfactory:
+- UEVR Injector Tool version [nightly 1140 or newer](https://github.com/praydog/UEVR-nightly/releases)
+- The Satisfactory profile for UEVR depending on where you bought Satisfactory:
 	- [UEVR Profile for Steam Satisfactory](https://github.com/dortamur/satisfactory-uevr-enhancements/raw/master/UEVR/FactoryGameSteam-Win64-Shipping.zip)
 	- [UEVR Profile for Epic Store Satisfactory](https://github.com/dortamur/satisfactory-uevr-enhancements/raw/master/UEVR/FactoryGameEGS-Win64-Shipping.zip)
 
