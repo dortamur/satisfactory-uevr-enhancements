@@ -1,5 +1,5 @@
 -- Profile version to match against UEVR Enhancements mod expected version
-local uevr_profile_version = 'v1.2.0-1'
+local uevr_profile_version = 'v1.2.2-1'
 
 local log_functions = uevr.params.functions
 
@@ -11,6 +11,7 @@ vr_log("Initializing UEVREnhancements.lua "..uevr_profile_version)
 
 UEVR_UObjectHook.activate()
 
+local vr = uevr.params.vr
 local api = uevr.api;
 local uobjects = uevr.types.FUObjectArray.get()
 local last_gamepad = {}
@@ -24,6 +25,22 @@ local movement_mode = 0 -- -1
 local roomscale_mode = false
 local tick_countdown = 0
 local aim_methods = {'Game', 'HMD', 'Right Hand', 'Left Hand'}
+local button_labels = {'A', 'X', 'B', 'Y', 'LeftStick', 'RightStick', 'LeftGrip', 'RightGrip', 'Start', 'Back'}
+local active_controller = nil
+
+-- Capacitive touch actions (VR.hpp s_action_*_touch_*)
+local TOUCH_ACTIONS = {
+    "/actions/default/in/AButtonTouchLeft",
+    "/actions/default/in/BButtonTouchLeft",
+    "/actions/default/in/ThumbrestTouchLeft",
+    "/actions/default/in/AButtonTouchRight",
+    "/actions/default/in/BButtonTouchRight",
+    "/actions/default/in/ThumbrestTouchRight",
+}
+
+-- Touch action tracking
+local action_handles = {}
+local touch_state = {}
 
 local function aim_method_label(aim_mode)
   return tostring(aim_methods[(aim_mode or 0)+1])
@@ -32,7 +49,7 @@ end
 local function update_aim_mode()
   -- Aim mode changed!! Update UEVR Input Aim mode
   aim_mode = uevr_bridge.AimMode
-  uevr.params.vr.set_aim_method(aim_mode)
+  vr.set_aim_method(aim_mode)
   vr_log('Aim Mode changed: '..tostring(aim_mode)..' => '..aim_method_label(aim_mode))
 end
 
@@ -41,7 +58,7 @@ local function update_roomscale_mode()
   roomscale_mode = uevr_bridge.RoomscaleMode
   vr_log('Roomscale Mode changed: '..tostring(roomscale_mode))
 
-  uevr.params.vr.set_mod_value("VR_RoomscaleMovement",tostring(roomscale_mode))
+  vr.set_mod_value("VR_RoomscaleMovement",tostring(roomscale_mode))
 end
 
 local function update_movement_mode()
@@ -50,12 +67,12 @@ local function update_movement_mode()
   vr_log('Movement Mode changed: '..tostring(movement_mode))
 
   -- uevr.params.vr:set_mod_value("VR_AimMethod","1")
-  uevr.params.vr.set_mod_value("VR_MovementOrientation",movement_mode)
+  vr.set_mod_value("VR_MovementOrientation",movement_mode)
   -- uevr.params.vr.set_movement_orientation()
 end
 
 local function update_haptics_left()
-  local vr = uevr.params.vr
+  -- local vr = uevr.params.vr
   -- vr_log('Haptics Left Update!')
   local source_handle = vr.get_left_joystick_source()
   -- uevr_bridge.HapticsLeftPending = false
@@ -67,7 +84,7 @@ local function update_haptics_left()
 end
 
 local function update_haptics_right()
-  local vr = uevr.params.vr
+  -- local vr = uevr.params.vr
   -- vr_log('Haptics Right Update!')
   local source_handle = vr.get_right_joystick_source()
   -- uevr_bridge.HapticsRightPending = false
@@ -79,7 +96,7 @@ local function update_haptics_right()
 end
 
 local function recenter_view()
-  local vr = uevr.params.vr
+  -- local vr = uevr.params.vr
   local hmd_position = UEVR_Vector3f.new()
   local hmd_rotation = UEVR_Quaternionf.new()
   vr.get_pose(vr.get_hmd_index(), hmd_position, hmd_rotation)
@@ -187,12 +204,10 @@ local function init_bridge()
     -- Check if SetUEVRModValue can be hooked
     if (uevr_bridge.SetUEVRModValue ~= nil) then
       uevr_bridge.SetUEVRModValue:hook_ptr(nil, function(fn, obj, locals, result)
-          vr_log("SetUEVRModValue:")
-          vr_log('  Name='..tostring(uevr_bridge.UEVRModPropName))
-          vr_log('  Value='..tostring(uevr_bridge.UEVRModPropValue))
+          vr_log("SetUEVRModValue: "..tostring(uevr_bridge.UEVRModPropName).."="..tostring(uevr_bridge.UEVRModPropValue))
 
           -- Set the UEVR property based on mod settings
-          uevr.params.vr.set_mod_value(tostring(uevr_bridge.UEVRModPropName), tostring(uevr_bridge.UEVRModPropValue))
+          vr.set_mod_value(tostring(uevr_bridge.UEVRModPropName), tostring(uevr_bridge.UEVRModPropValue))
         end
       )
     end
@@ -240,7 +255,21 @@ uevr.sdk.callbacks.on_xinput_get_state(function(retval, user_index, state)
     return
   end
 
+-- vr_log(string.format("[XInput] idx=%d wButtons=0x%04X", user_index, state.Gamepad.wButtons))
+
   local gamepad = state.Gamepad
+
+  if active_controller == nil then
+    -- Lock onto the first slot that ever reports input (just check buttons+triggers); ignore the rest.
+    if gamepad.wButtons ~= 0 or gamepad.bLeftTrigger ~= 0 or gamepad.bRightTrigger ~= 0 then
+      active_controller = user_index
+      vr_log("Locked controller to index " .. user_index)
+    end
+  end
+
+  if active_controller ~= nil and user_index ~= active_controller then
+      return -- ignore controller
+  end
 
   -- vr_log('Comparing '..gamepad.wButtons..' to '..last_gamepad.wButtons)
   -- Compare gamepad states to last_gamepad
@@ -256,14 +285,26 @@ uevr.sdk.callbacks.on_xinput_get_state(function(retval, user_index, state)
     local btn_start = gamepad.wButtons & XINPUT_GAMEPAD_START ~= 0
     local btn_back = gamepad.wButtons & XINPUT_GAMEPAD_BACK ~= 0
     -- vr_log('Buttons A='..tostring(btn_a)..' B='..tostring(btn_b)..' X='..tostring(btn_x)..' Y='..tostring(btn_y)..' LS='..tostring(btn_left_stick)..' LG='..tostring(btn_left_grip)..' RS='..tostring(btn_right_stick)..' RG='..tostring(btn_right_grip))
-    vr_log('Buttons wButtons='..tostring(gamepad.wButtons)..' Start='..tostring(btn_start)..' Back='..tostring(btn_back))
+    if (gamepad.wButtons ~= 0) then
+      local button_states = { btn_a, btn_x, btn_b, btn_y, btn_left_stick, btn_right_stick, btn_left_grip, btn_right_grip, btn_start, btn_back }
+      -- Assemble string list of active buttons
+      local active_buttons = {}
+      for i, state in ipairs(button_states) do
+          if state then
+              table.insert(active_buttons, button_labels[i])
+          end
+      end
+      vr_log(string.format('Buttons wButtons=0x%04X: %s', gamepad.wButtons, table.concat(active_buttons, ', ')))
+    else
+      vr_log('Buttons cleared')
+    end
     last_gamepad.wButtons = gamepad.wButtons
     uevr_bridge:UpdateButtonState(btn_a, btn_b, btn_x, btn_y, btn_left_stick, btn_left_grip, btn_right_stick, btn_right_grip, btn_start)
   end
   if (gamepad.sThumbLX or 0) ~= last_gamepad.sThumbLX or (gamepad.sThumbLY or 0) ~= last_gamepad.sThumbLY then
     local stick_left_x = gamepad.sThumbLX or 0
     local stick_left_y = gamepad.sThumbLY or 0
-    -- vr_log('Left Stick X='..tostring(stick_left_x)..' Y='..tostring(stick_left_y)..' UI='..tostring(user_index)..' RV='..tostring(retval)..' PN='..tostring(state.dwPacketNumber))
+    -- vr_log('Left Stick X='..tostring(stick_left_x)..' Y='..tostring(stick_left_y)) -- ..' UI='..tostring(user_index)..' RV='..tostring(retval)..' PN='..tostring(state.dwPacketNumber))
     last_gamepad.sThumbLX = gamepad.sThumbLX or 0
     last_gamepad.sThumbLY = gamepad.sThumbLY or 0
     uevr_bridge:UpdateLeftStickState(gamepad.sThumbLX, gamepad.sThumbLY)
@@ -292,6 +333,27 @@ uevr.sdk.callbacks.on_xinput_get_state(function(retval, user_index, state)
 
   -- vr_log('XState: '..tostring(user_index)..' / '..tostring(retval)..' / '..tostring(gamepad.wButtons)..' / '..tostring(left_trigger)..' / '..tostring(stick_left_x)..' / '..tostring(stick_left_y)..' / '..tostring(right_trigger)..' / '..tostring(stick_right_x)..' / '..tostring(stick_right_y))
 
+  -- Check touch event status
+
+  local controllers = {
+      L = vr.get_left_joystick_source(),
+      R = vr.get_right_joystick_source(),
+  }
+
+  for _, action_path in ipairs(TOUCH_ACTIONS) do
+    local h = action_handles[action_path]
+    if h ~= 0 then
+        for hand, src in pairs(controllers) do
+            local key = action_path .. hand
+            local now = vr.is_action_active(h, src)
+            if now ~= touch_state[key] then
+                touch_state[key] = now
+                vr_log(string.format("Touch: %-22s src=%s -> %s",
+                    action_path:match("([^/]+)$"), hand, now and "TOUCH" or "release"))
+            end
+        end
+    end
+  end
 end)
 
 uevr.sdk.callbacks.on_post_engine_tick(function(engine, delta)
@@ -299,6 +361,7 @@ uevr.sdk.callbacks.on_post_engine_tick(function(engine, delta)
 end)
 
 uevr.sdk.callbacks.on_pre_engine_tick(function(engine, delta)
+  if not vr.is_runtime_ready() then return end
   -- if true then return end -- Breakpoint
 
   -- Check every *n* ticks...
@@ -312,9 +375,27 @@ uevr.sdk.callbacks.on_pre_engine_tick(function(engine, delta)
         vr_log('UEVR Enhancement Mod not found! Did you install the mod?')
         return
       end
+      -- Init touch event tracking
+      for _, path in ipairs(TOUCH_ACTIONS) do
+        action_handles[path] = vr.get_action_handle(path)
+        if action_handles[path] == 0 then
+            print("[TouchLog] NULL handle: " .. path)
+        end
+      end
     end
 
     -- vr_log('States: AM='..tostring(uevr_bridge.AimMode)..' UII='..tostring(uevr_bridge.UIInteractMode)..' MM='..tostring(uevr_bridge.MovementMode)..' RS='..tostring(uevr_bridge.RoomscaleMode))
   end
+
+  -- Detect Touch events
+  -- local L, R = vr.get_left_joystick_source(), vr.get_right_joystick_source()
+  -- local h = {}
+  -- local function act(p) h[p] = h[p] or vr.get_action_handle(p); return h[p] end
+  -- local function down(p, src) return vr.is_action_active(act(p), src) end
+
+  -- -- e.g. right thumbrest capacitive touch
+  -- if down("/actions/default/in/ThumbrestTouchRight", R) then
+  --   vr_log("Right Thumbrest Touched")
+  -- end
 
 end)
