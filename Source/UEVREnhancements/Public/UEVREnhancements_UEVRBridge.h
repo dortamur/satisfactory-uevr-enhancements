@@ -23,23 +23,31 @@ public:
 	UFUNCTION(BlueprintCallable, Category="Default")
 	void DebugLog(FString DebugString);
 
-	/** Called by UEVR plugin. Updates state of main controller buttons. */
+	/** Called by UEVR plugin. Updates state of a single button. InputButton is an EVRInputButton value. */
+	UFUNCTION(BlueprintCallable)
+	void UpdateInputButton(int32 InputButton, bool Pressed);
+
+	/** Called by UEVR plugin. Updates the state of a stick. InputStick is an EVRInputStick value, X/Y are raw XInput values. */
+	UFUNCTION(BlueprintCallable)
+	void UpdateInputStick(int32 InputStick, int32 X, int32 Y);
+
+	/** Deprecated (pre 1.2.3 UEVR profile): use UpdateInputButton. */
 	UFUNCTION(BlueprintCallable)
 	void UpdateButtonState(bool A, bool B, bool X, bool Y, bool LS, bool LG, bool RS, bool RG, bool Start);
 
-	/** Called by UEVR plugin. Updates state of Left Stick. */
+	/** Deprecated (pre 1.2.3 UEVR profile): use UpdateInputStick. */
 	UFUNCTION(BlueprintCallable)
 	void UpdateLeftStickState(int32 X, int32 Y);
 
-	/** Called by UEVR plugin. Updates state of Right Stick. */
+	/** Deprecated (pre 1.2.3 UEVR profile): use UpdateInputStick. */
 	UFUNCTION(BlueprintCallable)
 	void UpdateRightStickState(int32 X, int32 Y);
 
-	/** Called by UEVR plugin. Updates state of Left Trigger. */
+	/** Deprecated (pre 1.2.3 UEVR profile): use UpdateInputButton. */
 	UFUNCTION(BlueprintCallable)
 	void UpdateLeftTriggerState(bool LT);
 
-	/** Called by UEVR plugin. Updates state of Right Trigger. */
+	/** Deprecated (pre 1.2.3 UEVR profile): use UpdateInputButton. */
 	UFUNCTION(BlueprintCallable)
 	void UpdateRightTriggerState(bool RT);
 
@@ -82,11 +90,20 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void InputActionsTick();
 
-	/** Translate a button state into an Input Action call. */
-	void CheckButtonAction(bool Condition, UInputAction* Action);
+	/** Translate a button state into an Input Action call. Slot is the (already mirrored) action slot. */
+	void CheckInputButtonAction(bool Condition, EVRInputButton Slot);
 
-	/** Called on Tick to translate a stick position into an Input Action. */
-	void CheckStickPosAction(double X, double Y, UInputAction* Action);
+	/** Called on Tick to translate a stick position into an Input Action. Slot is the (already mirrored) action slot. */
+	void CheckInputStickAction(const FVector2D& Pos, EVRInputStick Slot);
+
+	/** Returns the left/right swapped equivalent of an input button (used for Left Hand Mode). */
+	static EVRInputButton MirrorInputButton(EVRInputButton InputButton);
+
+	/** Loads the Input Action assets (once). */
+	void LoadInputActions();
+
+	/** Sends End events for any held actions and clears tracked state (used when the mapping changes). */
+	void ReleaseHeldActions();
 
 	/** Starts a new haptics effect for the right controller. */
 	UFUNCTION(BlueprintCallable)
@@ -210,30 +227,29 @@ public:
 
 private:
 	/** Current button and stick states */
-	bool button_x = false;
-	bool button_y = false;
-	bool button_a = false;
-	bool button_b = false;
-	bool button_left_stick = false;
-	bool button_left_grip = false;
-	bool button_left_trigger = false;
-	bool button_right_stick = false;
-	bool button_right_grip = false;
-	bool button_right_trigger = false;
-	bool button_start = false;
-	double stick_left_x = 0.0;
-	double stick_left_y = 0.0;
-	double stick_right_x = 0.0;
-	double stick_right_y = 0.0;
+	static constexpr int32 NumInputButtons = static_cast<int32>(EVRInputButton::Count);
+	static constexpr int32 NumInputSticks = static_cast<int32>(EVRInputStick::Count);
+
+	/** Current physical states, indexed by EVRInputButton / EVRInputStick. */
+	bool ButtonStates[NumInputButtons] = {};
+	FVector2D StickStates[NumInputSticks];
+
+	/** Last states broadcast, indexed by (mirrored) action slot. */
+	bool LastButtonStates[NumInputButtons] = {};
+	bool LastStickStates[NumInputSticks] = {};
+
 	EVRPlayerState PlayerState;
 
-	// Array of Input Action asset paths to load in the constructor.
-	static TArray<FName> InputActionPaths;
+	// Input Action asset paths, indexed by EVRInputButton / EVRInputStick.
+	static TArray<FName> InputButtonActionPaths;
+	static TArray<FName> InputStickActionPaths;
 
-	// Array of Input Actions to the list of above input state variables.
-	TArray<UInputAction*> InputActions;
+	// Loaded Input Actions, indexed by EVRInputButton / EVRInputStick. Entries may be null if an asset failed to load.
+	UPROPERTY()
+	TArray<TObjectPtr<UInputAction>> InputButtonActions;
+	UPROPERTY()
+	TArray<TObjectPtr<UInputAction>> InputStickActions;
 
-	/** Map to track state of active actions */
-	TMap<UInputAction*,bool> LastActions;
+	bool InputActionsLoaded = false;
 
 };

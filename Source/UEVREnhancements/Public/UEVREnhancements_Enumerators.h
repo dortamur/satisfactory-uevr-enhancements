@@ -46,3 +46,41 @@ enum class EVRInputActionState : uint8 {
   Ongoing               UMETA(DisplayName = "Ongoing"),
   End                   UMETA(DisplayName = "End")
 };
+
+UENUM(BlueprintType)
+enum class EVRControllerType : uint8 {
+  None                  UMETA(DisplayName = "None"),
+  Touch                 UMETA(DisplayName = "Touch"),
+  Frame                 UMETA(DisplayName = "Frame")
+};
+
+/**
+ * Physical controller buttons, named by position (not by game function).
+ * The numeric values are mirrored in UEVR profile script (UEVREnhancements.lua) (INPUT_BUTTON table) - keep them in sync!
+ */
+UENUM(BlueprintType)
+enum class EVRInputButton : uint8 {
+  LeftX                 UMETA(DisplayName = "Left X"),
+  LeftY                 UMETA(DisplayName = "Left Y"),
+  RightA                UMETA(DisplayName = "Right A"),
+  RightB                UMETA(DisplayName = "Right B"),
+  LeftClick             UMETA(DisplayName = "Left Stick Click"),
+  LeftGrip              UMETA(DisplayName = "Left Grip"),
+  LeftTrigger           UMETA(DisplayName = "Left Trigger"),
+  RightClick            UMETA(DisplayName = "Right Stick Click"),
+  RightGrip             UMETA(DisplayName = "Right Grip"),
+  RightTrigger          UMETA(DisplayName = "Right Trigger"),
+  Start                 UMETA(DisplayName = "Start"),
+  Back                  UMETA(DisplayName = "Back"),
+  LeftShoulder          UMETA(DisplayName = "Left Shoulder"),
+  RightShoulder         UMETA(DisplayName = "Right Shoulder"),
+  Count                 UMETA(Hidden)
+};
+
+/** Analog sticks. Numeric values are mirrored in UEVR profile script (UEVREnhancements.lua) (INPUT_STICK table). */
+UENUM(BlueprintType)
+enum class EVRInputStick : uint8 {
+  Left                  UMETA(DisplayName = "Left Stick"),
+  Right                 UMETA(DisplayName = "Right Stick"),
+  Count                 UMETA(Hidden)
+};

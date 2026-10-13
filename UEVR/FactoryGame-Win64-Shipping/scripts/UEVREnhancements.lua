@@ -1,5 +1,5 @@
 -- Profile version to match against UEVR Enhancements mod expected version
-local uevr_profile_version = 'v1.2.2-1'
+local uevr_profile_version = 'v1.2.3-1'
 
 local log_functions = uevr.params.functions
 
@@ -27,6 +27,26 @@ local tick_countdown = 0
 local aim_methods = {'Game', 'HMD', 'Right Hand', 'Left Hand'}
 local button_labels = {'A', 'X', 'B', 'Y', 'LeftStick', 'RightStick', 'LeftGrip', 'RightGrip', 'Start', 'Back'}
 local active_controller = nil
+
+-- Input button ids. MUST match EVRInputButton in UEVREnhancements_Enumerators.h (physical button names).
+local INPUT_BUTTON = {
+  LeftX = 0, LeftY = 1, RightA = 2, RightB = 3,
+  LeftClick = 4, LeftGrip = 5, LeftTrigger = 6,
+  RightClick = 7, RightGrip = 8, RightTrigger = 9,
+  Start = 10, Back = 11, LeftShoulder = 12, RightShoulder = 13,
+}
+-- Input stick ids. MUST match EVRInputStick in UEVREnhancements_Enumerators.h
+local INPUT_STICK = { Left = 0, Right = 1 }
+
+-- Analog trigger values above this count as pressed (XINPUT_GAMEPAD_TRIGGER_THRESHOLD)
+local TRIGGER_THRESHOLD = 30
+
+-- Last values sent to the bridge, keyed by input button id / input stick id
+local last_input_buttons = {}
+local last_input_sticks = {}
+
+-- Set true once we know the bridge supports UpdateInputButton/UpdateInputStick (newer mod); otherwise use legacy Update*State calls
+local bridge_new_input_api = false
 
 -- Default to "touch" controller type
 local controller_type = 'touch'
@@ -171,6 +191,8 @@ local function init_bridge()
     vr_log("UEVRBridge not found")
   else
     vr_log("UEVRBridge found!")
+    bridge_new_input_api = (uevr_bridge.UpdateInputButton ~= nil and uevr_bridge.UpdateInputStick ~= nil)
+    vr_log("UEVRBridge input API: "..(bridge_new_input_api and "UpdateInputButton/UpdateInputStick" or "legacy Update*State"))
     local pv = uevr.params.version
     local fn = uevr.params.functions
     vr_log("UEVR API: "..tostring(pv)..' / '..tostring(pv.major)..'.'..tostring(pv.minor)..'.'..tostring(pv.patch))
@@ -291,6 +313,56 @@ local function init_bridge()
   end
 end
 
+-- Send a single input button state change to the bridge (only if changed).
+local function update_input_button(id, pressed)
+  pressed = pressed and true or false
+  if last_input_buttons[id] == pressed then return end
+  last_input_buttons[id] = pressed
+  uevr_bridge:UpdateInputButton(id, pressed)
+end
+
+-- Send all button states if updated. New bridges get one UpdateInputButton call per changed button;
+-- older bridges get the legacy all-in-one UpdateButtonState call.
+local function update_input_buttons(s)
+  if bridge_new_input_api then
+    update_input_button(INPUT_BUTTON.RightA, s.a)
+    update_input_button(INPUT_BUTTON.RightB, s.b)
+    update_input_button(INPUT_BUTTON.LeftX, s.x)
+    update_input_button(INPUT_BUTTON.LeftY, s.y)
+    update_input_button(INPUT_BUTTON.LeftClick, s.left_stick)
+    update_input_button(INPUT_BUTTON.RightClick, s.right_stick)
+    update_input_button(INPUT_BUTTON.LeftGrip, s.left_grip)
+    update_input_button(INPUT_BUTTON.RightGrip, s.right_grip)
+    update_input_button(INPUT_BUTTON.LeftShoulder, s.left_shoulder)
+    update_input_button(INPUT_BUTTON.RightShoulder, s.right_shoulder)
+    update_input_button(INPUT_BUTTON.Start, s.start)
+    update_input_button(INPUT_BUTTON.Back, s.back)
+  else
+    uevr_bridge:UpdateButtonState(s.a, s.b, s.x, s.y, s.left_stick, s.left_grip, s.right_stick, s.right_grip, s.start)
+  end
+end
+
+local function update_input_stick(id, x, y)
+  if bridge_new_input_api then
+    uevr_bridge:UpdateInputStick(id, x, y)
+  elseif id == INPUT_STICK.Left then
+    uevr_bridge:UpdateLeftStickState(x, y)
+  else
+    uevr_bridge:UpdateRightStickState(x, y)
+  end
+end
+
+local function update_input_button_trigger(id, value)
+  local pressed = value > TRIGGER_THRESHOLD
+  if bridge_new_input_api then
+    update_input_button(id, pressed)
+  elseif id == INPUT_BUTTON.LeftTrigger then
+    uevr_bridge:UpdateLeftTriggerState(pressed)
+  else
+    uevr_bridge:UpdateRightTriggerState(pressed)
+  end
+end
+
 uevr.sdk.callbacks.on_xinput_get_state(function(retval, user_index, state)
   -- if true then return end -- Breakpoint
 
@@ -390,7 +462,13 @@ uevr.sdk.callbacks.on_xinput_get_state(function(retval, user_index, state)
       vr_log('Buttons cleared')
     end
     last_gamepad.wButtons = gamepad.wButtons
-    uevr_bridge:UpdateButtonState(btn_a, btn_b, btn_x, btn_y, btn_left_stick, btn_left_grip, btn_right_stick, btn_right_grip, btn_start)
+    update_input_buttons({
+      a = btn_a, b = btn_b, x = btn_x, y = btn_y,
+      left_stick = btn_left_stick, right_stick = btn_right_stick,
+      left_grip = btn_left_grip, right_grip = btn_right_grip,
+      left_shoulder = btn_left_shoulder, right_shoulder = btn_right_shoulder,
+      start = btn_start, back = btn_back,
+    })
   end
   if (gamepad.sThumbLX or 0) ~= last_gamepad.sThumbLX or (gamepad.sThumbLY or 0) ~= last_gamepad.sThumbLY then
     local stick_left_x = gamepad.sThumbLX or 0
@@ -398,7 +476,7 @@ uevr.sdk.callbacks.on_xinput_get_state(function(retval, user_index, state)
     -- vr_log('Left Stick X='..tostring(stick_left_x)..' Y='..tostring(stick_left_y)) -- ..' UI='..tostring(user_index)..' RV='..tostring(retval)..' PN='..tostring(state.dwPacketNumber))
     last_gamepad.sThumbLX = gamepad.sThumbLX or 0
     last_gamepad.sThumbLY = gamepad.sThumbLY or 0
-    uevr_bridge:UpdateLeftStickState(gamepad.sThumbLX, gamepad.sThumbLY)
+    update_input_stick(INPUT_STICK.Left, gamepad.sThumbLX, gamepad.sThumbLY)
   end
   if (gamepad.sThumbRX or 0) ~= last_gamepad.sThumbRX or (gamepad.sThumbRY or 0) ~= last_gamepad.sThumbRY then
     local stick_right_x = gamepad.sThumbRX or 0
@@ -406,20 +484,20 @@ uevr.sdk.callbacks.on_xinput_get_state(function(retval, user_index, state)
     -- vr_log('Right Stick X='..tostring(stick_right_x)..' Y='..tostring(stick_right_y))
     last_gamepad.sThumbRX = gamepad.sThumbRX or 0
     last_gamepad.sThumbRY = gamepad.sThumbRY or 0
-    uevr_bridge:UpdateRightStickState(gamepad.sThumbRX, gamepad.sThumbRY)
+    update_input_stick(INPUT_STICK.Right, gamepad.sThumbRX, gamepad.sThumbRY)
   end
 
   if gamepad.bLeftTrigger ~= last_gamepad.bLeftTrigger then
     local left_trigger = gamepad.bLeftTrigger
     -- vr_log('Left Trigger LT='..tostring(left_trigger))
     last_gamepad.bLeftTrigger = gamepad.bLeftTrigger
-    uevr_bridge:UpdateLeftTriggerState(gamepad.bLeftTrigger ~= 0)
+    update_input_button_trigger(INPUT_BUTTON.LeftTrigger, gamepad.bLeftTrigger)
   end
   if gamepad.bRightTrigger ~= last_gamepad.bRightTrigger then
     local right_trigger = gamepad.bRightTrigger
     -- vr_log('Right Trigger RT='..tostring(right_trigger))
     last_gamepad.bRightTrigger = gamepad.bRightTrigger
-    uevr_bridge:UpdateRightTriggerState(gamepad.bRightTrigger ~= 0)
+    update_input_button_trigger(INPUT_BUTTON.RightTrigger, gamepad.bRightTrigger)
   end
 
   -- vr_log('XState: '..tostring(user_index)..' / '..tostring(retval)..' / '..tostring(gamepad.wButtons)..' / '..tostring(left_trigger)..' / '..tostring(stick_left_x)..' / '..tostring(stick_left_y)..' / '..tostring(right_trigger)..' / '..tostring(stick_right_x)..' / '..tostring(stick_right_y))
