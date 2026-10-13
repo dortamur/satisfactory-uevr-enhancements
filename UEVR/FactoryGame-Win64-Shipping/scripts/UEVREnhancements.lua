@@ -28,19 +28,37 @@ local aim_methods = {'Game', 'HMD', 'Right Hand', 'Left Hand'}
 local button_labels = {'A', 'X', 'B', 'Y', 'LeftStick', 'RightStick', 'LeftGrip', 'RightGrip', 'Start', 'Back'}
 local active_controller = nil
 
+-- Default to "touch" controller type
+local controller_type = 'touch'
+local controller_is_frame = false
+
 -- Capacitive touch actions (VR.hpp s_action_*_touch_*)
-local TOUCH_ACTIONS = {
-    "/actions/default/in/AButtonTouchLeft",
-    "/actions/default/in/BButtonTouchLeft",
-    "/actions/default/in/ThumbrestTouchLeft",
-    "/actions/default/in/AButtonTouchRight",
-    "/actions/default/in/BButtonTouchRight",
-    "/actions/default/in/ThumbrestTouchRight",
+local CONTROLLER_ACTIONS = {
+  -- Touch actions
+  "/actions/default/in/AButtonTouchLeft",
+  "/actions/default/in/BButtonTouchLeft",
+  "/actions/default/in/ThumbrestTouchLeft",
+  "/actions/default/in/AButtonTouchRight",
+  "/actions/default/in/BButtonTouchRight",
+  "/actions/default/in/ThumbrestTouchRight",
+  "/actions/default/in/TriggerTouch",
+  "/actions/default/in/BumperTouch",
+  "/actions/default/in/GripTouch",
+  "/actions/default/in/JoystickTouch",
+  "/actions/default/in/StartButtonTouch",
+  "/actions/default/in/BackButtonTouch",
+  "/actions/default/in/DPad_UpTouch",
+  "/actions/default/in/DPad_DownTouch",
+  "/actions/default/in/DPad_LeftTouch",
+  "/actions/default/in/DPad_RightTouch",
+  -- Button press actions
+  "/actions/default/in/Grip",
+  "/actions/default/in/Squeeze"
 }
 
--- Touch action tracking
+-- Touch and button action tracking
 local action_handles = {}
-local touch_state = {}
+local action_state = {}
 
 local function aim_method_label(aim_mode)
   return tostring(aim_methods[(aim_mode or 0)+1])
@@ -103,6 +121,31 @@ local function recenter_view()
   vr.set_standing_origin(hmd_position)
   vr.recenter_view()
   vr_log('Recenter View and Reset Origin done')
+end
+
+local function check_controller_type()
+  if (vr.get_controller_type ~= nil) then
+    local source = vr.get_right_joystick_source()
+    controller_type = vr.get_controller_type(source)
+    controller_is_frame = (controller_type == "frame")
+    vr_log("Controller type: "..controller_type)
+  end
+end
+
+local function init_controllers()
+  check_controller_type()
+
+  -- Init touch and button action tracking
+  for _, path in ipairs(CONTROLLER_ACTIONS) do
+    local handle = vr.get_action_handle(path)
+    if handle == 0 then
+        vr_log("Skipping controller action: " .. path)
+    else
+        -- Add supported action handle
+        action_handles[path] = handle
+        vr_log("Supported controller action: " .. path)
+    end
+  end
 end
 
 local function init_bridge()
@@ -264,6 +307,9 @@ uevr.sdk.callbacks.on_xinput_get_state(function(retval, user_index, state)
     if gamepad.wButtons ~= 0 or gamepad.bLeftTrigger ~= 0 or gamepad.bRightTrigger ~= 0 then
       active_controller = user_index
       vr_log("Locked controller to index " .. user_index)
+
+      -- Re-test Controller Type (since it's typically unknown on first test)
+      check_controller_type()
     end
   end
 
@@ -271,12 +317,46 @@ uevr.sdk.callbacks.on_xinput_get_state(function(retval, user_index, state)
       return -- ignore controller
   end
 
+  -- Check touch and button action status (not covered by XInput)
+  local controllers = {
+      L = vr.get_left_joystick_source(),
+      R = vr.get_right_joystick_source(),
+  }
+
+  local changed_buttons = false
+  local changed_touch = false
+  -- local changed_actions = {}
+  for action_path, handle in pairs(action_handles) do
+    for hand, src in pairs(controllers) do
+      local key = hand..':'..action_path:match("([^/]+)$")
+      -- vr_log(string.format("Touch Test: %s %-22s %s", hand, action_path:match("([^/]+)$"), key, tostring(src)))
+      local now = vr.is_action_active(handle, src)
+      if now ~= action_state[key] then
+        action_state[key] = now
+        -- Squeeze debugging
+        -- if (string.find(key, "Squeeze")) then
+        --   local src = (hand == "L") and vr.get_left_joystick_source() or vr.get_right_joystick_source()
+        --   local squeeze_axis = vr.get_action_axis(squeeze, src)
+        --   vr_log(string.format("Squeeze Action: %s %-22s %f %s", hand, action_path:match("([^/]+)$"), squeeze_axis.value, now and "start" or "stop"))
+        -- end
+        -- changed_actions.push(key)
+        if (string.find(key, "Touch")) then
+          changed_touch = true
+        else
+          changed_buttons = true
+        end
+        -- table.insert(changed_actions, key)
+        vr_log(string.format("Action: %s %-22s %s", hand, action_path:match("([^/]+)$"), now and "start" or "stop"))
+      end
+    end
+  end
+
   -- vr_log('Comparing '..gamepad.wButtons..' to '..last_gamepad.wButtons)
   -- Compare gamepad states to last_gamepad
-  if gamepad.wButtons ~= last_gamepad.wButtons then
+  if gamepad.wButtons ~= last_gamepad.wButtons or changed_buttons then
     local btn_a = gamepad.wButtons & XINPUT_GAMEPAD_A ~= 0
-    local btn_x = gamepad.wButtons & XINPUT_GAMEPAD_B ~= 0
-    local btn_b = gamepad.wButtons & XINPUT_GAMEPAD_X ~= 0
+    local btn_x = gamepad.wButtons & (controller_is_frame and XINPUT_GAMEPAD_X or XINPUT_GAMEPAD_B) ~= 0
+    local btn_b = gamepad.wButtons & (controller_is_frame and XINPUT_GAMEPAD_B or XINPUT_GAMEPAD_X) ~= 0
     local btn_y = gamepad.wButtons & XINPUT_GAMEPAD_Y ~= 0
     local btn_left_stick = gamepad.wButtons & XINPUT_GAMEPAD_LEFT_THUMB ~= 0
     local btn_right_stick = gamepad.wButtons & XINPUT_GAMEPAD_RIGHT_THUMB ~= 0
@@ -284,8 +364,19 @@ uevr.sdk.callbacks.on_xinput_get_state(function(retval, user_index, state)
     local btn_right_grip = gamepad.wButtons & XINPUT_GAMEPAD_RIGHT_SHOULDER ~= 0
     local btn_start = gamepad.wButtons & XINPUT_GAMEPAD_START ~= 0
     local btn_back = gamepad.wButtons & XINPUT_GAMEPAD_BACK ~= 0
+    local btn_left_shoulder = false
+    local btn_right_shoulder = false
+
+    -- If using Frame controllers, use Squeeze "action" instead of shoulder input, and reassign xinput to shoulders
+    if controller_type == "frame" then
+      btn_left_shoulder = btn_left_grip
+      btn_right_shoulder = btn_right_grip
+      btn_left_grip = action_state["L:Squeeze"]
+      btn_right_grip = action_state["R:Squeeze"]
+    end
+
     -- vr_log('Buttons A='..tostring(btn_a)..' B='..tostring(btn_b)..' X='..tostring(btn_x)..' Y='..tostring(btn_y)..' LS='..tostring(btn_left_stick)..' LG='..tostring(btn_left_grip)..' RS='..tostring(btn_right_stick)..' RG='..tostring(btn_right_grip))
-    if (gamepad.wButtons ~= 0) then
+    if (gamepad.wButtons ~= 0 or btn_left_grip or btn_right_grip) then
       local button_states = { btn_a, btn_x, btn_b, btn_y, btn_left_stick, btn_right_stick, btn_left_grip, btn_right_grip, btn_start, btn_back }
       -- Assemble string list of active buttons
       local active_buttons = {}
@@ -332,28 +423,6 @@ uevr.sdk.callbacks.on_xinput_get_state(function(retval, user_index, state)
   end
 
   -- vr_log('XState: '..tostring(user_index)..' / '..tostring(retval)..' / '..tostring(gamepad.wButtons)..' / '..tostring(left_trigger)..' / '..tostring(stick_left_x)..' / '..tostring(stick_left_y)..' / '..tostring(right_trigger)..' / '..tostring(stick_right_x)..' / '..tostring(stick_right_y))
-
-  -- Check touch event status
-
-  local controllers = {
-      L = vr.get_left_joystick_source(),
-      R = vr.get_right_joystick_source(),
-  }
-
-  for _, action_path in ipairs(TOUCH_ACTIONS) do
-    local h = action_handles[action_path]
-    if h ~= 0 then
-        for hand, src in pairs(controllers) do
-            local key = action_path .. hand
-            local now = vr.is_action_active(h, src)
-            if now ~= touch_state[key] then
-                touch_state[key] = now
-                vr_log(string.format("Touch: %-22s src=%s -> %s",
-                    action_path:match("([^/]+)$"), hand, now and "TOUCH" or "release"))
-            end
-        end
-    end
-  end
 end)
 
 uevr.sdk.callbacks.on_post_engine_tick(function(engine, delta)
@@ -370,17 +439,11 @@ uevr.sdk.callbacks.on_pre_engine_tick(function(engine, delta)
     tick_countdown = 500
 
     if (uevr_bridge == nil) then
+      init_controllers()
       init_bridge()
       if (uevr_bridge == nil) then
         vr_log('UEVR Enhancement Mod not found! Did you install the mod?')
         return
-      end
-      -- Init touch event tracking
-      for _, path in ipairs(TOUCH_ACTIONS) do
-        action_handles[path] = vr.get_action_handle(path)
-        if action_handles[path] == 0 then
-            print("[TouchLog] NULL handle: " .. path)
-        end
       end
     end
 
