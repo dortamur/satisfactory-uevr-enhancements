@@ -43,7 +43,8 @@ local INPUT_STICK = { Left = 0, Right = 1 }
 local CONTROLLER_TYPE = { None = 0, Touch = 1, Frame = 2 }
 
 -- Analog trigger values above this count as pressed (XINPUT_GAMEPAD_TRIGGER_THRESHOLD)
-local TRIGGER_THRESHOLD = 30
+local XINPUT_TRIGGER_THRESHOLD = 30 -- Range 0-255. For XInput triggers
+local ACTION_TRIGGER_THRESHOLD = 0.1 -- Range 0-1. For actions with axis values (trigger/grip)
 
 -- Last values sent to the bridge, keyed by input button id / input stick id
 local last_input_buttons = {}
@@ -56,9 +57,8 @@ local bridge_new_input_api = false
 local controller_type = CONTROLLER_TYPE.Touch
 local controller_is_frame = false
 
--- Capacitive touch actions (VR.hpp s_action_*_touch_*)
 local CONTROLLER_ACTIONS = {
-  -- Touch actions
+  -- Capacitive Touch actions
   "/actions/default/in/AButtonTouchLeft",
   "/actions/default/in/BButtonTouchLeft",
   "/actions/default/in/ThumbrestTouchLeft",
@@ -75,14 +75,24 @@ local CONTROLLER_ACTIONS = {
   -- "/actions/default/in/DPad_DownTouch",
   -- "/actions/default/in/DPad_LeftTouch",
   -- "/actions/default/in/DPad_RightTouch",
+
   -- Button press actions (for Steam Frame)
   "/actions/default/in/Grip",
+  -- Actions with vector/axis
+  "/actions/default/in/TriggerAxis",
   "/actions/default/in/Squeeze"
 }
 
+-- Repeat of Controller actions that have axis values vs just binary buttons
+local CONTROLLER_AXIS_ACTIONS = {
+  ["/actions/default/in/TriggerAxis"] = true,
+  ["/actions/default/in/Squeeze"] = true
+}
+
 -- Touch and button action tracking
-local action_handles = {}
-local action_state = {}
+local action_handles = {} -- Action handles
+local action_active_state = {} -- Track which actions are "active"
+local action_axis_state = {} -- Track vector values of actions with axis values
 
 local function aim_method_label(aim_mode)
   return tostring(aim_methods[(aim_mode or 0)+1])
@@ -154,7 +164,7 @@ local function check_controller_type()
     controller_type = uevr_controller_type == "frame" and CONTROLLER_TYPE.Frame or CONTROLLER_TYPE.Touch
     controller_is_frame = (controller_type == CONTROLLER_TYPE.Frame)
     uevr_bridge:SetControllerType(controller_type)
-    vr_log("Controller type: "..format("%d (%s)", controller_type, uevr_controller_type))
+    vr_log("Controller type: "..string.format("%d (%s)", controller_type, uevr_controller_type))
   else
     vr_log("Controller type: unknown (get_controller_type not available)")
   end
@@ -368,7 +378,7 @@ local function update_input_stick(id, x, y)
 end
 
 local function update_input_button_trigger(id, value)
-  local pressed = value > TRIGGER_THRESHOLD
+  local pressed = value > XINPUT_TRIGGER_THRESHOLD
   if bridge_new_input_api then
     update_input_button(id, pressed)
   elseif id == INPUT_BUTTON.LeftTrigger then
@@ -412,28 +422,27 @@ uevr.sdk.callbacks.on_xinput_get_state(function(retval, user_index, state)
 
   local changed_buttons = false
   local changed_touch = false
-  -- local changed_actions = {}
   for action_path, handle in pairs(action_handles) do
     for hand, src in pairs(controllers) do
       local key = hand..':'..action_path:match("([^/]+)$")
       -- vr_log(string.format("Touch Test: %s %-22s %s", hand, action_path:match("([^/]+)$"), key, tostring(src)))
-      local now = vr.is_action_active(handle, src)
-      if now ~= action_state[key] then
-        action_state[key] = now
-        -- Squeeze debugging
-        -- if (string.find(key, "Squeeze")) then
-        --   local src = (hand == "L") and vr.get_left_joystick_source() or vr.get_right_joystick_source()
-        --   local squeeze_axis = vr.get_action_axis(squeeze, src)
-        --   vr_log(string.format("Squeeze Action: %s %-22s %f %s", hand, action_path:match("([^/]+)$"), squeeze_axis.value, now and "start" or "stop"))
-        -- end
-        -- changed_actions.push(key)
+      local active_now = vr.is_action_active(handle, src)
+      if active_now ~= action_active_state[key] then
+        action_active_state[key] = active_now
         if (string.find(key, "Touch")) then
           changed_touch = true
+          vr_log(string.format("Touch Action: %-10s %s", key, active_now and "start" or "stop"))
         else
           changed_buttons = true
+          vr_log(string.format("Button Action: %-10s %s", key, active_now and "start" or "stop"))
         end
-        -- table.insert(changed_actions, key)
-        vr_log(string.format("Action: %s %-22s %s", hand, action_path:match("([^/]+)$"), now and "start" or "stop"))
+      end
+      -- Additional handling for vector/axis action updates
+      if (active_now and CONTROLLER_AXIS_ACTIONS[action_path]) then
+        -- local src = (hand == "L") and vr.get_left_joystick_source() or vr.get_right_joystick_source()
+        local action_axis = vr.get_action_axis(handle, src)
+        vr_log(string.format("Vector Action: %s %-10s %f %s", key, action_axis.active, action_axis.value, active_now and "start" or "stop"))
+        action_axis_state[key] = action_axis.active and action_axis.value or 0
       end
     end
   end
@@ -458,8 +467,8 @@ uevr.sdk.callbacks.on_xinput_get_state(function(retval, user_index, state)
     if controller_is_frame then
       btn_left_shoulder = btn_left_grip
       btn_right_shoulder = btn_right_grip
-      btn_left_grip = action_state["L:Squeeze"]
-      btn_right_grip = action_state["R:Squeeze"]
+      btn_left_grip = action_active_state["L:Squeeze"] and action_axis_state["L:Squeeze"] > ACTION_TRIGGER_THRESHOLD
+      btn_right_grip = action_active_state["R:Squeeze"] and action_axis_state["R:Squeeze"] > ACTION_TRIGGER_THRESHOLD
     end
 
     -- vr_log('Buttons A='..tostring(btn_a)..' B='..tostring(btn_b)..' X='..tostring(btn_x)..' Y='..tostring(btn_y)..' LS='..tostring(btn_left_stick)..' LG='..tostring(btn_left_grip)..' RS='..tostring(btn_right_stick)..' RG='..tostring(btn_right_grip))
@@ -508,13 +517,13 @@ uevr.sdk.callbacks.on_xinput_get_state(function(retval, user_index, state)
 
   if gamepad.bLeftTrigger ~= last_gamepad.bLeftTrigger then
     local left_trigger = gamepad.bLeftTrigger
-    -- vr_log('Left Trigger LT='..tostring(left_trigger))
+    vr_log('Left Trigger LT='..tostring(left_trigger))
     last_gamepad.bLeftTrigger = gamepad.bLeftTrigger
     update_input_button_trigger(INPUT_BUTTON.LeftTrigger, gamepad.bLeftTrigger)
   end
   if gamepad.bRightTrigger ~= last_gamepad.bRightTrigger then
     local right_trigger = gamepad.bRightTrigger
-    -- vr_log('Right Trigger RT='..tostring(right_trigger))
+    vr_log('Right Trigger RT='..tostring(right_trigger))
     last_gamepad.bRightTrigger = gamepad.bRightTrigger
     update_input_button_trigger(INPUT_BUTTON.RightTrigger, gamepad.bRightTrigger)
   end
