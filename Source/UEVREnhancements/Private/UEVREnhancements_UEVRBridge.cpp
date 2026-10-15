@@ -21,8 +21,12 @@ TArray<FName> UUEVREnhancements_UEVRBridge::InputButtonActionPaths = {
     TEXT("/UEVREnhancements/Inputs/Actions/IA_VRRightTrigger"),   // RightTrigger
     TEXT("/UEVREnhancements/Inputs/Actions/IA_VRStartButton"),    // Start
     TEXT("/UEVREnhancements/Inputs/Actions/IA_VRBackButton"),     // Back (new asset)
-    TEXT("/UEVREnhancements/Inputs/Actions/IA_VRLeftShoulder"),   // LeftShoulder (new asset)
-    TEXT("/UEVREnhancements/Inputs/Actions/IA_VRRightShoulder")   // RightShoulder (new asset)
+    TEXT("/UEVREnhancements/Inputs/Actions/IA_VRShoulderLeft"),   // LeftShoulder (new asset)
+    TEXT("/UEVREnhancements/Inputs/Actions/IA_VRShoulderRight"),  // RightShoulder (new asset)
+    TEXT("/UEVREnhancements/Inputs/Actions/IA_VRDPadUp"),         // DPadUp (new asset)
+    TEXT("/UEVREnhancements/Inputs/Actions/IA_VRDPadDown"),       // DPadDown (new asset)
+    TEXT("/UEVREnhancements/Inputs/Actions/IA_VRDPadLeft"),       // DPadLeft (new asset)
+    TEXT("/UEVREnhancements/Inputs/Actions/IA_VRDPadRight")       // DPadRight (new asset)
 };
 
 // Asset paths, in EVRInputStick order.
@@ -31,7 +35,7 @@ TArray<FName> UUEVREnhancements_UEVRBridge::InputStickActionPaths = {
     TEXT("/UEVREnhancements/Inputs/Actions/IA_VRRightStick")      // Right
 };
 
-static_assert(static_cast<int32>(EVRInputButton::Count) == 14, "InputButtonActionPaths must match EVRInputButton");
+static_assert(static_cast<int32>(EVRInputButton::Count) == 18, "InputButtonActionPaths must match EVRInputButton");
 static_assert(static_cast<int32>(EVRInputStick::Count) == 2, "InputStickActionPaths must match EVRInputStick");
 
 UUEVREnhancements_UEVRBridge::UUEVREnhancements_UEVRBridge() {
@@ -61,6 +65,7 @@ void UUEVREnhancements_UEVRBridge::LoadInputActions() {
 
 /** Returns the left/right swapped equivalent of an input button (used for Left Hand Mode). */
 EVRInputButton UUEVREnhancements_UEVRBridge::MirrorInputButton(EVRInputButton InputButton) {
+  // TODO: Steam Frame alternate mirrored mapping
   switch (InputButton) {
     case EVRInputButton::LeftX:         return EVRInputButton::RightA;
     case EVRInputButton::LeftY:         return EVRInputButton::RightB;
@@ -300,6 +305,19 @@ void UUEVREnhancements_UEVRBridge::InitUEVRBridge(FString Profile, FString UEVR,
   if (UEVRBridgeInitialised.IsBound())
   {
     UEVRBridgeInitialised.Broadcast();
+  }
+}
+
+void UUEVREnhancements_UEVRBridge::SetControllerType(int32 NewControllerType) {
+  EVRControllerType ControllerTypeEnum = static_cast<EVRControllerType>(NewControllerType);
+  if (ControllerTypeEnum != this->ControllerType) {
+    this->DebugLog(FString::Printf(TEXT("ControllerType changed: %s"), *UEnum::GetValueAsString(ControllerTypeEnum)));
+    this->ControllerType = ControllerTypeEnum;
+
+    if (UEVRBridgeControllerTypeChanged.IsBound())
+    {
+      UEVRBridgeControllerTypeChanged.Broadcast();
+    }
   }
 }
 

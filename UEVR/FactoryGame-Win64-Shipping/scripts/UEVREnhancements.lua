@@ -34,9 +34,13 @@ local INPUT_BUTTON = {
   LeftClick = 4, LeftGrip = 5, LeftTrigger = 6,
   RightClick = 7, RightGrip = 8, RightTrigger = 9,
   Start = 10, Back = 11, LeftShoulder = 12, RightShoulder = 13,
+  DPadUp = 14, DPadDown = 15, DPadLeft = 16, DPadRight = 17
 }
 -- Input stick ids. MUST match EVRInputStick in UEVREnhancements_Enumerators.h
 local INPUT_STICK = { Left = 0, Right = 1 }
+
+-- Controller types. MUST match EVRControllerType in UEVREnhancements_Enumerators.h
+local CONTROLLER_TYPE = { None = 0, Touch = 1, Frame = 2 }
 
 -- Analog trigger values above this count as pressed (XINPUT_GAMEPAD_TRIGGER_THRESHOLD)
 local TRIGGER_THRESHOLD = 30
@@ -49,7 +53,7 @@ local last_input_sticks = {}
 local bridge_new_input_api = false
 
 -- Default to "touch" controller type
-local controller_type = 'touch'
+local controller_type = CONTROLLER_TYPE.Touch
 local controller_is_frame = false
 
 -- Capacitive touch actions (VR.hpp s_action_*_touch_*)
@@ -67,11 +71,11 @@ local CONTROLLER_ACTIONS = {
   "/actions/default/in/JoystickTouch",
   "/actions/default/in/StartButtonTouch",
   "/actions/default/in/BackButtonTouch",
-  "/actions/default/in/DPad_UpTouch",
-  "/actions/default/in/DPad_DownTouch",
-  "/actions/default/in/DPad_LeftTouch",
-  "/actions/default/in/DPad_RightTouch",
-  -- Button press actions
+  -- "/actions/default/in/DPad_UpTouch",
+  -- "/actions/default/in/DPad_DownTouch",
+  -- "/actions/default/in/DPad_LeftTouch",
+  -- "/actions/default/in/DPad_RightTouch",
+  -- Button press actions (for Steam Frame)
   "/actions/default/in/Grip",
   "/actions/default/in/Squeeze"
 }
@@ -146,9 +150,13 @@ end
 local function check_controller_type()
   if (vr.get_controller_type ~= nil) then
     local source = vr.get_right_joystick_source()
-    controller_type = vr.get_controller_type(source)
-    controller_is_frame = (controller_type == "frame")
-    vr_log("Controller type: "..controller_type)
+    local uevr_controller_type = vr.get_controller_type(source)
+    controller_type = uevr_controller_type == "frame" and CONTROLLER_TYPE.Frame or CONTROLLER_TYPE.Touch
+    controller_is_frame = (controller_type == CONTROLLER_TYPE.Frame)
+    uevr_bridge:SetControllerType(controller_type)
+    vr_log("Controller type: "..format("%d (%s)", controller_type, uevr_controller_type))
+  else
+    vr_log("Controller type: unknown (get_controller_type not available)")
   end
 end
 
@@ -310,6 +318,8 @@ local function init_bridge()
 
     -- update roomscale mode to initial state
     update_roomscale_mode()
+
+    init_controllers()
   end
 end
 
@@ -317,6 +327,7 @@ end
 local function update_input_button(id, pressed)
   pressed = pressed and true or false
   if last_input_buttons[id] == pressed then return end
+  vr_log("UpdateInputButton: "..tostring(id).." => "..tostring(pressed))
   last_input_buttons[id] = pressed
   uevr_bridge:UpdateInputButton(id, pressed)
 end
@@ -337,6 +348,10 @@ local function update_input_buttons(s)
     update_input_button(INPUT_BUTTON.RightShoulder, s.right_shoulder)
     update_input_button(INPUT_BUTTON.Start, s.start)
     update_input_button(INPUT_BUTTON.Back, s.back)
+    update_input_button(INPUT_BUTTON.DPadUp, s.dpad_up)
+    update_input_button(INPUT_BUTTON.DPadDown, s.dpad_down)
+    update_input_button(INPUT_BUTTON.DPadLeft, s.dpad_left)
+    update_input_button(INPUT_BUTTON.DPadRight, s.dpad_right)
   else
     uevr_bridge:UpdateButtonState(s.a, s.b, s.x, s.y, s.left_stick, s.left_grip, s.right_stick, s.right_grip, s.start)
   end
@@ -440,7 +455,7 @@ uevr.sdk.callbacks.on_xinput_get_state(function(retval, user_index, state)
     local btn_right_shoulder = false
 
     -- If using Frame controllers, use Squeeze "action" instead of shoulder input, and reassign xinput to shoulders
-    if controller_type == "frame" then
+    if controller_is_frame then
       btn_left_shoulder = btn_left_grip
       btn_right_shoulder = btn_right_grip
       btn_left_grip = action_state["L:Squeeze"]
@@ -468,6 +483,10 @@ uevr.sdk.callbacks.on_xinput_get_state(function(retval, user_index, state)
       left_grip = btn_left_grip, right_grip = btn_right_grip,
       left_shoulder = btn_left_shoulder, right_shoulder = btn_right_shoulder,
       start = btn_start, back = btn_back,
+      dpad_up = controller_is_frame and gamepad.wButtons & XINPUT_GAMEPAD_DPAD_UP ~= 0,
+      dpad_down = controller_is_frame and gamepad.wButtons & XINPUT_GAMEPAD_DPAD_DOWN ~= 0,
+      dpad_left = controller_is_frame and gamepad.wButtons & XINPUT_GAMEPAD_DPAD_LEFT ~= 0,
+      dpad_right = controller_is_frame and gamepad.wButtons & XINPUT_GAMEPAD_DPAD_RIGHT ~= 0
     })
   end
   if (gamepad.sThumbLX or 0) ~= last_gamepad.sThumbLX or (gamepad.sThumbLY or 0) ~= last_gamepad.sThumbLY then
@@ -517,7 +536,6 @@ uevr.sdk.callbacks.on_pre_engine_tick(function(engine, delta)
     tick_countdown = 500
 
     if (uevr_bridge == nil) then
-      init_controllers()
       init_bridge()
       if (uevr_bridge == nil) then
         vr_log('UEVR Enhancement Mod not found! Did you install the mod?')

@@ -74,6 +74,10 @@ enum class EVRInputButton : uint8 {
   Back                  UMETA(DisplayName = "Back"),
   LeftShoulder          UMETA(DisplayName = "Left Shoulder"),
   RightShoulder         UMETA(DisplayName = "Right Shoulder"),
+  DPadUp                UMETA(DisplayName = "D-Pad Up"),
+  DPadDown              UMETA(DisplayName = "D-Pad Down"),
+  DPadLeft              UMETA(DisplayName = "D-Pad Left"),
+  DPadRight             UMETA(DisplayName = "D-Pad Right"),
   Count                 UMETA(Hidden)
 };
 

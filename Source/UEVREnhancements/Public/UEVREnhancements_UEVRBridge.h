@@ -51,6 +51,10 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void UpdateRightTriggerState(bool RT);
 
+	/** Set the controller type (called from UEVR profile script on init). */
+	UFUNCTION(BlueprintCallable)
+	void SetControllerType(int32 ControllerTypeId);
+
 	UFUNCTION(BlueprintCallable)
 	void SetLeftHandMode(bool left_hand_mode);
 
@@ -153,6 +157,11 @@ public:
 	UPROPERTY(BlueprintAssignable, EditDefaultsOnly, Category="UEVR")
 	FUEVRBridgeInitialised UEVRBridgeInitialised;
 
+	/** Called when UEVR controller type is set or changed. */
+	DECLARE_DYNAMIC_MULTICAST_DELEGATE(FUEVRBridgeControllerTypeChanged);
+	UPROPERTY(BlueprintAssignable, EditDefaultsOnly, Category="UEVR")
+	FUEVRBridgeControllerTypeChanged UEVRBridgeControllerTypeChanged;
+
 	/** Please add a variable description */
 	DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FUpdateUIInteraction, bool, UIInteraction);
 	UPROPERTY(BlueprintAssignable, EditDefaultsOnly, Category="UEVR")
@@ -174,6 +183,9 @@ public:
 
 	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category="UEVR")
 	FString UEVRBranch;
+
+	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly, Category="UEVR")
+	EVRControllerType ControllerType;
 
 	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category="UEVR")
 	bool UIInteractMode;
