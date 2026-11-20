@@ -93,6 +93,7 @@ local CONTROLLER_AXIS_ACTIONS = {
 local action_handles = {} -- Action handles
 local action_active_state = {} -- Track which actions are "active"
 local action_axis_state = {} -- Track vector values of actions with axis values
+local last_frame_grip = { L = false, R = false } -- Last Frame grip pressed states (from Squeeze axis vs threshold)
 
 local function aim_method_label(aim_mode)
   return tostring(aim_methods[(aim_mode or 0)+1])
@@ -400,8 +401,11 @@ uevr.sdk.callbacks.on_xinput_get_state(function(retval, user_index, state)
   local gamepad = state.Gamepad
 
   if active_controller == nil then
-    -- Lock onto the first slot that ever reports input (just check buttons+triggers); ignore the rest.
-    if gamepad.wButtons ~= 0 or gamepad.bLeftTrigger ~= 0 or gamepad.bRightTrigger ~= 0 then
+    -- Lock onto the first slot that ever reports input (check buttons, triggers, sticks).
+    -- Stick range is 0 to 32767, generous thresholds are used to filter out minor movements
+    if gamepad.wButtons ~= 0 or gamepad.bLeftTrigger ~= 0 or gamepad.bRightTrigger ~= 0
+      or gamepad.sThumbLX > 10000 or gamepad.sThumbLY > 10000 or gamepad.sThumbRX > 10000 or gamepad.sThumbRY > 10000
+    then
       active_controller = user_index
       vr_log("Locked controller to index " .. user_index)
 
@@ -441,15 +445,30 @@ uevr.sdk.callbacks.on_xinput_get_state(function(retval, user_index, state)
       if (active_now and CONTROLLER_AXIS_ACTIONS[action_path]) then
         -- local src = (hand == "L") and vr.get_left_joystick_source() or vr.get_right_joystick_source()
         local action_axis = vr.get_action_axis(handle, src)
-        vr_log(string.format("Vector Action: %s %-10s %f %s", key, action_axis.active, action_axis.value, active_now and "start" or "stop"))
         action_axis_state[key] = action_axis.active and action_axis.value or 0
       end
     end
   end
 
+  -- Frame grips come from the analog Squeeze action. Its "active" state can stay unchanged while the
+  -- value crosses the threshold, so detect the pressed-state change directly.
+  local frame_left_grip, frame_right_grip = false, false
+  if controller_is_frame then
+    frame_left_grip = (action_active_state["L:Squeeze"] and (action_axis_state["L:Squeeze"] or 0) > ACTION_TRIGGER_THRESHOLD) or false
+    frame_right_grip = (action_active_state["R:Squeeze"] and (action_axis_state["R:Squeeze"] or 0) > ACTION_TRIGGER_THRESHOLD) or false
+  end
+  local changed_grips = frame_left_grip ~= last_frame_grip.L or frame_right_grip ~= last_frame_grip.R
+  if changed_grips then
+    vr_log(string.format("Frame Grip: L=%s (%.2f) R=%s (%.2f)",
+      tostring(frame_left_grip), action_axis_state["L:Squeeze"] or 0,
+      tostring(frame_right_grip), action_axis_state["R:Squeeze"] or 0))
+  end
+  last_frame_grip.L = frame_left_grip
+  last_frame_grip.R = frame_right_grip
+
   -- vr_log('Comparing '..gamepad.wButtons..' to '..last_gamepad.wButtons)
   -- Compare gamepad states to last_gamepad
-  if gamepad.wButtons ~= last_gamepad.wButtons or changed_buttons then
+  if gamepad.wButtons ~= last_gamepad.wButtons or changed_buttons or changed_grips then
     local btn_a = gamepad.wButtons & XINPUT_GAMEPAD_A ~= 0
     local btn_x = gamepad.wButtons & (controller_is_frame and XINPUT_GAMEPAD_X or XINPUT_GAMEPAD_B) ~= 0
     local btn_b = gamepad.wButtons & (controller_is_frame and XINPUT_GAMEPAD_B or XINPUT_GAMEPAD_X) ~= 0
@@ -467,8 +486,8 @@ uevr.sdk.callbacks.on_xinput_get_state(function(retval, user_index, state)
     if controller_is_frame then
       btn_left_shoulder = btn_left_grip
       btn_right_shoulder = btn_right_grip
-      btn_left_grip = action_active_state["L:Squeeze"] and action_axis_state["L:Squeeze"] > ACTION_TRIGGER_THRESHOLD
-      btn_right_grip = action_active_state["R:Squeeze"] and action_axis_state["R:Squeeze"] > ACTION_TRIGGER_THRESHOLD
+      btn_left_grip = frame_left_grip
+      btn_right_grip = frame_right_grip
     end
 
     -- vr_log('Buttons A='..tostring(btn_a)..' B='..tostring(btn_b)..' X='..tostring(btn_x)..' Y='..tostring(btn_y)..' LS='..tostring(btn_left_stick)..' LG='..tostring(btn_left_grip)..' RS='..tostring(btn_right_stick)..' RG='..tostring(btn_right_grip))
